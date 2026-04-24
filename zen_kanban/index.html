@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Kanban</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --card-bg: rgba(51, 65, 85, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .board {
+            display: flex;
+            gap: 1.5rem;
+            flex: 1;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .column {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            width: 320px;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 150px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .column-header {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            font-weight: 600;
+        }
+
+        .task-count {
+            background: rgba(255,255,255,0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .task-list {
+            padding: 1rem;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-height: 50px;
+        }
+
+        /* Custom Scrollbar */
+        .task-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .task-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .task-list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+
+        .task {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .task:active {
+            cursor: grabbing;
+        }
+
+        .task:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .task.dragging {
+            opacity: 0.5;
+            border: 2px dashed var(--accent);
+        }
+
+        .task-content {
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .task-actions {
+            display: flex;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .task:hover .task-actions {
+            opacity: 1;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.2rem;
+            border-radius: 4px;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .add-task-container {
+            padding: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .add-task-btn {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed var(--glass-border);
+            color: var(--text-main);
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-task-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .task-form {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .task-form.active {
+            display: flex;
+        }
+
+        .task-input {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 0.75rem;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 60px;
+            outline: none;
+        }
+
+        .task-input:focus {
+            border-color: var(--accent);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+        }
+
+        /* Visual cue for drag over */
+        .task-list.drag-over {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Zen Kanban</h1>
+        <p>A serene space to organize your thoughts.</p>
+    </header>
+
+    <div class="board" id="board">
+        <!-- Columns will be generated by JS -->
+    </div>
+
+    <script>
+        const defaultData = [
+            { id: 'todo', title: 'To Do', tasks: [{id: 't1', content: 'Explore the universe'}, {id: 't2', content: 'Breathe in, breathe out'}] },
+            { id: 'in-progress', title: 'In Progress', tasks: [{id: 't3', content: 'Building something useful'}] },
+            { id: 'done', title: 'Done', tasks: [{id: 't4', content: 'Go wild'}] }
+        ];
+
+        let boardData = JSON.parse(localStorage.getItem('zenKanbanData')) || defaultData;
+
+        function saveData() {
+            localStorage.setItem('zenKanbanData', JSON.stringify(boardData));
+            updateCounts();
+        }
+
+        function renderBoard() {
+            const boardEl = document.getElementById('board');
+            boardEl.innerHTML = '';
+
+            boardData.forEach(col => {
+                const colEl = document.createElement('div');
+                colEl.className = 'column';
+                colEl.dataset.id = col.id;
+
+                colEl.innerHTML = `
+                    <div class="column-header">
+                        <span>${col.title}</span>
+                        <span class="task-count" id="count-${col.id}">${col.tasks.length}</span>
+                    </div>
+                    <div class="task-list" id="list-${col.id}"></div>
+                    <div class="add-task-container">
+                        <button class="add-task-btn" onclick="showForm('${col.id}')">+ Add Task</button>
+                        <div class="task-form" id="form-${col.id}">
+                            <textarea class="task-input" id="input-${col.id}" placeholder="What needs to be done?"></textarea>
+                            <div class="form-actions">
+                                <button class="btn btn-primary" onclick="addTask('${col.id}')">Add</button>
+                                <button class="btn btn-cancel" onclick="hideForm('${col.id}')">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                boardEl.appendChild(colEl);
+
+                const listEl = document.getElementById(`list-${col.id}`);
+                col.tasks.forEach(task => renderTask(task, listEl, col.id));
+
+                // Drag and drop listeners for the list
+                listEl.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    listEl.classList.add('drag-over');
+                    const draggingTask = document.querySelector('.dragging');
+                    const afterElement = getDragAfterElement(listEl, e.clientY);
+
+                    if (afterElement == null) {
+                        listEl.appendChild(draggingTask);
+                    } else {
+                        listEl.insertBefore(draggingTask, afterElement);
+                    }
+                });
+
+                listEl.addEventListener('dragleave', () => {
+                    listEl.classList.remove('drag-over');
+                });
+
+                listEl.addEventListener('drop', e => {
+                    e.preventDefault();
+                    listEl.classList.remove('drag-over');
+
+                    const taskId = e.dataTransfer.getData('text/plain');
+                    const sourceColId = e.dataTransfer.getData('sourceCol');
+                    const targetColId = col.id;
+
+                    if(sourceColId !== targetColId || true) {
+                        // Re-calculate state based on DOM order for simplicity and robust sync
+                        syncStateFromDOM();
+                    }
+                });
+            });
+        }
+
+        function renderTask(task, listEl, colId) {
+            const taskEl = document.createElement('div');
+            taskEl.className = 'task';
+            taskEl.draggable = true;
+            taskEl.dataset.id = task.id;
+            taskEl.dataset.colId = colId;
+
+            taskEl.innerHTML = `
+                <div class="task-content">${escapeHTML(task.content)}</div>
+                <div class="task-actions">
+                    <button class="delete-btn" onclick="deleteTask('${colId}', '${task.id}')">🗑️</button>
+                </div>
+            `;
+
+            taskEl.addEventListener('dragstart', e => {
+                taskEl.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', task.id);
+                e.dataTransfer.setData('sourceCol', colId);
+                // Slight delay to allow drag image to render before making original invisible
+                setTimeout(() => taskEl.style.opacity = '0.5', 0);
+            });
+
+            taskEl.addEventListener('dragend', () => {
+                taskEl.classList.remove('dragging');
+                taskEl.style.opacity = '1';
+                syncStateFromDOM();
+            });
+
+            listEl.appendChild(taskEl);
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.task:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function syncStateFromDOM() {
+            boardData.forEach(col => {
+                const listEl = document.getElementById(`list-${col.id}`);
+                const taskEls = [...listEl.querySelectorAll('.task')];
+
+                col.tasks = taskEls.map(el => {
+                    // Update dataset column ID
+                    el.dataset.colId = col.id;
+                    // Find original content or recreate
+                    let originalTaskContent = el.querySelector('.task-content').innerText;
+                    return { id: el.dataset.id, content: originalTaskContent };
+                });
+            });
+            saveData();
+        }
+
+        function showForm(colId) {
+            document.getElementById(`form-${colId}`).classList.add('active');
+            document.getElementById(`input-${colId}`).focus();
+            document.querySelector(`#list-${colId} ~ .add-task-btn`).style.display = 'none';
+        }
+
+        function hideForm(colId) {
+            document.getElementById(`form-${colId}`).classList.remove('active');
+            document.getElementById(`input-${colId}`).value = '';
+            document.querySelector(`#list-${colId} ~ .add-task-btn`).style.display = 'flex';
+        }
+
+        function addTask(colId) {
+            const input = document.getElementById(`input-${colId}`);
+            const content = input.value.trim();
+            if (!content) return;
+
+            const newTask = {
+                id: 't' + Date.now(),
+                content: content
+            };
+
+            const colIndex = boardData.findIndex(c => c.id === colId);
+            boardData[colIndex].tasks.push(newTask);
+
+            const listEl = document.getElementById(`list-${colId}`);
+            renderTask(newTask, listEl, colId);
+
+            hideForm(colId);
+            saveData();
+
+            // Scroll to bottom
+            listEl.scrollTop = listEl.scrollHeight;
+        }
+
+        function deleteTask(colId, taskId) {
+            if(!confirm("Delete this task?")) return;
+
+            const colIndex = boardData.findIndex(c => c.id === colId);
+            boardData[colIndex].tasks = boardData[colIndex].tasks.filter(t => t.id !== taskId);
+
+            const taskEl = document.querySelector(`.task[data-id="${taskId}"]`);
+            if(taskEl) taskEl.remove();
+
+            saveData();
+        }
+
+        function updateCounts() {
+            boardData.forEach(col => {
+                const countEl = document.getElementById(`count-${col.id}`);
+                if(countEl) countEl.innerText = col.tasks.length;
+            });
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g,
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        // Initial Render
+        renderBoard();
+
+        // Handle enter key in textareas
+        document.addEventListener('keydown', e => {
+            if(e.key === 'Enter' && !e.shiftKey && e.target.classList.contains('task-input')) {
+                e.preventDefault();
+                const colId = e.target.id.split('-')[1];
+                addTask(colId);
+            }
+            if(e.key === 'Escape' && e.target.classList.contains('task-input')) {
+                 const colId = e.target.id.split('-')[1];
+                 hideForm(colId);
+            }
+        });
+    </script>
+</body>
+</html>
