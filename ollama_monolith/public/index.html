@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE MONOLITH</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <!-- Load Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="overlay">
+        <header>
+            <h1>THE MONOLITH</h1>
+            <p class="subtitle">ASK AND TREMBLE</p>
+        </header>
+
+        <div class="interaction-zone">
+            <input type="text" id="query-input" placeholder="Whisper into the void..." autocomplete="off">
+        </div>
+
+        <div id="response-container" class="response-container">
+            <div id="response-text" class="response-text"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
