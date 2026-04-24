@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLLAMA OVERDRIVE // NEURAL DEBATE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <h1 class="glitch" data-text="OLLAMA OVERDRIVE">OLLAMA OVERDRIVE</h1>
+        <p class="subtitle">MULTI-AGENT NEURAL DEBATE PROTOCOL ACTIVATED</p>
+    </header>
+
+    <main>
+        <div class="control-panel">
+            <label for="topic-input">> SUBJECT_OF_DEBATE:</label>
+            <input type="text" id="topic-input" placeholder="e.g., The implications of conscious toasters" autocomplete="off">
+            <button id="start-btn" class="cyber-button">INITIATE_CHAOS()</button>
+        </div>
+
+        <div class="debate-arena" id="arena">
+            <!-- Persona panels will be injected here -->
+        </div>
+
+        <div class="synthesis-panel" id="synthesis-container" style="display: none;">
+            <div class="panel-header glitch-text">>> SYNTHESIZING_TRUTH...</div>
+            <div class="synthesis-output" id="synthesis-output"></div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
