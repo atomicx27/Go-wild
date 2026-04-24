@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Synesthesia</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        canvas {
+            display: block;
+        }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            z-index: 10;
+            pointer-events: none;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+        .btn {
+            pointer-events: auto;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            color: #000;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+        }
+        .btn:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 255, 1);
+        }
+    </style>
+</head>
+<body>
+    <div id="ui">
+        <h1>COSMIC SYNESTHESIA</h1>
+        <p>Click and drag to bend space and sound.</p>
+        <button class="btn" id="start-btn">INITIATE MADNESS (Enable Audio)</button>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('start-btn');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Audio Context Setup
+        let audioCtx;
+        let mainGain;
+        let filter;
+        let distortion;
+        let oscillators = [];
+        let isAudioInitialized = false;
+
+        function initAudio() {
+            if (isAudioInitialized) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+
+            mainGain = audioCtx.createGain();
+            mainGain.gain.value = 0.2; // Keep it from blowing out ears immediately
+
+            filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1000;
+            filter.Q.value = 10;
+
+            // Simple distortion curve
+            distortion = audioCtx.createWaveShaper();
+            function makeDistortionCurve(amount) {
+                let k = typeof amount === 'number' ? amount : 50,
+                    n_samples = 44100,
+                    curve = new Float32Array(n_samples),
+                    deg = Math.PI / 180,
+                    i = 0,
+                    x;
+                for ( ; i < n_samples; ++i ) {
+                    x = i * 2 / n_samples - 1;
+                    curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+                }
+                return curve;
+            };
+            distortion.curve = makeDistortionCurve(400);
+            distortion.oversample = '4x';
+
+            filter.connect(distortion);
+            distortion.connect(mainGain);
+            mainGain.connect(audioCtx.destination);
+
+            for (let i = 0; i < 3; i++) {
+                let osc = audioCtx.createOscillator();
+                osc.type = ['sine', 'triangle', 'sawtooth'][i];
+                osc.frequency.value = 100 + (i * 50);
+                osc.connect(filter);
+                osc.start();
+                oscillators.push(osc);
+            }
+
+            isAudioInitialized = true;
+            startBtn.style.display = 'none';
+        }
+
+        startBtn.addEventListener('click', initAudio);
+
+        // Particle System
+        let particles = [];
+        let attractors = [];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                this.size = Math.random() * 3 + 1;
+            }
+
+            update() {
+                let ax = 0;
+                let ay = 0;
+
+                for (let attr of attractors) {
+                    let dx = attr.x - this.x;
+                    let dy = attr.y - this.y;
+                    let distSq = dx * dx + dy * dy;
+                    let dist = Math.sqrt(distSq);
+
+                    if (dist > 5) {
+                        let force = attr.strength / distSq;
+                        ax += (dx / dist) * force;
+                        ay += (dy / dist) * force;
+                    }
+                }
+
+                this.vx += ax;
+                this.vy += ay;
+
+                // Friction
+                this.vx *= 0.99;
+                this.vy *= 0.99;
+
+                // Speed limit
+                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                if (speed > 15) {
+                    this.vx = (this.vx / speed) * 15;
+                    this.vy = (this.vy / speed) * 15;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Wrap around
+                if (this.x < 0) this.x += width;
+                if (this.x > width) this.x -= width;
+                if (this.y < 0) this.y += height;
+                if (this.y > height) this.y -= height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Attractor {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.strength = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 500 + 100);
+                this.hue = Math.random() * 360;
+                this.life = 200; // frames
+            }
+            draw() {
+                ctx.strokeStyle = `hsla(${this.hue}, 100%, 50%, ${this.life / 200})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, Math.abs(this.strength) / 10, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Add a crosshair
+                ctx.beginPath();
+                ctx.moveTo(this.x - 10, this.y);
+                ctx.lineTo(this.x + 10, this.y);
+                ctx.moveTo(this.x, this.y - 10);
+                ctx.lineTo(this.x, this.y + 10);
+                ctx.stroke();
+            }
+        }
+
+        for (let i = 0; i < 1000; i++) {
+            particles.push(new Particle());
+        }
+
+        // Interaction
+        let isMouseDown = false;
+
+        window.addEventListener('mousedown', (e) => {
+            if(e.target === startBtn) return;
+            isMouseDown = true;
+            if(isAudioInitialized && audioCtx.state === 'suspended') {
+                 audioCtx.resume();
+            }
+            attractors.push(new Attractor(e.clientX, e.clientY));
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isMouseDown) {
+                if(Math.random() > 0.7) {
+                    attractors.push(new Attractor(e.clientX, e.clientY));
+                }
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isMouseDown = false;
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            if(e.target === startBtn) return;
+            isMouseDown = true;
+            if(isAudioInitialized && audioCtx.state === 'suspended') {
+                 audioCtx.resume();
+            }
+            for(let i=0; i<e.touches.length; i++) {
+                attractors.push(new Attractor(e.touches[i].clientX, e.touches[i].clientY));
+            }
+        });
+
+        window.addEventListener('touchmove', (e) => {
+             if (isMouseDown) {
+                if(Math.random() > 0.5) {
+                    attractors.push(new Attractor(e.touches[0].clientX, e.touches[0].clientY));
+                }
+            }
+        });
+
+        window.addEventListener('touchend', () => {
+             isMouseDown = false;
+        });
+
+        let time = 0;
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Trail effect
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.globalCompositeOperation = 'lighter';
+
+            let totalVx = 0;
+            let totalVy = 0;
+
+            for (let i = attractors.length - 1; i >= 0; i--) {
+                attractors[i].draw();
+                attractors[i].life--;
+                if(attractors[i].life <= 0) {
+                    attractors.splice(i, 1);
+                }
+            }
+
+            for (let p of particles) {
+                p.update();
+                p.draw();
+                totalVx += Math.abs(p.vx);
+                totalVy += Math.abs(p.vy);
+            }
+
+            ctx.globalCompositeOperation = 'source-over';
+
+            // Audio Modulation
+            if (isAudioInitialized) {
+                let avgSpeed = (totalVx + totalVy) / (particles.length * 2);
+
+                // Modulate filter cutoff based on overall particle speed
+                filter.frequency.setTargetAtTime(Math.min(5000, 100 + avgSpeed * 500), audioCtx.currentTime, 0.1);
+
+                // Modulate oscillator frequencies slightly based on time and attractors count
+                let baseFreq = 50 + (attractors.length * 10);
+
+                if (oscillators[0]) {
+                    oscillators[0].frequency.setTargetAtTime(baseFreq + Math.sin(time * 0.05) * 20 * avgSpeed, audioCtx.currentTime, 0.1);
+                }
+                if (oscillators[1]) {
+                    oscillators[1].frequency.setTargetAtTime(baseFreq * 1.5 + Math.cos(time * 0.07) * 50 * avgSpeed, audioCtx.currentTime, 0.1);
+                }
+                if (oscillators[2]) {
+                    oscillators[2].frequency.setTargetAtTime(baseFreq * 2.1 + Math.sin(time * 0.03) * 100 * avgSpeed, audioCtx.currentTime, 0.1);
+                    oscillators[2].detune.setTargetAtTime(avgSpeed * 100, audioCtx.currentTime, 0.1);
+                }
+
+                // Add an occasional rhythmic burst if there are many attractors
+                if(attractors.length > 10 && Math.random() > 0.95) {
+                     mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.01);
+                     mainGain.gain.setTargetAtTime(0.1, audioCtx.currentTime + 0.1, 0.1);
+                } else {
+                     mainGain.gain.setTargetAtTime(0.2 + (avgSpeed / 15) * 0.2, audioCtx.currentTime, 0.1);
+                }
+            }
+
+            time++;
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
