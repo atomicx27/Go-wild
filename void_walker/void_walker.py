@@ -52,8 +52,15 @@ def query_ollama(prompt, system_prompt):
 
 # --- TOOLS ---
 def tool_execute_bash(command):
-    """Executes a bash command and returns the output."""
+    """Executes a bash command and returns the output. Requires human confirmation."""
     print_typewriter(f"  [>] EXECUTING BASH: {command}", C.MAGENTA)
+
+    # SAFETY: Human-in-the-loop confirmation
+    print_typewriter(f"  [!] THE VOID WANTS TO RUN: {C.RED}{command}{C.RESET}", C.YELLOW)
+    confirm = input(f"  [?] Allow execution? (y/n): ")
+    if confirm.lower() != 'y':
+        return "USER DENIED EXECUTION."
+
     try:
         result = subprocess.run(command, shell=True, text=True, capture_output=True, timeout=10)
         output = result.stdout + result.stderr
