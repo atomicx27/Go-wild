@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ollama Thought Weaver</title>
+    <!-- Include Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #f8fafc; }
+        .markdown-body h1 { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; color: #1e293b; }
+        .markdown-body h2 { font-size: 1.25rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; color: #334155; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.25rem;}
+        .markdown-body h3 { font-size: 1.1rem; font-weight: bold; margin-top: 0.75rem; margin-bottom: 0.5rem; color: #475569; }
+        .markdown-body p { margin-bottom: 1rem; color: #334155; line-height: 1.6;}
+        .markdown-body ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; color: #334155;}
+        .markdown-body ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; color: #334155;}
+        .markdown-body li { margin-bottom: 0.25rem; }
+        .markdown-body strong { color: #0f172a; }
+        .markdown-body pre { background: #1e293b; color: #f8fafc; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1rem;}
+        .markdown-body code { background: #e2e8f0; padding: 0.1rem 0.3rem; border-radius: 0.25rem; font-size: 0.9em;}
+        .markdown-body pre code { background: transparent; padding: 0; }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans text-slate-800">
+
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-10">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                <h1 class="text-xl font-bold text-slate-800 tracking-tight">Thought Weaver <span class="text-sm font-normal text-slate-500 ml-2">Local AI Organizer</span></h1>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <label for="model-select" class="text-sm font-medium text-slate-600">Model:</label>
+                <select id="model-select" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                    <option value="">Loading models...</option>
+                </select>
+                <button id="refresh-models" class="text-slate-400 hover:text-blue-600 transition-colors" title="Refresh Models">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 py-8 flex flex-col md:flex-row gap-6">
+
+        <!-- Input Section -->
+        <div class="w-full md:w-1/2 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 flex justify-between items-center">
+                <h2 class="font-semibold text-slate-700">Raw Brain Dump</h2>
+                <button id="clear-btn" class="text-xs text-slate-500 hover:text-red-500 transition-colors">Clear</button>
+            </div>
+            <textarea id="thought-input" class="flex-grow w-full p-4 resize-none outline-none text-slate-700 focus:ring-inset focus:ring-2 focus:ring-blue-500 min-h-[300px]" placeholder="Dump your chaotic thoughts, meeting notes, or random ideas here. The AI will weave them into an organized structure..."></textarea>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-200">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Instructions (Optional)</label>
+                <input type="text" id="custom-prompt" class="w-full mb-4 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., 'Extract action items', 'Format as a blog post outline'">
+
+                <button id="weave-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="btn-text">Weave Thoughts</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="w-full md:w-1/2 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 flex justify-between items-center">
+                <h2 class="font-semibold text-slate-700">Organized Output</h2>
+                <button id="copy-btn" class="text-xs text-blue-600 hover:text-blue-800 transition-colors hidden font-medium flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg> Copy
+                </button>
+            </div>
+            <div id="output-area" class="flex-grow p-6 overflow-y-auto min-h-[300px] max-h-[calc(100vh-250px)] relative">
+                <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
+                    <svg class="w-16 h-16 mb-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    <p class="text-sm">Output will appear here</p>
+                </div>
+                <div id="result-content" class="markdown-body hidden"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const modelSelect = document.getElementById('model-select');
+        const refreshModelsBtn = document.getElementById('refresh-models');
+        const inputArea = document.getElementById('thought-input');
+        const customPrompt = document.getElementById('custom-prompt');
+        const weaveBtn = document.getElementById('weave-btn');
+        const btnText = document.getElementById('btn-text');
+        const outputArea = document.getElementById('output-area');
+        const emptyState = document.getElementById('empty-state');
+        const resultContent = document.getElementById('result-content');
+        const clearBtn = document.getElementById('clear-btn');
+        const copyBtn = document.getElementById('copy-btn');
+
+        let isProcessing = false;
+        let abortController = null;
+        let rawMarkdown = "";
+
+        const systemPrompt = `You are a highly skilled professional organizer and summarizer. The user will provide a chaotic 'brain dump' of thoughts, notes, or ideas.
+Your task is to untangle this mess and present it back in a highly structured, readable, and logical Markdown format.
+
+Unless the user specifies otherwise, generally follow this structure:
+1.  **Summary:** A brief 1-2 sentence overview of the core theme.
+2.  **Key Themes/Topics:** Group related points together under clear headings.
+3.  **Action Items (if any):** A bulleted checklist of concrete tasks to be done.
+4.  **Open Questions/Insights (if any):** Important lingering thoughts.
+
+Do NOT include any conversational filler (like "Here is the organized version..."). Just output the raw Markdown structure immediately.`;
+
+        async function loadModels() {
+            try {
+                modelSelect.innerHTML = '<option value="">Loading...</option>';
+                const response = await fetch('/api/tags');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+
+                modelSelect.innerHTML = '';
+                if (data.models && data.models.length > 0) {
+                    data.models.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model.name;
+                        option.textContent = model.name;
+                        modelSelect.appendChild(option);
+                    });
+                } else {
+                    modelSelect.innerHTML = '<option value="">No models found</option>';
+                }
+            } catch (error) {
+                console.error("Failed to load models:", error);
+                modelSelect.innerHTML = '<option value="">Error loading models</option>';
+            }
+        }
+
+        async function processThoughts() {
+            const text = inputArea.value.trim();
+            const selectedModel = modelSelect.value;
+            const userInstructions = customPrompt.value.trim();
+
+            if (!text) {
+                alert("Please enter some thoughts first.");
+                return;
+            }
+            if (!selectedModel) {
+                alert("Please select an Ollama model first.");
+                return;
+            }
+
+            if (isProcessing) {
+                if (abortController) abortController.abort();
+                resetUI();
+                return;
+            }
+
+            setProcessingState(true);
+            emptyState.classList.add('hidden');
+            resultContent.classList.remove('hidden');
+            resultContent.innerHTML = '';
+            rawMarkdown = "";
+            copyBtn.classList.add('hidden');
+
+            let finalSystemPrompt = systemPrompt;
+            if (userInstructions) {
+                finalSystemPrompt += `\n\nUSER SPECIFIC INSTRUCTIONS: ${userInstructions}`;
+            }
+
+            abortController = new AbortController();
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: selectedModel,
+                        stream: true,
+                        messages: [
+                            { role: 'system', content: finalSystemPrompt },
+                            { role: 'user', content: text }
+                        ]
+                    }),
+                    signal: abortController.signal
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (line.trim() === '') continue;
+                        try {
+                            const parsed = JSON.parse(line);
+                            if (parsed.message && parsed.message.content) {
+                                rawMarkdown += parsed.message.content;
+                                resultContent.innerHTML = marked.parse(rawMarkdown);
+                                // Auto-scroll to bottom of output
+                                outputArea.scrollTop = outputArea.scrollHeight;
+                            }
+                        } catch (e) {
+                            console.warn('Error parsing JSON stream chunk:', e);
+                        }
+                    }
+                }
+
+                if(rawMarkdown) {
+                     copyBtn.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.log('Request aborted');
+                } else {
+                    console.error('Processing error:', error);
+                    resultContent.innerHTML = `<div class="p-4 bg-red-50 text-red-700 border border-red-200 rounded-md">
+                        <strong>Error:</strong> ${error.message}
+                        <p class="text-sm mt-2">Ensure your local Ollama instance is running and accessible.</p>
+                    </div>`;
+                }
+            } finally {
+                setProcessingState(false);
+            }
+        }
+
+        function setProcessingState(processing) {
+            isProcessing = processing;
+            inputArea.disabled = processing;
+            modelSelect.disabled = processing;
+
+            if (processing) {
+                weaveBtn.innerHTML = '<span class="loader"></span> Stop Weaving';
+                weaveBtn.classList.replace('bg-blue-600', 'bg-red-600');
+                weaveBtn.classList.replace('hover:bg-blue-700', 'hover:bg-red-700');
+            } else {
+                weaveBtn.innerHTML = 'Weave Thoughts';
+                weaveBtn.classList.replace('bg-red-600', 'bg-blue-600');
+                weaveBtn.classList.replace('hover:bg-red-700', 'hover:bg-blue-700');
+            }
+        }
+
+        function resetUI() {
+            setProcessingState(false);
+            if (!rawMarkdown) {
+                emptyState.classList.remove('hidden');
+                resultContent.classList.add('hidden');
+            }
+        }
+
+        // Event Listeners
+        refreshModelsBtn.addEventListener('click', loadModels);
+        weaveBtn.addEventListener('click', processThoughts);
+
+        clearBtn.addEventListener('click', () => {
+            if(confirm('Clear all input and output?')) {
+                inputArea.value = '';
+                customPrompt.value = '';
+                rawMarkdown = '';
+                resultContent.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                resultContent.classList.add('hidden');
+                copyBtn.classList.add('hidden');
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(rawMarkdown).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!`;
+                setTimeout(() => copyBtn.innerHTML = originalText, 2000);
+            });
+        });
+
+        // Initialize
+        loadModels();
+    </script>
+</body>
+</html>
