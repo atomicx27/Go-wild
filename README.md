@@ -16,3 +16,5 @@ each folder here will be a new project
 * **test_weaver**: An AI-Agentic Pytest Generator using Ollama.
 * **void_walker**: An Unhinged, Autonomous Agentic Workflow Engine using Ollama (Pure Python, No dependencies).
 * **zen_kanban**: A Zen Kanban web project.
+
+* **genesis_chamber**: An autonomous multi-agent brainstorming and scaffolding engine that watches an inbox for text files containing raw ideas, runs them through a pipeline (Visionary, Critic, Architect, Coder) via Ollama, and scaffolds a full MVP outbox.
