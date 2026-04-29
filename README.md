@@ -5,6 +5,7 @@ each folder here will be a new project
 ## Projects
 
 * **code_exorcist**: An automated, Ollama-powered bug banisher that executes broken code, summons AI to cast out bugs, and rewrites the purified code.
+* **data_alchemist**: An autonomous workflow where an agent watches for messy data files in a cauldron, generates and executes custom Python scripts using Ollama to clean them, and outputs clean data and insights to a vault.
 * **cosmic_synesthesia**: A Cosmic Synesthesia web project.
 * **docu_demon**: An aggressive, Ollama-powered auto-documenter that tears through codebases and injects PEP-compliant docstrings and comments.
 * **ollama_cli_agent**: An autonomous, command-line AI assistant powered by local LLMs via Ollama, utilizing a ReAct loop for executing shell commands.
