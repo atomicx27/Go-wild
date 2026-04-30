@@ -14,3 +14,7 @@ genesis_chamber/inbox/*
 !genesis_chamber/inbox/.gitkeep
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
+
+phantom_coder/test_env/
+phantom_coder/venv/
+phantom_coder/__pycache__/
