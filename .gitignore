@@ -14,3 +14,10 @@ genesis_chamber/inbox/*
 !genesis_chamber/inbox/.gitkeep
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
+
+data_forge/inbox/*
+!data_forge/inbox/.gitkeep
+data_forge/outbox/*
+!data_forge/outbox/.gitkeep
+data_forge/processed/*
+!data_forge/processed/.gitkeep
