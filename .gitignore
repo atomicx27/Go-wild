@@ -14,3 +14,13 @@ genesis_chamber/inbox/*
 !genesis_chamber/inbox/.gitkeep
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
+
+# Mind Weaver Ignore
+mind_weaver/inbox/*
+!mind_weaver/inbox/.gitkeep
+mind_weaver/vault/*
+!mind_weaver/vault/code/
+!mind_weaver/vault/journal/
+!mind_weaver/vault/concepts/
+!mind_weaver/vault/KANBAN.md
+!mind_weaver/vault/INDEX.md
