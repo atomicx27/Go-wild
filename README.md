@@ -4,6 +4,7 @@ each folder here will be a new project
 
 ## Projects
 
+* **archmage**: An agentic AI CLI tool that takes natural language commands ("spells"), writes a Python script to accomplish the task, automatically runs it, and auto-fixes any errors it encounters.
 * **code_exorcist**: An automated, Ollama-powered bug banisher that executes broken code, summons AI to cast out bugs, and rewrites the purified code.
 * **cosmic_synesthesia**: A Cosmic Synesthesia web project.
 * **docu_demon**: An aggressive, Ollama-powered auto-documenter that tears through codebases and injects PEP-compliant docstrings and comments.
