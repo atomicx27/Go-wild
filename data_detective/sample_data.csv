@@ -1,0 +1,11 @@
+date,product,category,price,quantity,revenue
+2023-01-01,Widget A,Widgets,10.0,5,50.0
+2023-01-02,Widget B,Widgets,15.0,2,30.0
+2023-01-03,Gadget X,Gadgets,25.0,1,25.0
+2023-01-04,Widget A,Widgets,10.0,10,100.0
+2023-01-05,Gadget Y,Gadgets,30.0,3,90.0
+2023-01-06,Widget C,Widgets,12.0,8,96.0
+2023-01-07,Gadget X,Gadgets,25.0,4,100.0
+2023-01-08,Widget B,Widgets,15.0,5,75.0
+2023-01-09,Gadget Z,Gadgets,50.0,2,100.0
+2023-01-10,Widget A,Widgets,10.0,15,150.0

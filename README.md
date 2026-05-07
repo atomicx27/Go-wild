@@ -18,3 +18,4 @@ each folder here will be a new project
 * **zen_kanban**: A Zen Kanban web project.
 
 * **genesis_chamber**: An autonomous multi-agent brainstorming and scaffolding engine that watches an inbox for text files containing raw ideas, runs them through a pipeline (Visionary, Critic, Architect, Coder) via Ollama, and scaffolds a full MVP outbox.
+* **data_detective**: An automated data analyst agent that generates, runs, and corrects python scripts to analyze datasets and writes markdown reports using Ollama.
