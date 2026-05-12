@@ -16,3 +16,13 @@ genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
 api_forge/app.log
 app.log
+
+phantom_coder/test_env/
+phantom_coder/venv/
+phantom_coder/__pycache__/
+data_alchemist/cauldron/*
+!data_alchemist/cauldron/.gitkeep
+data_alchemist/vault/*
+!data_alchemist/vault/.gitkeep
+data_alchemist/grimoire/*
+!data_alchemist/grimoire/.gitkeep
