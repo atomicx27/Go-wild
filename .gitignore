@@ -14,3 +14,10 @@ genesis_chamber/inbox/*
 !genesis_chamber/inbox/.gitkeep
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
+
+data_alchemist/cauldron/*
+!data_alchemist/cauldron/.gitkeep
+data_alchemist/vault/*
+!data_alchemist/vault/.gitkeep
+data_alchemist/grimoire/*
+!data_alchemist/grimoire/.gitkeep
