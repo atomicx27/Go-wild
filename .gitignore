@@ -14,3 +14,7 @@ genesis_chamber/inbox/*
 !genesis_chamber/inbox/.gitkeep
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
+
+data_alchemist/inbox/
+data_alchemist/outbox/
+data_alchemist/workspaces/
