@@ -14,6 +14,8 @@ genesis_chamber/inbox/*
 !genesis_chamber/inbox/.gitkeep
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
+api_forge/app.log
+app.log
 
 phantom_coder/test_env/
 phantom_coder/venv/
