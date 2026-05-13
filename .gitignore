@@ -24,3 +24,6 @@ data_alchemist/vault/*
 !data_alchemist/vault/.gitkeep
 data_alchemist/grimoire/*
 !data_alchemist/grimoire/.gitkeep
+code_colosseum/arena/
+code_colosseum/__pycache__/
+code_colosseum/battles/
