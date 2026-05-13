@@ -15,6 +15,12 @@ genesis_chamber/inbox/*
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
 
+data_forge/inbox/*
+!data_forge/inbox/.gitkeep
+data_forge/outbox/*
+!data_forge/outbox/.gitkeep
+data_forge/processed/*
+!data_forge/processed/.gitkeep
 # Mind Weaver Ignore
 mind_weaver/inbox/*
 !mind_weaver/inbox/.gitkeep
