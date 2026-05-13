@@ -1,33 +1,31 @@
 # Data Alchemist
 
-An autonomous, local AI-powered exploratory data analysis agent.
+Data Alchemist is an autonomous agent that processes data files (CSVs, JSONs, etc.) dropped into an inbox. It uses a local Ollama instance to generate Python code to analyze the data, self-heals if the code fails, extracts text insights and visualizations, and finally packages everything into a beautiful HTML dashboard in an outbox.
 
-Data Alchemist continuously watches an `input/` folder for `.csv` and `.json` files.
-Once a file is dropped in, it samples the dataset, sends the sample and metadata to a local Ollama instance (by default using `qwen2.5-coder:7b`), and asks it to generate a comprehensive Python script using `pandas`, `matplotlib`, and `seaborn` to perform Exploratory Data Analysis (EDA).
+## Features
 
-It then extracts the code, attempts to execute it, and if it fails, it feeds the stack trace back to Ollama to fix its own code—iterating up to 3 times in a self-healing loop.
+- **Autonomous Data Analysis**: Just drop a file in the inbox.
+- **LLM Code Generation**: Asks Ollama (`llama3`) to write python analysis scripts (pandas, matplotlib, seaborn).
+- **Self-Healing Execution**: If the generated python script crashes, Data Alchemist feeds the traceback back to Ollama to fix the code automatically.
+- **Dashboard Generation**: Compiles the final insights and generated plots into a modern HTML file.
 
-Successful scripts will output summary insights to the console and save the generated visualizations directly into the `output/` directory.
+## Prerequisites
 
-## Setup
+- Python 3
+- A running local instance of [Ollama](https://ollama.com/) (defaults to `http://localhost:11434`).
+- Ensure `llama3` is pulled: `ollama run llama3`
 
-1. Make sure you have Ollama installed and running locally with the `qwen2.5-coder:7b` model:
-   ```bash
-   ollama pull qwen2.5-coder:7b
-   ```
+The generated code might require data science libraries. You can install standard ones to your environment:
+```bash
+pip install pandas matplotlib seaborn scikit-learn
+```
 
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## How to Use
 
-## Usage
-
-1. Start the Data Alchemist:
+1. Start the Data Alchemist daemon:
    ```bash
    python alchemist.py
    ```
-
-2. Drop a `.csv` or `.json` file into the `input/` directory.
-3. Watch the magic happen in the console.
-4. Check the `output/` directory for generated charts and visual insights.
+2. Drop a dataset (e.g., `sales_data.csv`) into the `data_alchemist/inbox/` directory.
+3. Watch the terminal as the alchemist reads the sample, generates code, executes it, self-heals, and generates the dashboard.
+4. Open the `dashboard.html` located in the newly created folder inside `data_alchemist/outbox/` to view the final results.

@@ -15,6 +15,26 @@ genesis_chamber/inbox/*
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
 
-# Data Alchemist
-data_alchemist/venv/
-data_alchemist/__pycache__/
+data_necromancer/workspace/*
+!data_necromancer/workspace/.gitkeep
+data_necromancer/outbox/*
+!data_necromancer/outbox/.gitkeep
+data_necromancer/__pycache__/
+data_alchemist/inbox/
+data_alchemist/outbox/
+data_alchemist/workspaces/
+api_forge/app.log
+app.log
+
+phantom_coder/test_env/
+phantom_coder/venv/
+phantom_coder/__pycache__/
+data_alchemist/cauldron/*
+!data_alchemist/cauldron/.gitkeep
+data_alchemist/vault/*
+!data_alchemist/vault/.gitkeep
+data_alchemist/grimoire/*
+!data_alchemist/grimoire/.gitkeep
+code_colosseum/arena/
+code_colosseum/__pycache__/
+code_colosseum/battles/
