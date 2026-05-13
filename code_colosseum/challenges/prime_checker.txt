@@ -1,0 +1,1 @@
+Write a Python function to determine if a number is prime.
