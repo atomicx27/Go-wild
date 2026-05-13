@@ -1,0 +1,8 @@
+pandas
+matplotlib
+requests
+watchdog
+pandas
+requests
+matplotlib
+seaborn
