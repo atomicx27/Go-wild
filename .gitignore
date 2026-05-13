@@ -15,6 +15,11 @@ genesis_chamber/inbox/*
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
 
+data_necromancer/workspace/*
+!data_necromancer/workspace/.gitkeep
+data_necromancer/outbox/*
+!data_necromancer/outbox/.gitkeep
+data_necromancer/__pycache__/
 data_alchemist/inbox/
 data_alchemist/outbox/
 data_alchemist/workspaces/
