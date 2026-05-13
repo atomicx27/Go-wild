@@ -24,6 +24,7 @@ each folder here will be a new project
 
 * **data_alchemist**: An autonomous data analysis agent powered by Ollama. It ingests datasets, proposes interesting analytical questions based on schema, generates and executes Python code (pandas, matplotlib) to answer those questions with visualizations, and compiles the findings into a markdown report.
 * **genesis_chamber**: An autonomous multi-agent brainstorming and scaffolding engine that watches an inbox for text files containing raw ideas, runs them through a pipeline (Visionary, Critic, Architect, Coder) via Ollama, and scaffolds a full MVP outbox.
+* **mind_weaver**: An automated, Ollama-powered Second Brain agent that organizes raw text files into a structured, auto-linked Zettelkasten vault.
 * **data_detective**: An automated data analyst agent that generates, runs, and corrects python scripts to analyze datasets and writes markdown reports using Ollama.
 
 * **data_alchemist**: An autonomous, local AI-powered exploratory data analysis agent that continuously watches an input folder for datasets, writes code to analyze them using Ollama, and self-heals its own bugs.
