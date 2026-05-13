@@ -1,0 +1,13 @@
+Date,Product,Category,Region,Sales_Amount,Quantity,Discount
+2023-01-15,Laptop,Electronics,North,1200.00,1,0.05
+2023-01-16,Smartphone,Electronics,South,800.00,2,0.10
+2023-02-10,Desk Chair,Furniture,East,150.00,4,0.00
+2023-02-14,Monitor,Electronics,West,300.00,1,0.00
+2023-03-01,Notebooks,Office Supplies,North,25.50,10,0.05
+2023-03-05,Laptop,Electronics,South,1250.00,1,0.00
+2023-04-12,Coffee Maker,Appliances,East,80.00,2,0.15
+2023-04-18,Smartphone,Electronics,West,820.00,1,0.00
+2023-05-20,Desk Chair,Furniture,North,150.00,2,0.00
+2023-06-05,Monitor,Electronics,South,310.00,3,0.10
+2023-06-15,Pen Set,Office Supplies,East,15.00,20,0.00
+2023-07-01,Laptop,Electronics,West,1150.00,2,0.05

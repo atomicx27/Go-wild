@@ -5,6 +5,7 @@ each folder here will be a new project
 ## Projects
 
 * **code_exorcist**: An automated, Ollama-powered bug banisher that executes broken code, summons AI to cast out bugs, and rewrites the purified code.
+* **data_diviner**: An autonomous Data Analyst Agent powered by a local Ollama instance that dynamically loads CSVs into SQLite and uses a ReAct loop to answer plain English queries.
 * **data_necromancer**: An autonomous data analysis agent that resurrects dead datasets. Drop a CSV/JSON in the inbox, and it uses Ollama to write scripts, analyze data, fix its own bugs, and generate insights and visualizations.
 * **data_alchemist**: An autonomous workflow where an agent watches for messy data files in a cauldron, generates and executes custom Python scripts using Ollama to clean them, and outputs clean data and insights to a vault.
 * **cosmic_synesthesia**: A Cosmic Synesthesia web project.
