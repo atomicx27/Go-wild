@@ -15,6 +15,7 @@ genesis_chamber/inbox/*
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
 
+archmage/grimoire/
 data_necromancer/workspace/*
 !data_necromancer/workspace/.gitkeep
 data_necromancer/outbox/*

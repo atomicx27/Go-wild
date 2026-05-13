@@ -4,6 +4,7 @@ each folder here will be a new project
 
 ## Projects
 
+* **archmage**: An agentic AI CLI tool that takes natural language commands ("spells"), writes a Python script to accomplish the task, automatically runs it, and auto-fixes any errors it encounters.
 * **code_exorcist**: An automated, Ollama-powered bug banisher that executes broken code, summons AI to cast out bugs, and rewrites the purified code.
 * **data_diviner**: An autonomous Data Analyst Agent powered by a local Ollama instance that dynamically loads CSVs into SQLite and uses a ReAct loop to answer plain English queries.
 * **data_necromancer**: An autonomous data analysis agent that resurrects dead datasets. Drop a CSV/JSON in the inbox, and it uses Ollama to write scripts, analyze data, fix its own bugs, and generate insights and visualizations.
