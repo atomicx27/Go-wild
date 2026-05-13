@@ -15,6 +15,10 @@ genesis_chamber/inbox/*
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
 
+# the_toolmaker
+the_toolmaker/tools/
+the_toolmaker/registry.json
+the_toolmaker/__pycache__/
 archmage/grimoire/
 data_necromancer/workspace/*
 !data_necromancer/workspace/.gitkeep

@@ -18,6 +18,7 @@ each folder here will be a new project
 * **phoenix_healer**: An experimental agentic wrapper for Python scripts acting as an automated debugger using a local Ollama instance.
 * **snake_game**: A Snake Game web project.
 * **test_weaver**: An AI-Agentic Pytest Generator using Ollama.
+* **the_toolmaker**: An autonomous agent that writes, saves, and executes its own Python tools on demand to solve user requests.
 * **void_walker**: An Unhinged, Autonomous Agentic Workflow Engine using Ollama (Pure Python, No dependencies).
 * **zen_kanban**: A Zen Kanban web project.
 
