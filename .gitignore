@@ -15,6 +15,11 @@ genesis_chamber/inbox/*
 genesis_chamber/outbox/*
 !genesis_chamber/outbox/.gitkeep
 
+data_alchemist/venv/
+data_alchemist/__pycache__/
+data_alchemist/*.png
+data_alchemist/*.csv
+data_alchemist/report.md
 # the_toolmaker
 the_toolmaker/tools/
 the_toolmaker/registry.json

@@ -1,3 +1,6 @@
+pandas
+matplotlib
+requests
 watchdog
 pandas
 requests
