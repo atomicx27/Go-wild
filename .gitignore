@@ -63,3 +63,5 @@ data_alchemist/grimoire/*
 code_colosseum/arena/
 code_colosseum/__pycache__/
 code_colosseum/battles/
+app_smith/outbox/*
+app_smith/processed/*

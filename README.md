@@ -21,6 +21,7 @@ each folder here will be a new project
 * **the_toolmaker**: An autonomous agent that writes, saves, and executes its own Python tools on demand to solve user requests.
 * **void_walker**: An Unhinged, Autonomous Agentic Workflow Engine using Ollama (Pure Python, No dependencies).
 * **zen_kanban**: A Zen Kanban web project.
+* **app_smith**: An autonomous agent that watches an inbox for app ideas and builds full-stack applications (HTML/JS/CSS/Python) using Ollama.
 
 * **data_alchemist**: An autonomous data analysis agent powered by Ollama. It ingests datasets, proposes interesting analytical questions based on schema, generates and executes Python code (pandas, matplotlib) to answer those questions with visualizations, and compiles the findings into a markdown report.
 * **genesis_chamber**: An autonomous multi-agent brainstorming and scaffolding engine that watches an inbox for text files containing raw ideas, runs them through a pipeline (Visionary, Critic, Architect, Coder) via Ollama, and scaffolds a full MVP outbox.
