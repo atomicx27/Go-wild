@@ -33,3 +33,4 @@ each folder here will be a new project
 * **phantom_coder**: An autonomous background daemon that watches your codebase and automatically writes code for you in real-time when it detects special comments, powered by a local Ollama instance.
 * **code_colosseum**: An autonomous AI agent workflow where two AI 'gladiators' compete to write code and tests for a challenge, and a third AI judges the winner and generates a dramatic HTML battle report.
 * **dev_pet**: A virtual pet that lives in your codebase! It gets hungry and bored over time. You can feed it files or let it autonomously read your code and write snarky code reviews.
+* **infinite_dungeon**: An interactive, AI-generated text adventure game where a local Ollama instance acts as a dynamic Game Master.

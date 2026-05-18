@@ -64,8 +64,5 @@ code_colosseum/arena/
 code_colosseum/__pycache__/
 code_colosseum/battles/
 
-# dev_pet
-dev_pet/workspace/
-dev_pet/state.json
-dev_pet/__pycache__/
-dev_pet/daemon.log
+infinite_dungeon/__pycache__/
+infinite_dungeon/venv/
