@@ -63,3 +63,6 @@ data_alchemist/grimoire/*
 code_colosseum/arena/
 code_colosseum/__pycache__/
 code_colosseum/battles/
+
+infinite_dungeon/__pycache__/
+infinite_dungeon/venv/
