@@ -114,7 +114,15 @@ input[type="text"]::placeholder {
 
 .response-text.visible {
     opacity: 1;
+    animation: glow-pulse 3s infinite alternate ease-in-out;
 }
+
+@keyframes glow-pulse {
+    0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+    100% { text-shadow: 0 0 25px rgba(255, 255, 255, 1), 0 0 40px rgba(100, 0, 255, 0.6); }
+}
+
+
 
 /* Subtitle-style typing */
 .typing-cursor::after {

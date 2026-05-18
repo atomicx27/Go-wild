@@ -78,7 +78,12 @@ header {
     position: relative;
     text-shadow: 0.05em 0 0 var(--alert-color), -0.03em -0.04em 0 var(--tertiary-color),
                  0.025em 0.04em 0 var(--primary-color);
-    animation: glitch 1s infinite alternate;
+    animation: glitch 1s infinite alternate, glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    0% { text-shadow: 0 0 10px var(--alert-color), 0 0 20px var(--tertiary-color); }
+    100% { text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--alert-color); }
 }
 
 .glitch::before, .glitch::after {
@@ -177,7 +182,7 @@ input[type="text"]:focus {
     font-weight: bold;
     cursor: pointer;
     text-transform: uppercase;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     overflow: hidden;
 }
@@ -185,7 +190,8 @@ input[type="text"]:focus {
 .cyber-button:hover {
     background: var(--alert-color);
     color: #000;
-    box-shadow: 0 0 20px var(--alert-color);
+    box-shadow: 0 0 25px var(--alert-color), inset 0 0 10px rgba(0,0,0,0.5);
+    transform: scale(1.05);
 }
 
 .cyber-button:disabled {
@@ -211,11 +217,11 @@ input[type="text"]:focus {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
 }
 
 .persona-panel:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
 }
 
 .persona-header {

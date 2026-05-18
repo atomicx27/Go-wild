@@ -7,13 +7,20 @@
     <style>
         :root {
             --bg-color: #0f172a;
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.2);
             --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --card-bg: rgba(51, 65, 85, 0.8);
+            --text-muted: #cbd5e1;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --card-bg: rgba(51, 65, 85, 0.9);
+            --gradient-1: #8b5cf6;
+            --gradient-2: #3b82f6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         * {
@@ -123,17 +130,20 @@
             border-radius: 8px;
             padding: 1rem;
             cursor: grab;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            animation: fadeIn 0.3s ease-out;
             position: relative;
         }
 
         .task:active {
             cursor: grabbing;
+            transform: scale(0.98);
         }
 
         .task:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .task.dragging {
