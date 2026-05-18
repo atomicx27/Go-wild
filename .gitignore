@@ -64,6 +64,5 @@ code_colosseum/arena/
 code_colosseum/__pycache__/
 code_colosseum/battles/
 
-# omni_api
-omni_api/venv/
-omni_api/__pycache__/
+infinite_dungeon/__pycache__/
+infinite_dungeon/venv/
