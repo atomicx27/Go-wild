@@ -34,5 +34,6 @@ each folder here will be a new project
 * **data_alchemist**: An autonomous agent that processes data files from an inbox, generates Python scripts via Ollama to analyze them, extracts insights/visualizations, and outputs an HTML dashboard.
 * **phantom_coder**: An autonomous background daemon that watches your codebase and automatically writes code for you in real-time when it detects special comments, powered by a local Ollama instance.
 * **code_colosseum**: An autonomous AI agent workflow where two AI 'gladiators' compete to write code and tests for a challenge, and a third AI judges the winner and generates a dramatic HTML battle report.
+* **ollama_story_crafter**: An autonomous multi-agent workflow that watches an inbox for text prompts and generates complete, multi-chapter stories using a local Ollama instance.
 * **dev_pet**: A virtual pet that lives in your codebase! It gets hungry and bored over time. You can feed it files or let it autonomously read your code and write snarky code reviews.
 * **infinite_dungeon**: An interactive, AI-generated text adventure game where a local Ollama instance acts as a dynamic Game Master.
