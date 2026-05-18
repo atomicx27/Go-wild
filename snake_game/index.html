@@ -20,6 +20,10 @@
       background-color: #333;
       border: 2px solid #555;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: box-shadow 0.3s ease;
+    }
+    canvas:hover {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
     h1 {
       margin-top: 0;
@@ -27,6 +31,11 @@
     #score {
       font-size: 1.2em;
       margin-bottom: 10px;
+      transition: color 0.3s ease, transform 0.1s ease;
+    }
+    .score-pulse {
+      color: lime !important;
+      transform: scale(1.2);
     }
   </style>
 </head>
@@ -67,11 +76,14 @@
   }
 
   function clearScreen() {
+    ctx.shadowBlur = 0;
     ctx.fillStyle = "#333";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   function drawSnake() {
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "lime";
     ctx.fillStyle = "lime";
     for (let i = 0; i < snake.length; i++) {
       ctx.fillRect(snake[i].x * gridSize, snake[i].y * gridSize, gridSize - 2, gridSize - 2);
@@ -85,6 +97,8 @@
     if (head.x === foodX && head.y === foodY) {
       score += 10;
       scoreElement.innerText = "Score: " + score;
+      scoreElement.classList.add('score-pulse');
+      setTimeout(() => scoreElement.classList.remove('score-pulse'), 150);
       generateFood();
     } else {
       snake.pop();
@@ -92,6 +106,8 @@
   }
 
   function drawFood() {
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "red";
     ctx.fillStyle = "red";
     ctx.fillRect(foodX * gridSize, foodY * gridSize, gridSize - 2, gridSize - 2);
   }
