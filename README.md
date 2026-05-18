@@ -21,6 +21,8 @@ each folder here will be a new project
 * **the_toolmaker**: An autonomous agent that writes, saves, and executes its own Python tools on demand to solve user requests.
 * **void_walker**: An Unhinged, Autonomous Agentic Workflow Engine using Ollama (Pure Python, No dependencies).
 * **zen_kanban**: A Zen Kanban web project.
+* **app_smith**: An autonomous agent that watches an inbox for app ideas and builds full-stack applications (HTML/JS/CSS/Python) using Ollama.
+* **omni_api**: A self-writing, self-healing FastAPI server that dynamically generates endpoints when they return 404 and fixes its own bugs when they throw 500 errors, powered by Ollama.
 
 * **data_alchemist**: An autonomous data analysis agent powered by Ollama. It ingests datasets, proposes interesting analytical questions based on schema, generates and executes Python code (pandas, matplotlib) to answer those questions with visualizations, and compiles the findings into a markdown report.
 * **genesis_chamber**: An autonomous multi-agent brainstorming and scaffolding engine that watches an inbox for text files containing raw ideas, runs them through a pipeline (Visionary, Critic, Architect, Coder) via Ollama, and scaffolds a full MVP outbox.
@@ -33,3 +35,5 @@ each folder here will be a new project
 * **phantom_coder**: An autonomous background daemon that watches your codebase and automatically writes code for you in real-time when it detects special comments, powered by a local Ollama instance.
 * **code_colosseum**: An autonomous AI agent workflow where two AI 'gladiators' compete to write code and tests for a challenge, and a third AI judges the winner and generates a dramatic HTML battle report.
 * **ollama_story_crafter**: An autonomous multi-agent workflow that watches an inbox for text prompts and generates complete, multi-chapter stories using a local Ollama instance.
+* **dev_pet**: A virtual pet that lives in your codebase! It gets hungry and bored over time. You can feed it files or let it autonomously read your code and write snarky code reviews.
+* **infinite_dungeon**: An interactive, AI-generated text adventure game where a local Ollama instance acts as a dynamic Game Master.
