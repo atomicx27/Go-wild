@@ -38,6 +38,16 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .empty-state-float {
+            animation: float 3s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans text-slate-800">
@@ -90,11 +100,11 @@
                 </button>
             </div>
             <div id="output-area" class="flex-grow p-6 overflow-y-auto min-h-[300px] max-h-[calc(100vh-250px)] relative transition-all duration-500 ease-in-out bg-white">
-                <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 animate-pulse">
+                <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 empty-state-float">
                     <svg class="w-16 h-16 mb-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                     <p class="text-sm">Output will appear here</p>
                 </div>
-                <div id="result-content" class="markdown-body hidden"></div>
+                <div id="result-content" class="markdown-body hidden transition-opacity duration-500"></div>
             </div>
         </div>
 

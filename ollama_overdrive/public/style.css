@@ -155,6 +155,12 @@ main {
     border: 1px solid var(--border-color);
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
     align-items: center;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.control-panel:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
+    border-color: #55ff55;
 }
 
 input[type="text"] {
