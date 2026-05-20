@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Metropolis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #050505; color: white; font-family: 'Inter', sans-serif; }
+        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none; /* Let clicks pass through to canvas */
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: auto; /* Re-enable clicks for UI elements */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #info-panel {
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #info-panel.visible {
+            transform: translateX(0);
+        }
+
+        .category-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        /* Neon Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.5); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.8); }
+
+        #loading {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+    </style>
+    <!-- Import map for Three.js -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+</head>
+<body>
+    <div id="loading">Initializing Neural Matrix...</div>
+    <div id="canvas-container"></div>
+
+    <div id="ui-layer" class="p-6 flex justify-between">
+
+        <!-- Header -->
+        <div class="glass-panel p-6 rounded-2xl max-w-sm self-start">
+            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">CODE METROPOLIS</h1>
+            <p class="text-slate-300 text-sm mb-4">Autonomous Codebase Visualization</p>
+
+            <div class="space-y-2 text-sm">
+                <div class="flex items-center"><span class="category-dot bg-cyan-400" style="box-shadow: 0 0 10px #22d3ee;"></span>UI / Frontend</div>
+                <div class="flex items-center"><span class="category-dot bg-purple-500" style="box-shadow: 0 0 10px #a855f7;"></span>Logic / Backend</div>
+                <div class="flex items-center"><span class="category-dot bg-rose-500" style="box-shadow: 0 0 10px #f43f5e;"></span>Database</div>
+                <div class="flex items-center"><span class="category-dot bg-emerald-400" style="box-shadow: 0 0 10px #34d399;"></span>API</div>
+                <div class="flex items-center"><span class="category-dot bg-amber-400" style="box-shadow: 0 0 10px #fbbf24;"></span>Config</div>
+                <div class="flex items-center"><span class="category-dot bg-slate-400" style="box-shadow: 0 0 10px #94a3b8;"></span>Other / Test</div>
+            </div>
+
+            <div class="mt-6 text-xs text-slate-400">
+                Left Click: Rotate | Right Click: Pan | Scroll: Zoom<br>
+                Hover: Inspect Building
+            </div>
+        </div>
+
+        <!-- Info Panel (Hidden initially) -->
+        <div id="info-panel" class="glass-panel p-6 rounded-2xl w-96 self-start border-l-4 border-cyan-400">
+            <div class="flex justify-between items-start mb-4">
+                <h2 id="b-filename" class="text-xl font-mono font-bold text-white break-all">filename.py</h2>
+                <button id="close-btn" class="text-slate-400 hover:text-white">&times;</button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+                    <div class="text-xs text-slate-400 mb-1">LINES OF CODE</div>
+                    <div id="b-lines" class="text-2xl font-bold text-cyan-400">0</div>
+                </div>
+                <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+                    <div class="text-xs text-slate-400 mb-1">COMPLEXITY</div>
+                    <div class="flex items-end">
+                        <div id="b-complexity" class="text-2xl font-bold text-purple-400">0</div>
+                        <div class="text-xs text-slate-500 mb-1 ml-1">/10</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="text-xs text-slate-400 mb-1">CATEGORY</div>
+                <div id="b-category" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-400/20 text-cyan-400 border border-cyan-400/30">
+                    LOGIC
+                </div>
+            </div>
+
+            <div>
+                <div class="text-xs text-slate-400 mb-1">OLLAMA ANALYSIS</div>
+                <p id="b-summary" class="text-sm text-slate-300 leading-relaxed bg-black/30 p-4 rounded-lg border border-white/5 italic">
+                    Loading agentic analysis...
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        // --- Setup Scene ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+        camera.position.set(0, 150, 300);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x050505);
+        container.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.05; // Don't go below ground
+
+        // --- Post Processing (Neon Bloom) ---
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0;
+        bloomPass.strength = 1.2; // Neon intensity
+        bloomPass.radius = 0.5;
+
+        const composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        // --- Lighting ---
+        const ambientLight = new THREE.AmbientLight(0x222222);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(100, 200, 50);
+        scene.add(directionalLight);
+
+        // --- Ground Grid ---
+        const gridHelper = new THREE.GridHelper(1000, 50, 0x00ffff, 0x003333);
+        gridHelper.material.opacity = 0.2;
+        gridHelper.material.transparent = true;
+        scene.add(gridHelper);
+
+        // --- Data Colors ---
+        const CategoryColors = {
+            "UI": 0x22d3ee,       // Cyan
+            "LOGIC": 0xa855f7,    // Purple
+            "DATABASE": 0xf43f5e, // Rose
+            "API": 0x34d399,      // Emerald
+            "CONFIG": 0xfbbf24,   // Amber
+            "TEST": 0x94a3b8,     // Slate
+            "OTHER": 0x64748b     // Slate
+        };
+
+        const buildings = []; // Store meshes for raycasting
+        let hoveredBuilding = null;
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        // --- Fetch Data and Build City ---
+        async function loadCity() {
+            try {
+                const response = await fetch('/city_data.json');
+                if (!response.ok) throw new Error("Could not fetch city_data.json");
+                const data = await response.json();
+
+                document.getElementById('loading').style.display = 'none';
+                generateCity(data);
+            } catch (error) {
+                console.error("Error loading city data:", error);
+                document.getElementById('loading').innerText = "Error initializing Matrix. Make sure you ran the builder.";
+            }
+        }
+
+        function generateCity(data) {
+            const citySize = Math.max(300, Math.sqrt(data.length) * 40);
+
+            // Create a basic geometry for all buildings to share
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            // Shift pivot to bottom
+            geometry.translate(0, 0.5, 0);
+
+            data.forEach((file, index) => {
+                const colorHex = CategoryColors[file.category] || CategoryColors["OTHER"];
+
+                // Base material
+                const material = new THREE.MeshPhongMaterial({
+                    color: colorHex,
+                    emissive: colorHex,
+                    emissiveIntensity: 0.2, // Base glow
+                    transparent: true,
+                    opacity: 0.9,
+                    shininess: 100
+                });
+
+                const mesh = new THREE.Mesh(geometry, material);
+
+                // Calculate dimensions
+                const height = Math.max(10, Math.min(300, file.lines * 0.5)); // Scale height
+                const width = Math.max(4, file.complexity * 2); // Scale width by complexity
+                const depth = width;
+
+                mesh.scale.set(width, height, depth);
+
+                // Position randomly within city bounds (could be improved with a grid layout or spiral)
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * (citySize / 2);
+                mesh.position.set(
+                    Math.cos(angle) * radius,
+                    0,
+                    Math.sin(angle) * radius
+                );
+
+                // Store metadata on the mesh
+                mesh.userData = {
+                    fileData: file,
+                    originalColor: colorHex,
+                    originalEmissive: 0.2
+                };
+
+                // Add wireframe edges for tech look
+                const edges = new THREE.EdgesGeometry(geometry);
+                const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1 }));
+                mesh.add(line);
+
+                scene.add(mesh);
+                buildings.push(mesh);
+            });
+        }
+
+        // --- Interaction ---
+        function onMouseMove(event) {
+            // Calculate mouse position in normalized device coordinates (-1 to +1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        function onClick(event) {
+            if (hoveredBuilding) {
+                showInfoPanel(hoveredBuilding.userData.fileData);
+            }
+        }
+
+        document.getElementById('close-btn').addEventListener('click', () => {
+            document.getElementById('info-panel').classList.remove('visible');
+        });
+
+        function showInfoPanel(data) {
+            const panel = document.getElementById('info-panel');
+
+            document.getElementById('b-filename').innerText = data.path;
+            document.getElementById('b-lines').innerText = data.lines;
+            document.getElementById('b-complexity').innerText = data.complexity;
+
+            const catElem = document.getElementById('b-category');
+            catElem.innerText = data.category;
+
+            // Dynamic styling for category badge based on color
+            let colorMap = {
+                "UI": "text-cyan-400 bg-cyan-400/20 border-cyan-400/30",
+                "LOGIC": "text-purple-400 bg-purple-400/20 border-purple-400/30",
+                "DATABASE": "text-rose-400 bg-rose-400/20 border-rose-400/30",
+                "API": "text-emerald-400 bg-emerald-400/20 border-emerald-400/30",
+                "CONFIG": "text-amber-400 bg-amber-400/20 border-amber-400/30",
+            };
+            catElem.className = `inline-block px-3 py-1 rounded-full text-xs font-bold border ${colorMap[data.category] || "text-slate-400 bg-slate-400/20 border-slate-400/30"}`;
+
+            document.getElementById('b-summary').innerText = data.summary;
+
+            panel.classList.add('visible');
+
+            // Also change border color of panel to match
+            const colorHex = CategoryColors[data.category] || CategoryColors["OTHER"];
+            panel.style.borderLeftColor = '#' + colorHex.toString(16).padStart(6, '0');
+        }
+
+        window.addEventListener('mousemove', onMouseMove, false);
+        window.addEventListener('click', onClick, false);
+        window.addEventListener('resize', onWindowResize, false);
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // --- Animation Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            controls.update(); // required if controls.enableDamping is true
+
+            // Raycasting
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(buildings, false);
+
+            if (intersects.length > 0) {
+                const object = intersects[0].object;
+                if (hoveredBuilding !== object) {
+                    // Reset previous hovered building
+                    if (hoveredBuilding) {
+                        hoveredBuilding.material.emissiveIntensity = hoveredBuilding.userData.originalEmissive;
+                        hoveredBuilding.scale.y = hoveredBuilding.scale.y / 1.05; // Un-pulse
+                    }
+
+                    // Set new hovered building
+                    hoveredBuilding = object;
+                    hoveredBuilding.material.emissiveIntensity = 0.8; // Glow strongly
+                    hoveredBuilding.scale.y = hoveredBuilding.scale.y * 1.05; // Pulse up slightly
+                    document.body.style.cursor = 'pointer';
+                }
+            } else {
+                if (hoveredBuilding) {
+                    hoveredBuilding.material.emissiveIntensity = hoveredBuilding.userData.originalEmissive;
+                    hoveredBuilding.scale.y = hoveredBuilding.scale.y / 1.05;
+                    hoveredBuilding = null;
+                    document.body.style.cursor = 'default';
+                }
+            }
+
+            // Slowly rotate scene if not interacted with
+            // scene.rotation.y += 0.0005;
+
+            composer.render();
+        }
+
+        loadCity();
+        animate();
+
+    </script>
+</body>
+</html>

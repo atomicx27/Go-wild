@@ -66,3 +66,6 @@ code_colosseum/battles/
 
 infinite_dungeon/__pycache__/
 infinite_dungeon/venv/
+
+# code_metropolis
+code_metropolis/public/city_data.json
