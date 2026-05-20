@@ -130,25 +130,50 @@
             border-radius: 8px;
             padding: 1rem;
             cursor: grab;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
             animation: fadeIn 0.3s ease-out;
             position: relative;
         }
 
         .task:active {
             cursor: grabbing;
-            transform: scale(0.98);
+            transform: scale(0.95);
         }
 
         .task:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2), 0 4px 12px rgba(0,0,0,0.3);
+            border-color: rgba(139, 92, 246, 0.5);
         }
 
         .task.dragging {
-            opacity: 0.5;
+            opacity: 0.6;
             border: 2px dashed var(--accent);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+        }
+
+        .task-list:empty::after {
+            content: "Drop tasks here";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 60px;
+            color: var(--text-muted);
+            opacity: 0.5;
+            font-style: italic;
+            border: 2px dashed transparent;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .task-list.drag-over:empty::after {
+            border-color: var(--accent);
+            color: var(--accent);
+            opacity: 0.8;
+            background: rgba(139, 92, 246, 0.05);
         }
 
         .task-content {
