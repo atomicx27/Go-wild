@@ -62,6 +62,10 @@
             pointer-events: none;
         }
 
+        @keyframes textFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.1; }
+        }
     </style>
     <!-- Import map for Three.js -->
     <script type="importmap">
@@ -81,7 +85,7 @@
 
         <!-- Header -->
         <div class="glass-panel p-6 rounded-2xl max-w-sm self-start">
-            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">CODE METROPOLIS</h1>
+            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2" style="animation: textFlicker 3s infinite;">CODE METROPOLIS</h1>
             <p class="text-slate-300 text-sm mb-4">Autonomous Codebase Visualization</p>
 
             <div class="space-y-2 text-sm">

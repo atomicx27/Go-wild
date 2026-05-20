@@ -59,10 +59,17 @@ h1 {
     opacity: 0.6;
 }
 
+@keyframes floatZone {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
 .interaction-zone {
     width: 100%;
     max-width: 600px;
     pointer-events: auto; /* Re-enable clicks for input */
+    animation: floatZone 6s ease-in-out infinite;
 }
 
 input[type="text"] {

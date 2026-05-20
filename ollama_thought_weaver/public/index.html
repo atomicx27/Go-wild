@@ -48,6 +48,11 @@
         .empty-state-float {
             animation: float 3s ease-in-out infinite;
         }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans text-slate-800">
@@ -71,7 +76,7 @@
         </div>
     </header>
 
-    <main class="flex-grow max-w-5xl mx-auto w-full px-4 py-8 flex flex-col md:flex-row gap-6">
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 py-8 flex flex-col md:flex-row gap-6" style="animation: slideUpFade 0.8s ease-out;">
 
         <!-- Input Section -->
         <div class="w-full md:w-1/2 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
