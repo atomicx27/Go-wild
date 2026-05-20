@@ -67,5 +67,8 @@ code_colosseum/battles/
 infinite_dungeon/__pycache__/
 infinite_dungeon/venv/
 
-# code_metropolis
-code_metropolis/public/city_data.json
+# nexus_core
+nexus_core/workspace/*
+!nexus_core/workspace/.gitkeep
+nexus_core/__pycache__/
+nexus_core/venv/
