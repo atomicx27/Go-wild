@@ -146,6 +146,17 @@ main {
     z-index: 10;
 }
 
+@keyframes dropIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes borderPulse {
+    0% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); border-color: var(--border-color); }
+    50% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.6); border-color: #55ff55; }
+    100% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); border-color: var(--border-color); }
+}
+
 .control-panel {
     display: flex;
     gap: 1rem;
@@ -156,6 +167,7 @@ main {
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
     align-items: center;
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: dropIn 0.5s ease-out forwards, borderPulse 4s infinite alternate;
 }
 
 .control-panel:hover {
@@ -178,6 +190,11 @@ input[type="text"]:focus {
     box-shadow: 0 0 10px var(--primary-color) inset;
 }
 
+@keyframes btnPulse {
+    0% { box-shadow: 0 0 5px var(--alert-color); }
+    100% { box-shadow: 0 0 20px var(--alert-color), inset 0 0 10px rgba(255,51,51,0.2); }
+}
+
 .cyber-button {
     background: transparent;
     color: var(--alert-color);
@@ -191,12 +208,13 @@ input[type="text"]:focus {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     overflow: hidden;
+    animation: btnPulse 1.5s infinite alternate;
 }
 
 .cyber-button:hover {
     background: var(--alert-color);
     color: #000;
-    box-shadow: 0 0 25px var(--alert-color), inset 0 0 10px rgba(0,0,0,0.5);
+    box-shadow: 0 0 35px var(--alert-color), inset 0 0 15px rgba(0,0,0,0.5);
     transform: scale(1.05);
 }
 
