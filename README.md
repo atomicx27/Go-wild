@@ -38,3 +38,4 @@ each folder here will be a new project
 * **dev_pet**: A virtual pet that lives in your codebase! It gets hungry and bored over time. You can feed it files or let it autonomously read your code and write snarky code reviews.
 * **infinite_dungeon**: An interactive, AI-generated text adventure game where a local Ollama instance acts as a dynamic Game Master.
 * **nexus_core**: An autonomous multi-purpose agent core with a modern cyberpunk Web UI, utilizing a ReAct agent loop powered by Ollama.
+* **cyber_scout**: An autonomous agent that monitors an inbox for research queries, performs web searches, scrapes data, and synthesizes a highly informative, cyberpunk-styled HTML dossier using a local Ollama instance.

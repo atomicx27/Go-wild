@@ -72,3 +72,7 @@ nexus_core/workspace/*
 !nexus_core/workspace/.gitkeep
 nexus_core/__pycache__/
 nexus_core/venv/
+
+cyber_scout/inbox/
+cyber_scout/outbox/
+cyber_scout/archive/
