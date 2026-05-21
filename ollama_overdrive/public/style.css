@@ -245,7 +245,7 @@ input[type="text"]:focus {
 }
 
 .persona-panel:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-10px) scale(1.05);
 }
 
 .persona-header {
@@ -311,7 +311,12 @@ input[type="text"]:focus {
     padding: 2rem;
     margin-top: 2rem;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-    animation: synth-appear 1s ease-out;
+    animation: synth-appear 1s ease-out, borderPulseSynth 3s infinite alternate;
+}
+
+@keyframes borderPulseSynth {
+    0% { border-color: rgba(255, 255, 255, 0.5); box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); }
+    100% { border-color: rgba(255, 255, 255, 1); box-shadow: 0 0 40px rgba(255, 255, 255, 0.3); }
 }
 
 @keyframes synth-appear {

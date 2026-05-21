@@ -133,6 +133,13 @@ h2 {
     border: 1px solid var(--glass-border);
     border-radius: 8px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 40px rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.5);
 }
 
 main {
@@ -195,7 +202,18 @@ textarea:focus {
 .cyber-btn:hover:not(:disabled) {
     background: var(--primary);
     color: var(--bg-color);
-    box-shadow: 0 0 15px var(--primary);
+    box-shadow: 0 0 15px var(--primary), 0 0 30px var(--primary);
+    text-shadow: 2px 2px 0px rgba(255, 0, 255, 0.5), -2px -2px 0px rgba(0, 255, 255, 0.5);
+    animation: btnGlitch 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+
+@keyframes btnGlitch {
+    0% { transform: translate(0) }
+    20% { transform: translate(-2px, 2px) }
+    40% { transform: translate(-2px, -2px) }
+    60% { transform: translate(2px, 2px) }
+    80% { transform: translate(2px, -2px) }
+    100% { transform: translate(0) }
 }
 
 .cyber-btn:disabled {
