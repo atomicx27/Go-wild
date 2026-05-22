@@ -56,6 +56,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
+            transition: text-shadow 0.3s ease;
+            cursor: default;
+        }
+
+        header h1:hover {
+            text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent);
         }
 
         header p {
@@ -146,6 +152,12 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
             animation: fadeIn 0.3s ease-out;
             position: relative;
+        }
+
+        .task:hover {
+            transform: scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
         }
 
         .task:active {
