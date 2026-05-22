@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Oracle // RAG Explorer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="icon">⬡</span>
+                <h1>Code Oracle</h1>
+                <span class="badge">SYS: ONLINE</span>
+            </div>
+            <div class="controls">
+                <label class="toggle">
+                    <input type="checkbox" id="rag-toggle" checked>
+                    <span class="slider"></span>
+                    <span class="label-text">RAG</span>
+                </label>
+            </div>
+        </header>
+
+        <main>
+            <div class="chat-container" id="chat-container">
+                <div class="message system">
+                    <div class="avatar">SYS</div>
+                    <div class="content">
+                        Code Oracle initialized. Connection to local index established. Awaiting query...
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <form id="chat-form">
+                <div class="input-wrapper">
+                    <span class="prompt">❯</span>
+                    <input type="text" id="query-input" placeholder="Ask about the codebase..." autocomplete="off" required>
+                    <button type="submit" id="submit-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
