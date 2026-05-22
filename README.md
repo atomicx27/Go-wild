@@ -39,3 +39,4 @@ each folder here will be a new project
 * **infinite_dungeon**: An interactive, AI-generated text adventure game where a local Ollama instance acts as a dynamic Game Master.
 * **nexus_core**: An autonomous multi-purpose agent core with a modern cyberpunk Web UI, utilizing a ReAct agent loop powered by Ollama.
 * **cyber_scout**: An autonomous agent that monitors an inbox for research queries, performs web searches, scrapes data, and synthesizes a highly informative, cyberpunk-styled HTML dossier using a local Ollama instance.
+* **code_oracle**: A pure Python, zero-dependency local RAG engine and cyberpunk web UI that indexes your codebase using SQLite FTS5 and lets you chat with it via a local Ollama instance.
