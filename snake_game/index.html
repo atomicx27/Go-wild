@@ -111,7 +111,7 @@
   }
 
   function drawSnake() {
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 10 + Math.sin(Date.now() / 150) * 5;
     ctx.shadowColor = "lime";
     ctx.fillStyle = "lime";
     for (let i = 0; i < snake.length; i++) {
@@ -135,7 +135,7 @@
   }
 
   function drawFood() {
-    ctx.shadowBlur = 15;
+    ctx.shadowBlur = 15 + Math.sin(Date.now() / 100) * 10;
     ctx.shadowColor = "red";
     ctx.fillStyle = "red";
     ctx.fillRect(foodX * gridSize, foodY * gridSize, gridSize - 2, gridSize - 2);
