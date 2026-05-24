@@ -77,3 +77,6 @@ cyber_scout/inbox/
 cyber_scout/outbox/
 cyber_scout/archive/
 code_oracle/code_index.db
+
+# concept_weaver
+concept_weaver/__pycache__/
