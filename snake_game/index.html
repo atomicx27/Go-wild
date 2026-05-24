@@ -47,7 +47,7 @@
       border-radius: 4px;
     }
     canvas:hover {
-      box-shadow: 0 0 35px rgba(76, 175, 80, 0.8), 0 0 15px rgba(0, 255, 0, 0.4) inset;
+      box-shadow: 0 0 50px rgba(76, 175, 80, 0.8), 0 0 15px rgba(0, 255, 0, 0.4) inset;
       transform: scale(1.02);
     }
     h1 {
@@ -64,7 +64,7 @@
     .score-pulse {
       color: #4CAF50 !important;
       transform: scale(1.4);
-      text-shadow: 0 0 20px #4CAF50, 0 0 40px #4CAF50;
+      text-shadow: 0 0 30px #4CAF50, 0 0 60px #4CAF50;
     }
   </style>
 </head>
@@ -111,7 +111,7 @@
   }
 
   function drawSnake() {
-    ctx.shadowBlur = 10 + Math.sin(Date.now() / 150) * 5;
+    ctx.shadowBlur = 15 + Math.sin(Date.now() / 150) * 15;
     ctx.shadowColor = "lime";
     ctx.fillStyle = "lime";
     for (let i = 0; i < snake.length; i++) {
@@ -135,7 +135,7 @@
   }
 
   function drawFood() {
-    ctx.shadowBlur = 15 + Math.sin(Date.now() / 100) * 10;
+    ctx.shadowBlur = 20 + Math.sin(Date.now() / 100) * 15;
     ctx.shadowColor = "red";
     ctx.fillStyle = "red";
     ctx.fillRect(foodX * gridSize, foodY * gridSize, gridSize - 2, gridSize - 2);
