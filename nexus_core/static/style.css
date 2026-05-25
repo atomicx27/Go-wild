@@ -186,7 +186,8 @@ textarea {
 textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) inset;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4), inset 0 0 15px rgba(0, 255, 255, 0.2);
+    transform: scale(1.02);
 }
 
 .cyber-btn {
@@ -208,8 +209,9 @@ textarea:focus {
 .cyber-btn:hover:not(:disabled) {
     background: var(--primary);
     color: var(--bg-color);
-    box-shadow: 0 0 15px var(--primary), 0 0 30px var(--primary);
+    box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary), inset 0 0 10px rgba(255,255,255,0.5);
     text-shadow: 2px 2px 0px rgba(255, 0, 255, 0.5), -2px -2px 0px rgba(0, 255, 255, 0.5);
+    transform: scale(1.05);
     animation: btnGlitch 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
 }
 
@@ -282,6 +284,17 @@ textarea:focus {
     border-left: 3px solid transparent;
     word-break: break-word;
     animation: fadeIn 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+.log-entry::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: inherit;
+    animation: typing 0.5s steps(40, end) forwards;
+    pointer-events: none;
+    visibility: hidden;
 }
 
 .log-entry.thought {

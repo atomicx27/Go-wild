@@ -72,13 +72,12 @@ header {
 
 /* Glitch Effect */
 .glitch {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: bold;
     text-transform: uppercase;
     position: relative;
-    text-shadow: 0.05em 0 0 var(--alert-color), -0.03em -0.04em 0 var(--tertiary-color),
-                 0.025em 0.04em 0 var(--primary-color);
-    animation: glitch 1s infinite alternate, glow 2s ease-in-out infinite alternate;
+    text-shadow: 0.05em 0 0 var(--alert-color), -0.03em -0.04em 0 var(--tertiary-color), 0.025em 0.04em 0 var(--primary-color);
+    animation: glow 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
@@ -192,7 +191,7 @@ input[type="text"]:focus {
 
 @keyframes btnPulse {
     0% { box-shadow: 0 0 5px var(--alert-color); }
-    100% { box-shadow: 0 0 20px var(--alert-color), inset 0 0 10px rgba(255,51,51,0.2); }
+    100% { box-shadow: 0 0 25px var(--alert-color), 0 0 10px var(--alert-color) inset; }
 }
 
 .cyber-button {
@@ -214,8 +213,8 @@ input[type="text"]:focus {
 .cyber-button:hover {
     background: var(--alert-color);
     color: #000;
-    box-shadow: 0 0 35px var(--alert-color), inset 0 0 15px rgba(0,0,0,0.5);
-    transform: scale(1.05);
+    box-shadow: 0 0 40px var(--alert-color), inset 0 0 20px rgba(0,0,0,0.5);
+    transform: scale(1.1) skew(-2deg);
 }
 
 .cyber-button:disabled {

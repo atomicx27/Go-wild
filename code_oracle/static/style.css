@@ -232,7 +232,8 @@ main::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 }
 
 @keyframes fadeIn {
-    to { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .message.user {
@@ -334,7 +335,8 @@ footer {
 
 .input-wrapper:focus-within {
     border-color: var(--accent);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px rgba(0,255,204,0.1);
+    transform: translateY(-2px);
 }
 
 .prompt {
