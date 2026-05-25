@@ -77,3 +77,8 @@ cyber_scout/inbox/
 cyber_scout/outbox/
 cyber_scout/archive/
 code_oracle/code_index.db
+
+system_architect/blueprints/*
+!system_architect/blueprints/.gitkeep
+system_architect/__pycache__/
+system_architect/venv/
