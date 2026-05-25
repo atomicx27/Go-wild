@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept Weaver</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --primary-glow: #00ffcc;
+            --secondary-glow: #ff00ff;
+            --text-color: #e0e0e0;
+            --panel-bg: rgba(11, 15, 25, 0.85);
+            --border-color: rgba(0, 255, 204, 0.4);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        #app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        #main-content {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #header {
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow);
+            letter-spacing: 2px;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow); }
+            100% { text-shadow: 0 0 15px var(--primary-glow), 0 0 30px var(--primary-glow), 0 0 40px var(--secondary-glow); }
+        }
+
+        #search-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+            background: var(--panel-bg);
+            padding: 15px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            pointer-events: auto;
+            transition: all 0.3s ease;
+        }
+
+        #search-container:focus-within {
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
+            border-color: var(--primary-glow);
+        }
+
+        #topic-input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1.2rem;
+            width: 300px;
+            outline: none;
+            padding: 5px 10px;
+        }
+
+        #topic-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        #weave-btn {
+            background: transparent;
+            border: 1px solid var(--primary-glow);
+            color: var(--primary-glow);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        #weave-btn:hover {
+            background: var(--primary-glow);
+            color: var(--bg-color);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        #network-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #side-panel {
+            width: 350px;
+            background: var(--panel-bg);
+            border-left: 2px solid var(--border-color);
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            z-index: 20;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #side-panel.open {
+            transform: translateX(0);
+        }
+
+        #node-title {
+            color: var(--secondary-glow);
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--secondary-glow);
+            border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        #node-desc {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            color: #ccc;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        #close-panel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        #close-panel:hover {
+            color: var(--secondary-glow);
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+            color: var(--primary-glow);
+            font-size: 1.5rem;
+            display: none;
+            text-align: center;
+            background: var(--panel-bg);
+            padding: 20px 40px;
+            border-radius: 10px;
+            border: 1px solid var(--primary-glow);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 255, 204, 0.1);
+            border-top: 4px solid var(--primary-glow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Custom Scrollbar for side panel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 204, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 204, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <div id="main-content">
+        <div id="header">
+            <h1>CONCEPT WEAVER</h1>
+        </div>
+
+        <div id="network-container"></div>
+
+        <div id="loading">
+            <div class="spinner"></div>
+            Weaving Concepts...
+        </div>
+
+        <div id="search-container">
+            <input type="text" id="topic-input" placeholder="Enter a concept..." autocomplete="off">
+            <button id="weave-btn">Weave</button>
+        </div>
+    </div>
+
+    <div id="side-panel">
+        <button id="close-panel">&times;</button>
+        <h2 id="node-title">Node</h2>
+        <div id="node-desc">Click on a node to reveal its secrets.</div>
+    </div>
+</div>
+
+<script>
+    let network = null;
+    let nodesData = new vis.DataSet();
+    let edgesData = new vis.DataSet();
+
+    const container = document.getElementById('network-container');
+    const data = {
+        nodes: nodesData,
+        edges: edgesData
+    };
+    const options = {
+        nodes: {
+            shape: 'dot',
+            size: 20,
+            font: {
+                size: 14,
+                color: '#ffffff',
+                face: 'Courier New',
+                strokeWidth: 2,
+                strokeColor: '#000000'
+            },
+            borderWidth: 2,
+            color: {
+                border: '#00ffcc',
+                background: '#0b0f19',
+                highlight: {
+                    border: '#ff00ff',
+                    background: '#2a0a2a'
+                },
+                hover: {
+                    border: '#ffffff',
+                    background: '#1a1a1a'
+                }
+            },
+            shadow: {
+                enabled: true,
+                color: '#00ffcc',
+                size: 10,
+                x: 0,
+                y: 0
+            }
+        },
+        edges: {
+            width: 2,
+            color: {
+                color: 'rgba(0, 255, 204, 0.4)',
+                highlight: '#ff00ff',
+                hover: '#ffffff'
+            },
+            smooth: {
+                type: 'continuous'
+            },
+            font: {
+                color: '#a0a0a0',
+                size: 10,
+                face: 'Courier New',
+                strokeWidth: 0,
+                align: 'middle'
+            },
+            arrows: {
+                to: { enabled: true, scaleFactor: 0.5 }
+            }
+        },
+        physics: {
+            forceAtlas2Based: {
+                gravitationalConstant: -50,
+                centralGravity: 0.01,
+                springLength: 100,
+                springConstant: 0.08
+            },
+            maxVelocity: 50,
+            solver: 'forceAtlas2Based',
+            timestep: 0.35,
+            stabilization: { iterations: 150 }
+        },
+        interaction: {
+            hover: true,
+            tooltipDelay: 200,
+            zoomView: true,
+            dragView: true
+        }
+    };
+
+    network = new vis.Network(container, data, options);
+
+    // Interaction handlers
+    const sidePanel = document.getElementById('side-panel');
+    const nodeTitle = document.getElementById('node-title');
+    const nodeDesc = document.getElementById('node-desc');
+    const closeBtn = document.getElementById('close-panel');
+
+    network.on("click", function (params) {
+        if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+            const node = nodesData.get(nodeId);
+
+            nodeTitle.textContent = node.label;
+            nodeDesc.textContent = node.title || "No description available.";
+
+            sidePanel.classList.add('open');
+
+            // Highlight effect
+            network.focus(nodeId, {
+                scale: 1.2,
+                animation: {
+                    duration: 1000,
+                    easingFunction: "easeInOutQuad"
+                }
+            });
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        sidePanel.classList.remove('open');
+        network.fit({
+            animation: {
+                duration: 1000,
+                easingFunction: "easeInOutQuad"
+            }
+        });
+    });
+
+    // API Interaction
+    const topicInput = document.getElementById('topic-input');
+    const weaveBtn = document.getElementById('weave-btn');
+    const loading = document.getElementById('loading');
+
+    async function weaveConcept() {
+        const topic = topicInput.value.trim();
+        if (!topic) return;
+
+        loading.style.display = 'block';
+        weaveBtn.disabled = true;
+        sidePanel.classList.remove('open');
+
+        try {
+            const response = await fetch('/api/weave', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ topic })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status}`);
+            }
+
+            const graphData = await response.json();
+
+            // Clear existing
+            nodesData.clear();
+            edgesData.clear();
+
+            // Process nodes to ensure root node (id 1 usually) is prominent
+            if (graphData.nodes) {
+                const processedNodes = graphData.nodes.map(n => {
+                    if (n.id === 1 || n.id === "1") {
+                        return { ...n, size: 35, color: { border: '#ff00ff', background: '#2a0a2a' }, shadow: { color: '#ff00ff', size: 20 } };
+                    }
+                    return n;
+                });
+                nodesData.add(processedNodes);
+            }
+
+            if (graphData.edges) {
+                edgesData.add(graphData.edges);
+            }
+
+            network.fit({
+                animation: {
+                    duration: 1000,
+                    easingFunction: "easeInOutQuad"
+                }
+            });
+
+        } catch (error) {
+            console.error("Failed to weave:", error);
+            alert("Failed to weave concept. Check server logs.");
+        } finally {
+            loading.style.display = 'none';
+            weaveBtn.disabled = false;
+        }
+    }
+
+    weaveBtn.addEventListener('click', weaveConcept);
+    topicInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') weaveConcept();
+    });
+
+    // Initial dummy data for visual flair
+    nodesData.add([
+        {id: 1, label: 'Concept Weaver', title: 'An autonomous agentic workflow for knowledge deconstruction.', size: 30, color: { border: '#ff00ff' }},
+        {id: 2, label: 'Ollama', title: 'Local LLM engine powering the intelligence.'},
+        {id: 3, label: 'Cyberpunk UI', title: 'Glowing, modern web interface.'},
+        {id: 4, label: 'Vis-Network', title: 'Physics-based graph rendering library.'}
+    ]);
+    edgesData.add([
+        {from: 1, to: 2, label: 'powered by'},
+        {from: 1, to: 3, label: 'features'},
+        {from: 3, to: 4, label: 'uses'}
+    ]);
+
+</script>
+</body>
+</html>
