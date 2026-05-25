@@ -4,7 +4,9 @@
   <title>Snake Game</title>
   <style>
     body {
-      background-color: #111;
+      background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0f172a, #000000);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -29,6 +31,11 @@
       pointer-events: none;
     }
 
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
     @keyframes popIn {
       0% { transform: scale(0.8); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
@@ -47,7 +54,7 @@
       border-radius: 4px;
     }
     canvas:hover {
-      box-shadow: 0 0 35px rgba(76, 175, 80, 0.8), 0 0 15px rgba(0, 255, 0, 0.4) inset;
+      box-shadow: 0 0 40px rgba(76, 175, 80, 0.9), 0 0 20px rgba(0, 255, 0, 0.6) inset, 0 0 60px rgba(76, 175, 80, 0.4);
       transform: scale(1.02);
     }
     h1 {
@@ -63,8 +70,8 @@
     }
     .score-pulse {
       color: #4CAF50 !important;
-      transform: scale(1.4);
-      text-shadow: 0 0 20px #4CAF50, 0 0 40px #4CAF50;
+      transform: scale(1.5);
+      text-shadow: 0 0 20px #4CAF50, 0 0 40px #4CAF50, 0 0 60px #4CAF50;
     }
   </style>
 </head>
@@ -171,11 +178,17 @@
 
     if (gameOver) {
       clearInterval(gameLoop);
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = "red";
+      ctx.fillStyle = "#ff4444";
+      ctx.font = "bold 40px Courier New";
+      ctx.textAlign = "center";
+      ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "white";
       ctx.fillStyle = "white";
-      ctx.font = "30px sans-serif";
-      ctx.fillText("Game Over!", canvas.width / 4, canvas.height / 2);
-      ctx.font = "15px sans-serif";
-      ctx.fillText("Press Space to restart", canvas.width / 3.5, canvas.height / 2 + 30);
+      ctx.font = "18px Courier New";
+      ctx.fillText("Press Space to restart", canvas.width / 2, canvas.height / 2 + 40);
     }
   }
 
