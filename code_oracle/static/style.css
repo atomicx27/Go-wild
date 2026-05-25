@@ -205,6 +205,20 @@ main {
     scrollbar-color: var(--accent) transparent;
 }
 
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.chat-container:hover {
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+}
+
 main::-webkit-scrollbar { width: 6px; }
 main::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
@@ -369,7 +383,7 @@ button svg {
 
 button:hover {
     background: rgba(0, 255, 204, 0.2);
-    box-shadow: 0 0 10px var(--accent-glow);
+    box-shadow: 0 0 20px var(--accent);
 }
 
 @keyframes pulseGlow {

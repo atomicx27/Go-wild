@@ -44,6 +44,12 @@ header {
     animation: fadeIn 3s ease-in;
 }
 
+@keyframes textGlowPulse {
+    0% { text-shadow: 0 0 10px var(--monolith-glow), 0 0 20px var(--monolith-glow); }
+    50% { text-shadow: 0 0 20px var(--monolith-glow), 0 0 40px var(--monolith-glow), 0 0 60px var(--monolith-glow); }
+    100% { text-shadow: 0 0 10px var(--monolith-glow), 0 0 20px var(--monolith-glow); }
+}
+
 h1 {
     font-family: 'Cinzel', serif;
     font-size: 4rem;
@@ -51,6 +57,7 @@ h1 {
     font-weight: 700;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
     margin-bottom: 0.5rem;
+    animation: textGlowPulse 3s ease-in-out infinite;
 }
 
 .subtitle {
