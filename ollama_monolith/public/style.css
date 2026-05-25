@@ -44,6 +44,12 @@ header {
     animation: fadeIn 3s ease-in;
 }
 
+@keyframes textGlowPulse {
+    0% { text-shadow: 0 0 10px var(--monolith-glow), 0 0 20px var(--monolith-glow); }
+    50% { text-shadow: 0 0 20px var(--monolith-glow), 0 0 40px var(--monolith-glow), 0 0 60px var(--monolith-glow); }
+    100% { text-shadow: 0 0 10px var(--monolith-glow), 0 0 20px var(--monolith-glow); }
+}
+
 h1 {
     font-family: "Cinzel", serif;
     font-size: 4rem;
@@ -51,11 +57,7 @@ h1 {
     font-weight: 700;
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(100, 0, 255, 0.4);
     margin-bottom: 0.5rem;
-    animation: titleGlow 4s infinite alternate;
-}
-@keyframes titleGlow {
-    0% { text-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 40px rgba(100,0,255,0.2); }
-    100% { text-shadow: 0 0 40px rgba(255,255,255,0.6), 0 0 80px rgba(100,0,255,0.6), 0 0 120px rgba(255,0,255,0.4); }
+    animation: textGlowPulse 3s ease-in-out infinite;
 }
 
 .subtitle {

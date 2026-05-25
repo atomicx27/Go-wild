@@ -22,6 +22,11 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
+        @keyframes floatUIGlow {
+            0% { transform: translateY(0px); box-shadow: 0 0 20px rgba(255, 0, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1); }
+            50% { transform: translateY(-10px); box-shadow: 0 0 40px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.3); }
+            100% { transform: translateY(0px); box-shadow: 0 0 20px rgba(255, 0, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1); }
+        }
         #ui {
             position: absolute;
             top: 20px;
@@ -36,8 +41,7 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
-            animation: floatUI 4s ease-in-out infinite;
+            animation: floatUIGlow 4s ease-in-out infinite;
         }
         .btn {
             pointer-events: auto;
@@ -55,8 +59,8 @@
             animation: bg-shift 3s ease infinite;
         }
         .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.6);
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 0, 255, 0.8);
             background-position: right center;
             color: #fff;
         }
@@ -64,7 +68,6 @@
             transform: scale(0.92);
             box-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
         }
-
 
         @keyframes bg-shift {
             0% { background-position: 0% 50%; }
