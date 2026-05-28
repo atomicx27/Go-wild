@@ -46,7 +46,7 @@ header {
 
 @keyframes textGlowPulse {
     0% { text-shadow: 0 0 10px var(--monolith-glow), 0 0 20px var(--monolith-glow); }
-    50% { text-shadow: 0 0 20px var(--monolith-glow), 0 0 40px var(--monolith-glow), 0 0 60px var(--monolith-glow); }
+    50% { text-shadow: 0 0 30px var(--monolith-glow), 0 0 60px var(--monolith-glow), 0 0 90px var(--monolith-glow); }
     100% { text-shadow: 0 0 10px var(--monolith-glow), 0 0 20px var(--monolith-glow); }
 }
 
@@ -68,7 +68,7 @@ h1 {
 
 @keyframes floatZone {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
+    50% { transform: translateY(-25px); }
     100% { transform: translateY(0px); }
 }
 
