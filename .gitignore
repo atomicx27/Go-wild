@@ -80,3 +80,10 @@ code_oracle/code_index.db
 
 # concept_weaver
 concept_weaver/__pycache__/
+
+# cyber_forge
+cyber_forge/inbox/
+cyber_forge/armory/
+cyber_forge/__pycache__/
+cyber_forge/tests/__pycache__/
+cyber_forge/.pytest_cache/
