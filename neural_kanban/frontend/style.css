@@ -1,0 +1,62 @@
+.kanban-column {
+    transition: background-color 0.2s ease;
+}
+
+.kanban-column.drag-over {
+    background-color: rgba(8, 145, 178, 0.1);
+    border-color: rgba(8, 145, 178, 0.5);
+    box-shadow: 0 0 15px rgba(8, 145, 178, 0.2) inset;
+}
+
+.ticket-card {
+    cursor: grab;
+    transition: transform 0.1s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ticket-card:hover {
+    border-color: #0891b2; /* cyan-600 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 8px rgba(8, 145, 178, 0.3);
+}
+
+.ticket-card:active {
+    cursor: grabbing;
+}
+
+.ticket-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+/* Scrollbar styling for a cyberpunk feel */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111827; /* gray-900 */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #374151; /* gray-700 */
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4b5563; /* gray-600 */
+}
+
+/* Markdown prose overrides for AI comments */
+.prose pre {
+    background-color: #111827 !important;
+    border: 1px solid #374151;
+}
+
+.prose code {
+    color: #22d3ee !important; /* cyan-400 */
+}
+
+.comment-card.ai-comment {
+    border-left: 3px solid #22d3ee;
+    background: linear-gradient(90deg, rgba(8, 145, 178, 0.1) 0%, rgba(31, 41, 55, 0.5) 100%);
+}
