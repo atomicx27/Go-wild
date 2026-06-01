@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuro Clash - AI Debate Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col font-['Rajdhani'] bg-grid">
+    <div class="container mx-auto px-4 py-8 max-w-5xl flex-grow flex flex-col">
+        <header class="text-center mb-8">
+            <h1 class="text-5xl font-['Orbitron'] font-bold text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)] mb-2 tracking-widest uppercase">Neuro Clash</h1>
+            <p class="text-gray-400 text-xl tracking-wide">Autonomous Cyber-Debate Arena</p>
+        </header>
+
+        <div class="mb-8 p-6 bg-gray-800/80 border border-cyan-500/30 rounded-lg shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-sm">
+            <label for="topicInput" class="block text-sm font-medium text-cyan-400 mb-2 uppercase tracking-widest">Debate Topic</label>
+            <div class="flex gap-4">
+                <input type="text" id="topicInput" placeholder="e.g., Should AI govern humanity?"
+                    class="flex-1 bg-gray-900 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors">
+                <button id="startBtn" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-6 rounded-md transition-all uppercase tracking-wider hover:shadow-[0_0_15px_rgba(34,211,238,0.6)]">
+                    Initiate Sequence
+                </button>
+                <button id="stopBtn" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-6 rounded-md transition-all uppercase tracking-wider hidden hover:shadow-[0_0_15px_rgba(220,38,38,0.6)]">
+                    Terminate
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Alpha Agent -->
+            <div id="card-Alpha" class="agent-card p-6 bg-gray-800/80 border-t-4 border-purple-500 rounded-lg text-center opacity-50 transition-all duration-500 flex flex-col items-center">
+                <div class="w-20 h-20 rounded-full bg-gray-900 border-2 border-purple-500 flex items-center justify-center mb-4 avatar-glow">
+                    <span class="text-3xl">🦹</span>
+                </div>
+                <h2 class="text-2xl font-bold text-purple-400 mb-1 font-['Orbitron']">Alpha</h2>
+                <p class="text-xs text-purple-300 uppercase tracking-widest mb-4">Chaotic Hacker AI</p>
+                <div class="status-indicator w-3 h-3 rounded-full bg-gray-600 mx-auto"></div>
+            </div>
+
+            <!-- Moderator Agent -->
+            <div id="card-Moderator" class="agent-card p-6 bg-gray-800/80 border-t-4 border-cyan-500 rounded-lg text-center opacity-50 transition-all duration-500 flex flex-col items-center transform scale-105 z-10">
+                <div class="w-24 h-24 rounded-full bg-gray-900 border-2 border-cyan-500 flex items-center justify-center mb-4 avatar-glow">
+                    <span class="text-4xl">⚖️</span>
+                </div>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-1 font-['Orbitron']">Moderator</h2>
+                <p class="text-xs text-cyan-300 uppercase tracking-widest mb-4">Central Arbiter</p>
+                <div class="status-indicator w-3 h-3 rounded-full bg-gray-600 mx-auto"></div>
+            </div>
+
+            <!-- Omega Agent -->
+            <div id="card-Omega" class="agent-card p-6 bg-gray-800/80 border-t-4 border-emerald-500 rounded-lg text-center opacity-50 transition-all duration-500 flex flex-col items-center">
+                <div class="w-20 h-20 rounded-full bg-gray-900 border-2 border-emerald-500 flex items-center justify-center mb-4 avatar-glow">
+                    <span class="text-3xl">🤖</span>
+                </div>
+                <h2 class="text-2xl font-bold text-emerald-400 mb-1 font-['Orbitron']">Omega</h2>
+                <p class="text-xs text-emerald-300 uppercase tracking-widest mb-4">Corporate Logic AI</p>
+                <div class="status-indicator w-3 h-3 rounded-full bg-gray-600 mx-auto"></div>
+            </div>
+        </div>
+
+        <div class="flex-grow flex flex-col bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden shadow-inner">
+            <div class="bg-gray-900 border-b border-gray-700 p-3 flex justify-between items-center">
+                <span class="text-sm font-['Orbitron'] text-gray-400 uppercase tracking-wider">Live Transcript</span>
+                <span class="flex items-center gap-2">
+                    <span id="recording-dot" class="w-2 h-2 rounded-full bg-red-500 hidden animate-pulse"></span>
+                    <span id="status-text" class="text-xs text-gray-500 uppercase">Idle</span>
+                </span>
+            </div>
+            <div id="transcript" class="p-6 flex-grow overflow-y-auto max-h-[400px] flex flex-col gap-4 font-sans text-lg">
+                <!-- Dialogue will appear here -->
+                <div class="text-center text-gray-500 italic mt-auto mb-auto">Awaiting debate initialization...</div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

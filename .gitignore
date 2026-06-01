@@ -80,3 +80,10 @@ code_oracle/code_index.db
 
 # concept_weaver
 concept_weaver/__pycache__/
+
+# neuro_clash
+neuro_clash/venv/
+neuro_clash/.pytest_cache/
+neuro_clash/__pycache__/
+neuro_clash/tests/*.png
+neuro_clash/server.log
