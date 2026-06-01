@@ -15,9 +15,13 @@
             100% { background-position: 0% 50%; }
         }
         body {
-            background: linear-gradient(-45deg, #f8fafc, #e2e8f0, #cbd5e1, #f1f5f9);
+            background: linear-gradient(-45deg, #f8fafc, #e0e7ff, #c7d2fe, #f1f5f9);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 10s ease infinite;
+        }
+        .pulse-glow-hover:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4);
+            border-color: #3b82f6;
         }
         .markdown-body h1 { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; color: #1e293b; }
         .markdown-body h2 { font-size: 1.25rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; color: #334155; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.25rem;}

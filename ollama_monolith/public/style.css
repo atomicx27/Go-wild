@@ -60,10 +60,18 @@ h1 {
     animation: textGlowPulse 3s ease-in-out infinite;
 }
 
+@keyframes breatheText {
+    0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.2); transform: scale(1); }
+    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(200, 200, 255, 0.6); transform: scale(1.02); }
+    100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.2); transform: scale(1); }
+}
+
 .subtitle {
-    font-size: 1rem;
-    letter-spacing: 0.2rem;
-    opacity: 0.6;
+    font-size: 1.2rem;
+    letter-spacing: 5px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 10px;
+    animation: breatheText 4s ease-in-out infinite;
 }
 
 @keyframes floatZone {

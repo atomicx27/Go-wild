@@ -30,12 +30,16 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
-            background-color: var(--bg-color);
-            background-image:
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%),
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%),
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
@@ -154,12 +158,7 @@
             position: relative;
         }
 
-        .task:hover {
-            transform: scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 0 15px var(--accent);
-            border-left: 4px solid var(--accent);
-        }
+
 
         .task:active {
             cursor: grabbing;
@@ -168,9 +167,10 @@
 
         .task:hover {
             transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4), 0 0 15px var(--accent);
-            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6), 0 0 20px var(--accent);
+            border-color: var(--accent);
             border-left: 4px solid var(--accent);
+            z-index: 10;
         }
 
         .task.dragging {

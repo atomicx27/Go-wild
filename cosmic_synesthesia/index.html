@@ -41,7 +41,7 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: floatUIGlow 4s ease-in-out infinite;
+            animation: floatUIGlow 3s ease-in-out infinite;
         }
         .btn {
             pointer-events: auto;
@@ -76,9 +76,9 @@
         }
 
         @keyframes pulse-glow {
-            0% { text-shadow: 0 0 5px #ff00ff; }
-            50% { text-shadow: 0 0 20px #00ffff, 0 0 30px #ff00ff; }
-            100% { text-shadow: 0 0 5px #ff00ff; }
+            0% { text-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff; }
+            50% { text-shadow: 0 0 30px #00ffff, 0 0 60px #ff00ff, 0 0 80px #00ffff; }
+            100% { text-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff; }
         }
 
         h1 {

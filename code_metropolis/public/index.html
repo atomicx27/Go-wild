@@ -30,8 +30,8 @@
         }
 
         .glass-panel:hover {
-            border-color: rgba(0, 255, 255, 0.5);
-            box-shadow: 0 8px 60px rgba(0, 255, 255, 0.4);
+            border-color: rgba(0, 255, 255, 0.8);
+            box-shadow: 0 8px 80px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2);
         }
 
         #info-panel {
@@ -44,13 +44,19 @@
             box-shadow: -10px 0 30px rgba(0, 255, 255, 0.1);
         }
 
+        @keyframes dotPulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
         .category-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            display: inline-block;
             margin-right: 8px;
-            animation: pulse-dot 2s infinite alternate;
+            display: inline-block;
+            animation: dotPulse 2s infinite;
         }
 
         @keyframes pulse-dot {
