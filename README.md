@@ -43,6 +43,7 @@ each folder here will be a new project
 * **code_oracle**: A pure Python, zero-dependency local RAG engine and cyberpunk web UI that indexes your codebase using SQLite FTS5 and lets you chat with it via a local Ollama instance.
 * **system_architect**: An autonomous agent that acts as an AI project scaffolder, generating complete directory structures and starter code based on architectural blueprints designed by Ollama.
 * **concept_weaver**: A cyberpunk-styled, interactive web application that deconstructs topics into knowledge graphs using a local LLM via Ollama and renders them using a physics-based network visualization.
+* **neuro_clash**: An autonomous, cyberpunk-themed debate arena powered by a local Ollama instance where distinct AI personas argue over a user-provided topic, complete with native browser text-to-speech.
 
 * **synth_scribe**: An autonomous Ollama-powered documentation agent that generates cyberpunk-themed HTML sites with Mermaid.js architecture diagrams.
 * **market_mayhem**: An autonomous, multi-agent stock market simulation powered by a local Ollama instance, visualized in a cyberpunk-themed Terminal UI.
