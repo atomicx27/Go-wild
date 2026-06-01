@@ -80,4 +80,10 @@ code_oracle/code_index.db
 
 # concept_weaver
 concept_weaver/__pycache__/
+
+# Nexus Forge
+nexus_forge/nexus.db
+nexus_forge/workspace/
+nexus_forge/__pycache__/
+nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
