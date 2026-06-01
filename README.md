@@ -26,6 +26,7 @@ each folder here will be a new project
 
 * **data_alchemist**: An autonomous data analysis agent powered by Ollama. It ingests datasets, proposes interesting analytical questions based on schema, generates and executes Python code (pandas, matplotlib) to answer those questions with visualizations, and compiles the findings into a markdown report.
 * **genesis_chamber**: An autonomous multi-agent brainstorming and scaffolding engine that watches an inbox for text files containing raw ideas, runs them through a pipeline (Visionary, Critic, Architect, Coder) via Ollama, and scaffolds a full MVP outbox.
+* **nexus_forge**: An autonomous, multi-agent AI software factory. It uses a SQLite database to manage a Kanban board of tasks. An Architect Agent watches an inbox for text specs, breaks them down into files, and multiple Worker Agents generate the code. It features a cyberpunk Web UI to visualize the real-time Kanban board.
 * **data_forge**: An autonomous multi-agent pipeline that instantly turns raw CSV files into fully interactive, single-page HTML dashboards via Ollama.
 * **mind_weaver**: An automated, Ollama-powered Second Brain agent that organizes raw text files into a structured, auto-linked Zettelkasten vault.
 * **data_detective**: An automated data analyst agent that generates, runs, and corrects python scripts to analyze datasets and writes markdown reports using Ollama.
@@ -44,3 +45,4 @@ each folder here will be a new project
 * **concept_weaver**: A cyberpunk-styled, interactive web application that deconstructs topics into knowledge graphs using a local LLM via Ollama and renders them using a physics-based network visualization.
 
 * **cyber_forge**: An autonomous AI workflow engine that acts as a self-healing code factory. It watches an inbox for text ideas, prompts Ollama for python code and pytest suites, iteratively tests and fixes bugs in isolation, and displays forged tools in a cyberpunk-themed HTML armory.
+* **synapse_forge**: A cyberpunk-styled 2D canvas web app where users drop thought nodes, and a background autonomous agent recursively brainstorms and connects related ideas using Ollama.
