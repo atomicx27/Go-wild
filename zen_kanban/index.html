@@ -305,7 +305,7 @@
 
         .btn-primary:hover {
             background: var(--accent-hover);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.9);
             transform: scale(1.05);
         }
 
@@ -325,7 +325,18 @@
             background: rgba(255,255,255,0.05);
             border-radius: 8px;
         }
-    </style>
+
+        .column {
+            backdrop-filter: blur(8px);
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .task {
+            animation: slideDown 0.3s ease-out;
+        }
+</style>
 </head>
 <body>
 

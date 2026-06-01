@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse Forge - Cyberpunk Idea Weaver</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Using Google Fonts for a cyberpunk look -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="ui-overlay">
+        <h1>SYNAPSE FORGE</h1>
+        <p>DOUBLE-CLICK TO INJECT THOUGHT.</p>
+        <p>AWAIT AI SYNTHESIS.</p>
+    </div>
+
+    <div id="canvas-container">
+        <svg id="edges-layer"></svg>
+        <div id="nodes-layer"></div>
+    </div>
+
+    <!-- Template for adding new nodes via double click -->
+    <div id="input-modal" class="hidden">
+        <input type="text" id="thought-input" placeholder="ENTER INITIAL DIRECTIVE..." autocomplete="off">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

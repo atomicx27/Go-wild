@@ -223,6 +223,8 @@ main::-webkit-scrollbar { width: 6px; }
 main::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
 .message {
+    animation: slideInMessage 0.4s ease-out forwards;
+
     display: flex;
     gap: 15px;
     max-width: 85%;
@@ -406,4 +408,9 @@ pre {
 code {
     font-family: var(--font-mono);
     color: #aaddff;
+}
+
+@keyframes slideInMessage {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
 }
