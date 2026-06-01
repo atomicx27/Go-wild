@@ -191,7 +191,7 @@ input[type="text"]:focus {
 
 @keyframes btnPulse {
     0% { box-shadow: 0 0 5px var(--alert-color); }
-    100% { box-shadow: 0 0 25px var(--alert-color), 0 0 10px var(--alert-color) inset; }
+    100% { box-shadow: 0 0 40px var(--alert-color), 0 0 20px var(--alert-color) inset; }
 }
 
 .cyber-button {
@@ -244,7 +244,7 @@ input[type="text"]:focus {
 }
 
 .persona-panel:hover {
-    transform: translateY(-10px) scale(1.05);
+    transform: translateY(-10px) scale(1.05) skew(-1deg);
 }
 
 .persona-header {

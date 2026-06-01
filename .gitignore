@@ -84,3 +84,15 @@ concept_weaver/__pycache__/
 # market_mayhem
 market_mayhem/venv/
 market_mayhem/__pycache__/
+# cyber_forge
+cyber_forge/inbox/
+cyber_forge/armory/
+cyber_forge/__pycache__/
+cyber_forge/tests/__pycache__/
+cyber_forge/.pytest_cache/
+# Nexus Forge
+nexus_forge/nexus.db
+nexus_forge/workspace/
+nexus_forge/__pycache__/
+nexus_forge/tests/__pycache__/
+synapse_forge/__pycache__/

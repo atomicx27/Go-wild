@@ -1,0 +1,6 @@
+Create a simple web-based calculator application.
+
+It should have:
+1. An HTML file containing the structure of the calculator (display screen and a grid of buttons for numbers 0-9, operators + - * /, and equals).
+2. A CSS file to style it, making it look like a sleek, modern, dark-mode calculator.
+3. A JavaScript file that handles the logic (performing the actual math operations when buttons are clicked and updating the display screen).

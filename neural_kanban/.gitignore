@@ -1,0 +1,6 @@
+__pycache__/
+venv/
+env/
+kanban.db
+*.pyc
+.pytest_cache/
