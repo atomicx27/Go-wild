@@ -1,0 +1,150 @@
+:root {
+    --bg-color: #050510;
+    --grid-color: #1a1a3a;
+    --neon-blue: #00f3ff;
+    --neon-pink: #ff00ff;
+    --neon-green: #00ff66;
+    --text-color: #e0e0ff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Share Tech Mono', monospace;
+    overflow: hidden;
+    /* Cyberpunk grid background */
+    background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    height: 100vh;
+    width: 100vw;
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    pointer-events: none;
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+#ui-overlay h1 {
+    color: var(--neon-blue);
+    font-size: 2rem;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+#ui-overlay p {
+    color: #8888aa;
+    font-size: 0.9rem;
+}
+
+#canvas-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#edges-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#nodes-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+}
+
+.node {
+    position: absolute;
+    background: rgba(10, 10, 30, 0.8);
+    border: 1px solid var(--neon-blue);
+    padding: 15px 20px;
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: grab;
+    user-select: none;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.1);
+    transform: translate(-50%, -50%); /* Center on coordinates */
+    max-width: 250px;
+    word-wrap: break-word;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.node:active {
+    cursor: grabbing;
+}
+
+.node.processing {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px var(--neon-pink), inset 0 0 10px rgba(255, 0, 255, 0.3);
+    animation: pulse 1.5s infinite alternate;
+}
+
+.node.processed {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 5px var(--neon-pink), inset 0 0 5px rgba(255, 0, 255, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 20px var(--neon-pink), inset 0 0 15px rgba(255, 0, 255, 0.5);
+    }
+}
+
+.edge-line {
+    stroke: var(--neon-blue);
+    stroke-width: 2;
+    fill: none;
+    opacity: 0.5;
+    filter: drop-shadow(0 0 3px var(--neon-blue));
+}
+
+#input-modal {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border: 1px solid var(--neon-pink);
+    box-shadow: 0 0 15px var(--neon-pink);
+}
+
+#input-modal.hidden {
+    display: none;
+}
+
+#thought-input {
+    background: transparent;
+    border: none;
+    color: var(--neon-pink);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    outline: none;
+    width: 200px;
+}
+#thought-input::placeholder {
+    color: rgba(255, 0, 255, 0.5);
+}
