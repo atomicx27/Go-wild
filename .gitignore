@@ -81,6 +81,9 @@ code_oracle/code_index.db
 # concept_weaver
 concept_weaver/__pycache__/
 
+# market_mayhem
+market_mayhem/venv/
+market_mayhem/__pycache__/
 # cyber_forge
 cyber_forge/inbox/
 cyber_forge/armory/
