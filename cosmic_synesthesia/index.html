@@ -84,7 +84,23 @@
         h1 {
             animation: pulse-glow 2s infinite alternate;
         }
-    </style>
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px #0ff; }
+            50% { box-shadow: 0 0 25px #0ff; }
+            100% { box-shadow: 0 0 5px #0ff; }
+        }
+        #start-btn {
+            animation: pulseGlow 2s infinite;
+        }
+        #ui {
+            animation: fadeInUI 2s ease-out;
+        }
+        @keyframes fadeInUI {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+</style>
 </head>
 <body>
     <div id="ui">
