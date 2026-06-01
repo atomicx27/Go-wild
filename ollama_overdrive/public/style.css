@@ -151,9 +151,9 @@ main {
 }
 
 @keyframes borderPulse {
-    0% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); border-color: var(--border-color); }
-    50% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.6); border-color: #55ff55; }
-    100% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); border-color: var(--border-color); }
+    0% { box-shadow: 0 0 25px rgba(0, 255, 0, 0.4); border-color: var(--border-color); }
+    50% { box-shadow: 0 0 50px rgba(0, 255, 0, 0.8), inset 0 0 20px rgba(0, 255, 0, 0.2); border-color: #55ff55; }
+    100% { box-shadow: 0 0 25px rgba(0, 255, 0, 0.4); border-color: var(--border-color); }
 }
 
 .control-panel {
@@ -215,6 +215,7 @@ input[type="text"]:focus {
     color: #000;
     box-shadow: 0 0 40px var(--alert-color), inset 0 0 20px rgba(0,0,0,0.5);
     transform: scale(1.1) skew(-2deg);
+    text-shadow: 2px 2px 0px rgba(255,255,255,0.5), -2px -2px 0px rgba(0,255,255,0.5);
 }
 
 .cyber-button:disabled {

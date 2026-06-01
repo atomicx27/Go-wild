@@ -31,23 +31,42 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image:
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%),
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%),
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-        }
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
         header {
-            margin-bottom: 2rem;
-            text-align: center;
-        }
+    text-align: center;
+    padding: 2rem 0;
+    animation: fadeInDown 1s ease-out;
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+h1 {
+    font-size: 3rem;
+    background: -webkit-linear-gradient(45deg, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    animation: pulseGlow 3s infinite alternate;
+}
+@keyframes pulseGlow {
+    from { text-shadow: 0 0 10px rgba(139, 92, 246, 0.3); }
+    to { text-shadow: 0 0 30px rgba(236, 72, 153, 0.8); }
+}
 
         header h1 {
             font-size: 2.5rem;
@@ -79,20 +98,22 @@
         }
 
         .column {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            width: 320px;
-            min-width: 320px;
-            display: flex;
-            flex-direction: column;
-            max-height: calc(100vh - 150px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.5s ease-out backwards;
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-        }
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.column:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+}
 
         .column:hover {
             box-shadow: 0 10px 50px -5px rgba(139, 92, 246, 0.4);
@@ -144,15 +165,24 @@
         }
 
         .task {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 1rem;
-            cursor: grab;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
-            animation: fadeIn 0.3s ease-out;
-            position: relative;
-        }
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: grab;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.task:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
+    background: rgba(45, 45, 55, 0.8);
+    border-color: rgba(139, 92, 246, 0.4);
+}
 
         .task:hover {
             transform: scale(1.02);

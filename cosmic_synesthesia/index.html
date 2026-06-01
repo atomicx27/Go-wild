@@ -29,19 +29,26 @@
         }
         #ui {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
             color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            pointer-events: auto;
             z-index: 10;
-            pointer-events: none;
-            text-shadow: 0 0 5px #ff00ff;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
             border-radius: 12px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: floatUIGlow 4s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.1);
+            animation: floatUI 6s ease-in-out infinite;
+        }
+        @keyframes floatUI {
+            0% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -55%); }
+            100% { transform: translate(-50%, -50%); }
         }
         .btn {
             pointer-events: auto;

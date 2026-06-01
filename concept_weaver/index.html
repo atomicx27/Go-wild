@@ -132,8 +132,9 @@
 
         #side-panel {
             width: 350px;
-            background: var(--panel-bg);
-            border-left: 2px solid var(--border-color);
+            background: rgba(11, 15, 25, 0.7);
+            backdrop-filter: blur(15px);
+            border-left: 2px solid var(--primary-glow);
             padding: 30px;
             box-sizing: border-box;
             display: flex;
@@ -145,7 +146,7 @@
             top: 0;
             height: 100%;
             z-index: 20;
-            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+            box-shadow: -10px 0 30px rgba(0, 255, 204, 0.2);
         }
 
         #side-panel.open {

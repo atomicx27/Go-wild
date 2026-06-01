@@ -37,6 +37,27 @@ body {
     align-items: center;
     padding: 4rem 2rem;
     pointer-events: none; /* Let clicks pass through to canvas if needed */
+    animation: floatOverlay 8s ease-in-out infinite;
+}
+@keyframes floatOverlay {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+@keyframes floatOverlay {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+@keyframes floatOverlay {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+@keyframes floatOverlay {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
 }
 
 header {
@@ -104,8 +125,8 @@ input[type="text"]:focus {
 }
 
 @keyframes input-glow {
-    0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255,255,255,0.1); }
-    100% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.6), 0 0 30px rgba(100, 0, 255, 0.8), inset 0 0 15px rgba(255,255,255,0.3); }
+    0% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.2); }
+    100% { box-shadow: 0 0 60px rgba(255, 255, 255, 0.8), 0 0 50px rgba(100, 0, 255, 1), inset 0 0 25px rgba(255,255,255,0.4); transform: scale(1.03); }
 }
 
 input[type="text"]::placeholder {

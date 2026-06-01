@@ -35,8 +35,22 @@
         }
 
         #info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            border-left: 4px solid #0ff;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-family: monospace;
+            width: 350px;
+            box-shadow: -5px 0 30px rgba(0, 255, 255, 0.2);
             transform: translateX(120%);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: auto;
         }
 
         #info-panel.visible {
