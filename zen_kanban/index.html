@@ -155,9 +155,9 @@
         }
 
         .task:hover {
-            transform: scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 0 15px var(--accent);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4), 0 0 15px var(--accent);
+            border-color: rgba(139, 92, 246, 0.5);
             border-left: 4px solid var(--accent);
         }
 
@@ -247,7 +247,7 @@
             padding: 0.75rem;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
             text-align: left;
             display: flex;
             align-items: center;
@@ -255,7 +255,10 @@
         }
 
         .add-task-btn:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+            color: #fff;
         }
 
         .task-form {

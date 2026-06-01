@@ -161,17 +161,19 @@ main {
     gap: 1rem;
     margin-bottom: 2rem;
     background: var(--panel-bg);
+    backdrop-filter: blur(10px);
     padding: 1.5rem;
     border: 1px solid var(--border-color);
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1);
     align-items: center;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
     animation: dropIn 0.5s ease-out forwards, borderPulse 4s infinite alternate;
 }
 
 .control-panel:hover {
-    box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
+    box-shadow: 0 0 40px rgba(0, 255, 0, 0.6), inset 0 0 20px rgba(0, 255, 0, 0.2);
     border-color: #55ff55;
+    transform: translateY(-2px);
 }
 
 input[type="text"] {
@@ -190,8 +192,8 @@ input[type="text"]:focus {
 }
 
 @keyframes btnPulse {
-    0% { box-shadow: 0 0 5px var(--alert-color); }
-    100% { box-shadow: 0 0 25px var(--alert-color), 0 0 10px var(--alert-color) inset; }
+    0% { box-shadow: 0 0 10px var(--alert-color), inset 0 0 5px var(--alert-color); text-shadow: 0 0 5px var(--alert-color); }
+    100% { box-shadow: 0 0 30px var(--alert-color), inset 0 0 15px var(--alert-color); text-shadow: 0 0 15px var(--alert-color); }
 }
 
 .cyber-button {
@@ -207,14 +209,15 @@ input[type="text"]:focus {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     overflow: hidden;
-    animation: btnPulse 1.5s infinite alternate;
+    animation: btnPulse 1s infinite alternate ease-in-out;
 }
 
 .cyber-button:hover {
     background: var(--alert-color);
     color: #000;
-    box-shadow: 0 0 40px var(--alert-color), inset 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: 0 0 50px var(--alert-color), inset 0 0 20px rgba(0,0,0,0.8);
     transform: scale(1.1) skew(-2deg);
+    animation: none;
 }
 
 .cyber-button:disabled {
@@ -223,6 +226,7 @@ input[type="text"]:focus {
     cursor: not-allowed;
     background: transparent;
     box-shadow: none;
+    animation: none;
 }
 
 .debate-arena {
@@ -234,6 +238,7 @@ input[type="text"]:focus {
 
 .persona-panel {
     background: var(--panel-bg);
+    backdrop-filter: blur(5px);
     border: 1px solid var(--border-color);
     padding: 1.5rem;
     min-height: 300px;
@@ -245,6 +250,8 @@ input[type="text"]:focus {
 
 .persona-panel:hover {
     transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.4), inset 0 0 15px rgba(0, 255, 0, 0.2);
+    border-color: #55ff55;
 }
 
 .persona-header {

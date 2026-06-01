@@ -22,6 +22,9 @@
             height: 100%;
             font-family: 'Courier New', Courier, monospace;
             background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 204, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 255, 0.05) 0%, transparent 20%);
             color: var(--text-color);
             overflow: hidden;
         }
@@ -73,17 +76,19 @@
             display: flex;
             gap: 10px;
             background: var(--panel-bg);
+            backdrop-filter: blur(10px);
             padding: 15px;
-            border-radius: 30px;
+            border-radius: 8px; /* Cyberpunk sharp edges */
             border: 1px solid var(--border-color);
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2), inset 0 0 10px rgba(0, 255, 204, 0.1);
             pointer-events: auto;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         #search-container:focus-within {
-            box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.6), inset 0 0 15px rgba(0, 255, 204, 0.2);
             border-color: var(--primary-glow);
+            transform: translateX(-50%) translateY(-5px);
         }
 
         #topic-input {
@@ -106,19 +111,23 @@
             border: 1px solid var(--primary-glow);
             color: var(--primary-glow);
             padding: 8px 20px;
-            border-radius: 20px;
+            border-radius: 4px; /* Cyberpunk sharp edges */
             cursor: pointer;
             font-family: inherit;
             font-size: 1.1rem;
             font-weight: bold;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
 
         #weave-btn:hover {
             background: var(--primary-glow);
             color: var(--bg-color);
-            box-shadow: 0 0 10px var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow), 0 0 40px var(--primary-glow);
+            transform: scale(1.05);
         }
 
         #network-container {
@@ -128,11 +137,16 @@
             top: 0;
             left: 0;
             z-index: 1;
+            /* Inner glowing border for canvas */
+            box-shadow: inset 0 0 50px rgba(0, 255, 204, 0.1);
         }
 
         #side-panel {
             width: 350px;
             background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border-left: 2px solid var(--border-color);
+            box-shadow: -5px 0 20px rgba(0, 255, 204, 0.1);
             border-left: 2px solid var(--border-color);
             padding: 30px;
             box-sizing: border-box;

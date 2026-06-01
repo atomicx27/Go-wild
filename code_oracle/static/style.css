@@ -87,11 +87,27 @@ body {
     flex-direction: column;
     z-index: 10;
     background: var(--bg-panel);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 255, 204, 0.4);
     border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,255,204,0.05);
+    box-shadow: 0 0 40px rgba(0,0,0,0.9), inset 0 0 30px rgba(0,255,204,0.1), 0 0 15px rgba(0, 255, 204, 0.2);
     overflow: hidden;
+    position: relative;
+}
+
+.container::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    opacity: 0.8;
 }
 
 /* Header */
@@ -123,6 +139,12 @@ h1 {
     text-transform: uppercase;
     color: var(--text-main);
     text-shadow: 0 0 10px var(--accent-glow);
+    animation: textFlicker 3s infinite;
+}
+
+@keyframes textFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent); }
+    20%, 24%, 55% { text-shadow: none; opacity: 0.8; }
 }
 
 .badge {
@@ -331,6 +353,28 @@ footer {
     border-radius: 8px;
     padding: 5px 15px;
     transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.input-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    z-index: -1;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.input-wrapper:focus-within::before {
+    transform: translateX(100%);
+    animation: neonBorder 2s linear infinite;
+}
+
+@keyframes neonBorder {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .input-wrapper:focus-within {

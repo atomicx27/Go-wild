@@ -20,18 +20,19 @@
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 255, 0.15);
             pointer-events: auto; /* Re-enable clicks for UI elements */
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.05);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         .glass-panel:hover {
-            border-color: rgba(0, 255, 255, 0.5);
-            box-shadow: 0 8px 60px rgba(0, 255, 255, 0.4);
+            border-color: rgba(0, 255, 255, 0.8);
+            box-shadow: 0 8px 60px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         #info-panel {
@@ -98,21 +99,23 @@
 
         <!-- Header -->
         <div class="glass-panel p-6 rounded-2xl max-w-sm self-start">
-            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2" style="animation: textFlicker 3s infinite;">CODE METROPOLIS</h1>
-            <p class="text-slate-300 text-sm mb-4">Autonomous Codebase Visualization</p>
+            <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-cyan-500 to-blue-500 mb-2 drop-shadow-lg" style="animation: textFlicker 3s infinite;">CODE METROPOLIS</h1>
+            <p class="text-cyan-400 text-xs mb-6 uppercase tracking-widest font-bold">Autonomous Codebase Visualization</p>
 
-            <div class="space-y-2 text-sm">
-                <div class="flex items-center"><span class="category-dot bg-cyan-400" style="box-shadow: 0 0 10px #22d3ee;"></span>UI / Frontend</div>
-                <div class="flex items-center"><span class="category-dot bg-purple-500" style="box-shadow: 0 0 10px #a855f7;"></span>Logic / Backend</div>
-                <div class="flex items-center"><span class="category-dot bg-rose-500" style="box-shadow: 0 0 10px #f43f5e;"></span>Database</div>
-                <div class="flex items-center"><span class="category-dot bg-emerald-400" style="box-shadow: 0 0 10px #34d399;"></span>API</div>
-                <div class="flex items-center"><span class="category-dot bg-amber-400" style="box-shadow: 0 0 10px #fbbf24;"></span>Config</div>
-                <div class="flex items-center"><span class="category-dot bg-slate-400" style="box-shadow: 0 0 10px #94a3b8;"></span>Other / Test</div>
+            <div class="space-y-3 text-sm font-medium">
+                <div class="flex items-center hover:translate-x-2 transition-transform duration-300"><span class="category-dot bg-cyan-400" style="box-shadow: 0 0 15px #22d3ee;"></span>UI / Frontend</div>
+                <div class="flex items-center hover:translate-x-2 transition-transform duration-300"><span class="category-dot bg-purple-500" style="box-shadow: 0 0 15px #a855f7;"></span>Logic / Backend</div>
+                <div class="flex items-center hover:translate-x-2 transition-transform duration-300"><span class="category-dot bg-rose-500" style="box-shadow: 0 0 15px #f43f5e;"></span>Database</div>
+                <div class="flex items-center hover:translate-x-2 transition-transform duration-300"><span class="category-dot bg-emerald-400" style="box-shadow: 0 0 15px #34d399;"></span>API</div>
+                <div class="flex items-center hover:translate-x-2 transition-transform duration-300"><span class="category-dot bg-amber-400" style="box-shadow: 0 0 15px #fbbf24;"></span>Config</div>
+                <div class="flex items-center hover:translate-x-2 transition-transform duration-300"><span class="category-dot bg-slate-400" style="box-shadow: 0 0 15px #94a3b8;"></span>Other / Test</div>
             </div>
 
-            <div class="mt-6 text-xs text-slate-400">
-                Left Click: Rotate | Right Click: Pan | Scroll: Zoom<br>
-                Hover: Inspect Building
+            <div class="mt-8 pt-4 border-t border-cyan-500/20 text-xs text-slate-400 leading-relaxed">
+                <span class="text-cyan-400 font-bold">Left Click:</span> Rotate <br>
+                <span class="text-cyan-400 font-bold">Right Click:</span> Pan <br>
+                <span class="text-cyan-400 font-bold">Scroll:</span> Zoom<br>
+                <span class="text-cyan-400 font-bold">Hover:</span> Inspect Building
             </div>
         </div>
 
