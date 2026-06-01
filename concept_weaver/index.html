@@ -232,7 +232,27 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(0, 255, 204, 0.6);
         }
-    </style>
+
+        #header h1 {
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--primary-glow));
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        #side-panel {
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        #weave-btn:hover {
+            box-shadow: 0 0 15px var(--secondary-glow);
+            text-shadow: 0 0 5px #fff;
+        }
+</style>
 </head>
 <body>
 

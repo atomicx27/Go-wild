@@ -1,0 +1,43 @@
+INFO:     Started server process [32171]
+INFO:     Waiting for application startup.
+INFO:backend.agent:Starting AI Agent loop...
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:45736 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45736 - "GET /style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "POST /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:backend.agent:AI Agent processing ticket: bd1d7c09-6ec7-4f8a-bf45-d9042b3749e4 - Implement Authentication
+ERROR:backend.agent:Error communicating with Ollama: All connection attempts failed
+INFO:backend.agent:AI Agent finished processing ticket: bd1d7c09-6ec7-4f8a-bf45-d9042b3749e4
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45738 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52732 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52732 - "GET /style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52744 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52744 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52744 - "POST /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52744 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52744 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:backend.agent:AI Agent processing ticket: c5a3e8fb-f172-46e5-9e66-d65b06b577d3 - Implement Authentication
+ERROR:backend.agent:Error communicating with Ollama: All connection attempts failed
+INFO:backend.agent:AI Agent finished processing ticket: c5a3e8fb-f172-46e5-9e66-d65b06b577d3
+INFO:     127.0.0.1:37080 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37080 - "GET /style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37082 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37082 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37082 - "POST /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37082 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37082 - "GET /api/tickets HTTP/1.1" 200 OK
+INFO:backend.agent:AI Agent processing ticket: 0848f52c-5cb9-4658-b3b7-10b02b2916a5 - Implement Auth Backend
+ERROR:backend.agent:Error communicating with Ollama: All connection attempts failed
+INFO:backend.agent:AI Agent finished processing ticket: 0848f52c-5cb9-4658-b3b7-10b02b2916a5
+INFO:     127.0.0.1:37082 - "GET /api/tickets HTTP/1.1" 200 OK

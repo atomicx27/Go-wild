@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Kanban | PM Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+
+    <header class="p-6 bg-gray-800 bg-opacity-50 border-b border-cyan-900 shadow-lg backdrop-blur-sm flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold text-cyan-400" style="font-family: 'Orbitron', sans-serif;">Neural Kanban</h1>
+            <p class="text-sm text-cyan-600 mt-1">Autonomous AI Project Management</p>
+        </div>
+        <button onclick="openNewTicketModal()" class="px-4 py-2 bg-cyan-700 hover:bg-cyan-600 text-white rounded-md font-semibold transition-colors shadow-[0_0_15px_rgba(8,145,178,0.5)]">
+            + New Ticket
+        </button>
+    </header>
+
+    <main class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- TODO Column -->
+            <div class="kanban-column bg-gray-800 bg-opacity-40 border border-gray-700 rounded-lg p-4 min-h-[500px]" data-status="TODO">
+                <h2 class="text-xl font-semibold mb-4 text-gray-300 border-b border-gray-700 pb-2 flex justify-between">
+                    <span>TODO</span>
+                    <span id="count-TODO" class="text-sm bg-gray-700 px-2 py-1 rounded-full">0</span>
+                </h2>
+                <div class="ticket-list space-y-4" id="list-TODO"></div>
+            </div>
+
+            <!-- IN PROGRESS Column -->
+            <div class="kanban-column bg-gray-800 bg-opacity-40 border border-gray-700 rounded-lg p-4 min-h-[500px]" data-status="IN PROGRESS">
+                <h2 class="text-xl font-semibold mb-4 text-blue-400 border-b border-blue-900 pb-2 flex justify-between">
+                    <span>IN PROGRESS</span>
+                    <span id="count-IN PROGRESS" class="text-sm bg-blue-900 px-2 py-1 rounded-full text-blue-200">0</span>
+                </h2>
+                <div class="ticket-list space-y-4" id="list-IN PROGRESS"></div>
+            </div>
+
+            <!-- REVIEW Column -->
+            <div class="kanban-column bg-gray-800 bg-opacity-40 border border-gray-700 rounded-lg p-4 min-h-[500px]" data-status="REVIEW">
+                <h2 class="text-xl font-semibold mb-4 text-yellow-400 border-b border-yellow-900 pb-2 flex justify-between">
+                    <span>REVIEW</span>
+                    <span id="count-REVIEW" class="text-sm bg-yellow-900 px-2 py-1 rounded-full text-yellow-200">0</span>
+                </h2>
+                <div class="ticket-list space-y-4" id="list-REVIEW"></div>
+            </div>
+
+            <!-- DONE Column -->
+            <div class="kanban-column bg-gray-800 bg-opacity-40 border border-gray-700 rounded-lg p-4 min-h-[500px]" data-status="DONE">
+                <h2 class="text-xl font-semibold mb-4 text-green-400 border-b border-green-900 pb-2 flex justify-between">
+                    <span>DONE</span>
+                    <span id="count-DONE" class="text-sm bg-green-900 px-2 py-1 rounded-full text-green-200">0</span>
+                </h2>
+                <div class="ticket-list space-y-4" id="list-DONE"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Ticket Modal -->
+    <div id="newTicketModal" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="bg-gray-800 border border-cyan-900 p-6 rounded-lg w-full max-w-lg shadow-[0_0_30px_rgba(8,145,178,0.2)]">
+            <h2 class="text-2xl font-bold mb-4 text-cyan-400">Create New Ticket</h2>
+            <form id="newTicketForm">
+                <div class="mb-4">
+                    <label class="block text-gray-400 mb-2 text-sm">Title</label>
+                    <input type="text" id="ticketTitle" required class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-400 mb-2 text-sm">Description</label>
+                    <textarea id="ticketDescription" rows="4" class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"></textarea>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeNewTicketModal()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-200 transition-colors">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-cyan-700 hover:bg-cyan-600 rounded text-white font-semibold transition-colors shadow-[0_0_10px_rgba(8,145,178,0.4)]">Create & Summon AI</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ticket Detail Modal -->
+    <div id="ticketDetailModal" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center z-50 backdrop-blur-sm p-4">
+        <div class="bg-gray-800 border border-cyan-900 rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col shadow-[0_0_30px_rgba(8,145,178,0.2)] overflow-hidden">
+            <div class="p-6 border-b border-gray-700 flex justify-between items-start">
+                <div>
+                    <h2 id="detailTitle" class="text-2xl font-bold text-white mb-2"></h2>
+                    <span id="detailStatus" class="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 uppercase"></span>
+                </div>
+                <button onclick="closeTicketDetailModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 flex flex-col lg:flex-row gap-6">
+                <!-- Left: Description -->
+                <div class="lg:w-1/3 border-b lg:border-b-0 lg:border-r border-gray-700 pb-6 lg:pb-0 lg:pr-6">
+                    <h3 class="text-sm uppercase text-gray-500 font-semibold mb-3">Description</h3>
+                    <div id="detailDescription" class="prose prose-invert prose-sm max-w-none text-gray-300"></div>
+                </div>
+
+                <!-- Right: Comments & AI -->
+                <div class="lg:w-2/3 flex flex-col">
+                    <h3 class="text-sm uppercase text-gray-500 font-semibold mb-3 flex justify-between items-center">
+                        <span>Activity & AI Analysis</span>
+                        <span id="aiStatusBadge" class="text-xs px-2 py-1 rounded-full bg-gray-700 text-gray-400">Processing...</span>
+                    </h3>
+
+                    <div id="commentsList" class="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+                        <!-- Comments injected here -->
+                    </div>
+
+                    <form id="commentForm" class="mt-auto border-t border-gray-700 pt-4">
+                        <input type="hidden" id="currentTicketId">
+                        <textarea id="newCommentContent" rows="2" placeholder="Add a comment..." required class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 mb-2"></textarea>
+                        <div class="flex justify-end">
+                            <button type="submit" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-white text-sm transition-colors">Post Comment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

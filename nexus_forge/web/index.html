@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Forge - AI Agent Factory</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="glitch-header">
+            <h1 class="glitch" data-text="NEXUS FORGE">NEXUS FORGE</h1>
+            <p class="subtitle">Autonomous AI Agent Software Factory</p>
+        </header>
+
+        <main class="kanban-board">
+            <!-- TODO Column -->
+            <div class="kanban-column" id="col-todo">
+                <div class="column-header">
+                    <h2><span class="neon-dot yellow"></span> BACKLOG</h2>
+                    <span class="task-count">0</span>
+                </div>
+                <div class="task-list" id="list-todo">
+                    <!-- Tasks injected by JS -->
+                </div>
+            </div>
+
+            <!-- IN PROGRESS Column -->
+            <div class="kanban-column" id="col-in-progress">
+                <div class="column-header">
+                    <h2><span class="neon-dot blue pulse"></span> SYNTHESIZING</h2>
+                    <span class="task-count">0</span>
+                </div>
+                <div class="task-list" id="list-in-progress">
+                    <!-- Tasks injected by JS -->
+                </div>
+            </div>
+
+            <!-- DONE Column -->
+            <div class="kanban-column" id="col-done">
+                <div class="column-header">
+                    <h2><span class="neon-dot green"></span> COMPILED</h2>
+                    <span class="task-count">0</span>
+                </div>
+                <div class="task-list" id="list-done">
+                    <!-- Tasks injected by JS -->
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="status-bar">
+                <div class="status-indicator">
+                    <span class="pulse-ring"></span>
+                    <span>SYSTEM ONLINE</span>
+                </div>
+                <div class="matrix-rain-toggle">
+                    Toggle Matrix
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Matrix Rain Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
