@@ -20,28 +20,32 @@
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.7) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
             pointer-events: auto; /* Re-enable clicks for UI elements */
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.05) !important;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
         }
 
         .glass-panel:hover {
-            border-color: rgba(0, 255, 255, 0.5);
-            box-shadow: 0 8px 60px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), 0 0 20px rgba(34, 211, 238, 0.2), inset 0 0 15px rgba(34, 211, 238, 0.1) !important;
+            transform: translateY(-2px);
+            border-color: rgba(34, 211, 238, 0.4) !important;
         }
 
         #info-panel {
-            transform: translateX(120%);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-left-color 0.3s ease !important;
+            transform: translateX(120%) scale(0.95);
+            opacity: 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
         }
 
         #info-panel.visible {
-            transform: translateX(0);
-            box-shadow: -10px 0 30px rgba(0, 255, 255, 0.1);
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), -5px 0 20px rgba(34, 211, 238, 0.1) !important;
         }
 
         .category-dot {
@@ -117,7 +121,7 @@
         </div>
 
         <!-- Info Panel (Hidden initially) -->
-        <div id="info-panel" class="glass-panel p-6 rounded-2xl w-96 self-start border-l-4 border-cyan-400">
+        <div id="info-panel" class="backdrop-blur-md transition-all duration-500 transform translate-x-4 opacity-0 [&.visible]:translate-x-0 [&.visible]:opacity-100 glass-panel p-6 rounded-2xl w-96 self-start border-l-4 border-cyan-400">
             <div class="flex justify-between items-start mb-4">
                 <h2 id="b-filename" class="text-xl font-mono font-bold text-white break-all">filename.py</h2>
                 <button id="close-btn" class="text-slate-400 hover:text-white transition-all duration-300 hover:rotate-90 hover:scale-125 hover:text-cyan-400">&times;</button>
