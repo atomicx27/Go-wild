@@ -8,6 +8,67 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
     <!-- Load Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+/* Modern UI Enhancements */
+html { scroll-behavior: smooth; cursor: none; }
+* { cursor: none !important; }
+body { transition: background-color 0.5s ease; }
+button, .btn, a, .node, .task, .card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+button:hover, .btn:hover, a:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 7px 14px rgba(0,255,255,0.3), 0 3px 6px rgba(255,0,255,0.3) !important;
+    filter: brightness(1.2);
+}
+button:active, .btn:active, a:active {
+    transform: translateY(1px) scale(0.98);
+}
+input, textarea {
+    transition: all 0.3s ease !important;
+}
+input:focus, textarea:focus {
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.5) !important;
+    border-color: rgba(0, 243, 255, 0.8) !important;
+    outline: none;
+}
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Custom Cyber Cursor */
+.cyber-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #0ff;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+    mix-blend-mode: difference;
+}
+.cyber-cursor-trail {
+    width: 8px;
+    height: 8px;
+    background-color: #f0f;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: top 0.1s ease-out, left 0.1s ease-out;
+    box-shadow: 0 0 10px #f0f;
+}
+</style>
+
 </head>
 <body>
     <div id="canvas-container"></div>
@@ -28,5 +89,88 @@
     </div>
 
     <script src="app.js"></script>
+
+<script>
+// Modern UI Enhancements Script
+document.addEventListener('DOMContentLoaded', () => {
+    // Custom Cursor
+    const cursor = document.createElement('div');
+    cursor.className = 'cyber-cursor';
+    document.body.appendChild(cursor);
+
+    const trail = document.createElement('div');
+    trail.className = 'cyber-cursor-trail';
+    document.body.appendChild(trail);
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+
+        setTimeout(() => {
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+        }, 50);
+    });
+
+    document.addEventListener('mousedown', () => {
+        cursor.style.width = '15px';
+        cursor.style.height = '15px';
+        cursor.style.backgroundColor = 'rgba(0, 255, 255, 0.5)';
+    });
+
+    document.addEventListener('mouseup', () => {
+        cursor.style.width = '20px';
+        cursor.style.height = '20px';
+        cursor.style.backgroundColor = 'transparent';
+    });
+
+    // Add interactive hover effects to interactive elements
+    const setupInteractives = () => {
+        const interactives = document.querySelectorAll('button, a, input, .btn, .node, .task');
+        interactives.forEach(el => {
+            if (el.dataset.cursorEnhanced) return;
+            el.dataset.cursorEnhanced = "true";
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '30px';
+                cursor.style.height = '30px';
+                cursor.style.borderColor = '#f0f';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+                cursor.style.borderColor = '#0ff';
+            });
+        });
+    };
+    setupInteractives();
+
+        // Intersection Observer for fade-in animations
+    const observerFade = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    const applyFade = () => {
+        const elementsToAnimate = document.querySelectorAll('h1, h2, .card, .container, .panel, .box, .column, .task, header, .agent-card');
+        elementsToAnimate.forEach(el => {
+            if (!el.classList.contains('fade-in-up')) {
+                el.classList.add('fade-in-up');
+                observerFade.observe(el);
+            }
+        });
+    };
+    applyFade();
+
+    // In case of dynamic content (like Kanban boards), observe and re-bind
+    const observerUI = new MutationObserver((mutations) => {
+        setupInteractives();
+        applyFade();
+    });
+    observerUI.observe(document.body, { childList: true, subtree: true });
+</script>
+
 </body>
 </html>
