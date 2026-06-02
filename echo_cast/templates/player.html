@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Cast - Neural Broadcast</title>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --dark-bg: #0a0a0c;
+            --grid-color: rgba(0, 243, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--neon-blue);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
+        }
+
+        /* CRT Scanline Effect */
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            margin-bottom: 30px;
+            z-index: 3;
+        }
+
+        #controls {
+            margin-bottom: 30px;
+            z-index: 3;
+        }
+
+        button {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: inherit;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3) inset, 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        button:hover {
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--neon-blue) inset, 0 0 20px var(--neon-blue);
+        }
+
+        button:disabled {
+            border-color: #555;
+            color: #555;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        #visualizer {
+            display: flex;
+            gap: 5px;
+            height: 50px;
+            margin-bottom: 40px;
+            z-index: 3;
+            align-items: flex-end;
+        }
+
+        .bar {
+            width: 15px;
+            height: 5px;
+            background-color: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+            transition: height 0.1s ease;
+        }
+
+        .playing .bar {
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        .playing .bar:nth-child(even) {
+            animation-duration: 0.4s;
+            animation-delay: 0.1s;
+        }
+
+        .playing .bar:nth-child(3n) {
+            animation-duration: 0.6s;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes bounce {
+            0% { height: 5px; }
+            100% { height: 50px; }
+        }
+
+        #transcript {
+            width: 80%;
+            max-width: 800px;
+            background: rgba(10, 10, 12, 0.8);
+            border: 1px solid var(--neon-blue);
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+            z-index: 3;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .line {
+            margin-bottom: 15px;
+            opacity: 0.5;
+            transition: opacity 0.3s, text-shadow 0.3s;
+            border-left: 3px solid transparent;
+            padding-left: 10px;
+        }
+
+        .line.active {
+            opacity: 1;
+            text-shadow: 0 0 5px currentColor;
+        }
+
+        .speaker-name {
+            font-weight: bold;
+            margin-right: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 243, 255, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>[ Echo Cast Neural Broadcast ]</h1>
+
+    <div id="controls">
+        <button id="playBtn">Initialize Broadcast</button>
+        <button id="pauseBtn" disabled>Pause</button>
+        <button id="stopBtn" disabled>Terminate</button>
+    </div>
+
+    <div id="visualizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <div id="transcript"></div>
+
+    <script>
+        // Data injected by python pipeline
+        const CAST_DATA = {{CAST_DATA}};
+        const SCRIPT_DATA = {{SCRIPT_DATA}};
+
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const visualizer = document.getElementById('visualizer');
+        const transcriptDiv = document.getElementById('transcript');
+
+        let synth = window.speechSynthesis;
+        let voices = [];
+        let currentLineIndex = 0;
+        let isPlaying = false;
+
+        // Colors for different speakers
+        const speakerColors = [
+            'var(--neon-blue)',
+            'var(--neon-pink)',
+            '#00ff00', // Neon green
+            '#ffff00'  // Neon yellow
+        ];
+        const speakerColorMap = {};
+
+        function populateVoiceList() {
+            voices = synth.getVoices();
+        }
+
+        populateVoiceList();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoiceList;
+        }
+
+        function renderTranscript() {
+            transcriptDiv.innerHTML = '';
+
+            // Assign colors
+            let colorIndex = 0;
+            CAST_DATA.forEach(persona => {
+                if(!speakerColorMap[persona.name]) {
+                    speakerColorMap[persona.name] = speakerColors[colorIndex % speakerColors.length];
+                    colorIndex++;
+                }
+            });
+
+            SCRIPT_DATA.forEach((line, index) => {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'line';
+                lineDiv.id = `line-${index}`;
+                lineDiv.style.color = speakerColorMap[line.speaker] || 'var(--neon-blue)';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'speaker-name';
+                nameSpan.textContent = `[${line.speaker}]:`;
+
+                const textSpan = document.createElement('span');
+                textSpan.textContent = line.text;
+
+                lineDiv.appendChild(nameSpan);
+                lineDiv.appendChild(textSpan);
+                transcriptDiv.appendChild(lineDiv);
+            });
+        }
+
+        function getVoiceForPersona(personaName) {
+            const persona = CAST_DATA.find(p => p.name === personaName);
+            // Simple deterministic voice selection based on name length if no explicit match
+            let voiceIndex = personaName.length % voices.length;
+
+            // Try to match English voices first
+            const engVoices = voices.filter(v => v.lang.startsWith('en'));
+            if(engVoices.length > 0) {
+                 // Spread out voices for different personas
+                 let pIndex = CAST_DATA.findIndex(p => p.name === personaName);
+                 voiceIndex = pIndex % engVoices.length;
+                 return engVoices[voiceIndex];
+            }
+
+            return voices[voiceIndex] || voices[0];
+        }
+
+        function playNextLine() {
+            if (currentLineIndex >= SCRIPT_DATA.length || !isPlaying) {
+                stopBroadcast();
+                return;
+            }
+
+            const lineData = SCRIPT_DATA[currentLineIndex];
+            const persona = CAST_DATA.find(p => p.name === lineData.speaker);
+
+            const utterThis = new SpeechSynthesisUtterance(lineData.text);
+
+            if(voices.length > 0) {
+                utterThis.voice = getVoiceForPersona(lineData.speaker);
+            }
+
+            if (persona) {
+                utterThis.pitch = persona.pitch || 1;
+                utterThis.rate = persona.rate || 1;
+            }
+
+            // Highlight UI
+            document.querySelectorAll('.line').forEach(el => el.classList.remove('active'));
+            const activeLine = document.getElementById(`line-${currentLineIndex}`);
+            if(activeLine) {
+                activeLine.classList.add('active');
+                activeLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            utterThis.onend = function (event) {
+                if(isPlaying) {
+                    currentLineIndex++;
+                    playNextLine();
+                }
+            };
+
+            utterThis.onerror = function (event) {
+                console.error('SpeechSynthesisUtterance.onerror', event);
+                if(isPlaying) {
+                    currentLineIndex++;
+                    playNextLine();
+                }
+            }
+
+            synth.speak(utterThis);
+        }
+
+        function startBroadcast() {
+            if(voices.length === 0) populateVoiceList(); // try again
+
+            if(synth.paused) {
+                synth.resume();
+            } else {
+                currentLineIndex = 0;
+                playNextLine();
+            }
+
+            isPlaying = true;
+            visualizer.classList.add('playing');
+            playBtn.disabled = true;
+            pauseBtn.disabled = false;
+            stopBtn.disabled = false;
+        }
+
+        function pauseBroadcast() {
+            synth.pause();
+            isPlaying = false;
+            visualizer.classList.remove('playing');
+            playBtn.disabled = false;
+            pauseBtn.disabled = true;
+        }
+
+        function stopBroadcast() {
+            synth.cancel();
+            isPlaying = false;
+            currentLineIndex = 0;
+            visualizer.classList.remove('playing');
+            document.querySelectorAll('.line').forEach(el => el.classList.remove('active'));
+
+            playBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+        }
+
+        playBtn.addEventListener('click', startBroadcast);
+        pauseBtn.addEventListener('click', pauseBroadcast);
+        stopBtn.addEventListener('click', stopBroadcast);
+
+        // Init UI
+        renderTranscript();
+    </script>
+</body>
+</html>
