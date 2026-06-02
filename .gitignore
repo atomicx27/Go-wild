@@ -102,3 +102,13 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+
+# echo_cast
+echo_cast/inbox/*
+!echo_cast/inbox/.gitkeep
+echo_cast/outbox/*
+!echo_cast/outbox/.gitkeep
+echo_cast/archive/*
+!echo_cast/archive/.gitkeep
+echo_cast/__pycache__/
+echo_cast/tests/__pycache__/
