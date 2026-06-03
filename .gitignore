@@ -102,3 +102,8 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+
+# chaos_tester
+chaos_tester/__pycache__/
+chaos_tester/workspace/
+.pytest_cache/
