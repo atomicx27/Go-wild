@@ -7,6 +7,45 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- UI Enhancements -->
+    <style>
+        :root {
+            --glow-color: #0ff;
+            --glow-spread-color: rgba(0, 255, 255, 0.4);
+        }
+        button, .btn, .cyber-button {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            position: relative;
+        }
+        button:hover, .btn:hover, .cyber-button:hover {
+            transform: translateY(-2px) scale(1.02) !important;
+            box-shadow: 0 0 15px var(--glow-spread-color), 0 0 30px var(--glow-spread-color) !important;
+            text-shadow: 0 0 8px var(--glow-color) !important;
+            filter: brightness(1.2) !important;
+        }
+        button:active, .btn:active {
+            transform: translateY(1px) scale(0.98) !important;
+        }
+        input:focus, textarea:focus, select:focus {
+            box-shadow: 0 0 15px var(--glow-spread-color) !important;
+            border-color: var(--glow-color) !important;
+            outline: none !important;
+            animation: inputPulse 2s infinite alternate !important;
+        }
+        @keyframes inputPulse {
+            0% { box-shadow: 0 0 10px var(--glow-spread-color); }
+            100% { box-shadow: 0 0 20px var(--glow-spread-color), 0 0 5px var(--glow-color) inset; }
+        }
+        .panel, .card, .glass-panel, .kanban-column, .terminal-box {
+            transition: all 0.4s ease-out !important;
+        }
+        .panel:hover, .card:hover, .glass-panel:hover, .terminal-box:hover {
+            box-shadow: 0 8px 32px 0 rgba(0, 255, 255, 0.15), inset 0 0 10px rgba(0, 255, 255, 0.05) !important;
+            transform: translateY(-2px);
+        }
+    </style>
+
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col font-['Rajdhani'] bg-grid">
     <div class="container mx-auto px-4 py-8 max-w-5xl flex-grow flex flex-col">

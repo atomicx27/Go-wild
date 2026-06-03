@@ -72,6 +72,38 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
+
+    <!-- UI Enhancements -->
+    <style>
+        :root {
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --primary-border: #3b82f6;
+        }
+        button, .btn {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+        button:hover, .btn:hover {
+            transform: translateY(-2px) scale(1.02) !important;
+            box-shadow: 0 10px 15px -3px var(--primary-glow), 0 4px 6px -2px var(--primary-glow) !important;
+        }
+        button:active, .btn:active {
+            transform: translateY(0) scale(0.98) !important;
+        }
+        input:focus, textarea:focus {
+            box-shadow: 0 0 0 3px var(--primary-glow) !important;
+            border-color: var(--primary-border) !important;
+            outline: none !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+        .card, .markdown-body {
+            transition: all 0.3s ease !important;
+        }
+        .card:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+        }
+    </style>
+
 </head>
 <body class="min-h-screen flex flex-col font-sans text-slate-800">
 
