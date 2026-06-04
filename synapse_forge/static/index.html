@@ -7,6 +7,61 @@
     <link rel="stylesheet" href="style.css">
     <!-- Using Google Fonts for a cyberpunk look -->
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<!-- Modern UI Enhancements Injected -->
+<style>
+html {
+    scroll-behavior: smooth;
+}
+body {
+    animation: fadeInBody 0.8s ease-out;
+}
+@keyframes fadeInBody {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+button, .btn, .button {
+    transition: all 0.3s ease !important;
+}
+button:hover, .btn:hover, .button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3) !important;
+}
+button:active, .btn:active, .button:active {
+    transform: translateY(1px) !important;
+}
+input, textarea, select {
+    transition: all 0.3s ease !important;
+}
+input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) !important;
+    border-color: #00ffff !important;
+    outline: none !important;
+}
+.card, .agent-card, .task, .kanban-column {
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+.card:hover, .agent-card:hover, .task:hover {
+    transform: translateY(-4px) scale(1.02) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 255, 0.2) !important;
+    z-index: 10;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.6);
+}
+</style>
 </head>
 <body>
     <div id="ui-overlay">
