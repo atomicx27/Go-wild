@@ -102,3 +102,7 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+holo_deck/holodecks/*
+!holo_deck/holodecks/.keep
+holo_deck/__pycache__/
+holo_deck/.pytest_cache/
