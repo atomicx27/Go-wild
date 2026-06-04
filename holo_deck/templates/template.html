@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holo Deck Scenario</title>
+    <style>
+        :root {
+            --neon-green: #0f0;
+            --dark-bg: #050505;
+            --text-color: #3f3;
+            --scanline-color: rgba(0, 255, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Hide scrollbars, managed within terminal */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #terminal {
+            width: 90%;
+            max-width: 1000px;
+            height: 90%;
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-green), inset 0 0 10px var(--neon-green);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: rgba(0, 20, 0, 0.8);
+        }
+
+        /* Scanline effect */
+        #terminal::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Subtle glowing overlay */
+        #terminal::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: radial-gradient(circle, rgba(0,255,0,0.1) 0%, rgba(0,0,0,0) 80%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+
+        #output {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+            white-space: pre-wrap;
+            z-index: 3;
+            position: relative;
+            text-shadow: 0 0 2px var(--neon-green);
+        }
+
+        /* Scrollbar styling */
+        #output::-webkit-scrollbar {
+            width: 8px;
+        }
+        #output::-webkit-scrollbar-track {
+            background: #000;
+            border-left: 1px solid var(--neon-green);
+        }
+        #output::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+
+
+        #input-line {
+            display: flex;
+            align-items: center;
+            z-index: 3;
+            position: relative;
+        }
+
+        #prompt {
+            color: var(--neon-green);
+            margin-right: 10px;
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        #command-input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1em;
+            outline: none;
+            text-shadow: 0 0 2px var(--neon-green);
+        }
+
+        /* Glitch effect on commands */
+        .user-cmd {
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+        }
+
+        .error-msg {
+            color: #f00;
+            text-shadow: 0 0 5px #f00;
+        }
+
+        .success-msg {
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid var(--neon-green);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal">
+        <div class="header">
+            <h1 id="game-title">HOLO_DECK SCENARIO</h1>
+            <p id="game-desc">Initializing simulation...</p>
+        </div>
+        <div id="output"></div>
+        <div id="input-line">
+            <span id="prompt">></span>
+            <input type="text" id="command-input" autocomplete="off" autofocus>
+        </div>
+    </div>
+    <script>
+        // Placeholder for injected JSON
+        window.SCENARIO = {{SCENARIO_JSON}};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const outputDiv = document.getElementById('output');
+            const inputField = document.getElementById('command-input');
+            const titleEl = document.getElementById('game-title');
+            const descEl = document.getElementById('game-desc');
+
+            let gameState = {
+                currentRoom: null,
+                inventory: []
+            };
+
+            // Initialization fallback if no scenario loaded
+            if (!window.SCENARIO || Object.keys(window.SCENARIO).length === 0) {
+                printMsg("ERROR: SCENARIO DATA NOT FOUND.", "error-msg");
+                return;
+            }
+
+            const scenario = window.SCENARIO;
+            titleEl.textContent = scenario.title || "HOLO_DECK SCENARIO";
+            descEl.textContent = scenario.description || "System ready.";
+            gameState.currentRoom = scenario.starting_room;
+
+            // Display initial room
+            look();
+
+            inputField.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const rawCmd = inputField.value.trim();
+                    if (rawCmd) {
+                        printMsg(`\n> ${rawCmd}`, "user-cmd");
+                        processCommand(rawCmd.toLowerCase());
+                    }
+                    inputField.value = '';
+                }
+            });
+
+            function printMsg(text, className = "") {
+                const el = document.createElement('div');
+                if (className) el.className = className;
+                el.textContent = text;
+                outputDiv.appendChild(el);
+                outputDiv.scrollTop = outputDiv.scrollHeight;
+            }
+
+            function processCommand(cmd) {
+                const parts = cmd.split(' ');
+                const action = parts[0];
+                const target = parts.slice(1).join(' ');
+
+                switch (action) {
+                    case 'look':
+                    case 'l':
+                        look();
+                        break;
+                    case 'go':
+                    case 'move':
+                    case 'walk':
+                        move(target);
+                        break;
+                    case 'take':
+                    case 'get':
+                    case 'grab':
+                        take(target);
+                        break;
+                    case 'inventory':
+                    case 'inv':
+                    case 'i':
+                        showInventory();
+                        break;
+                    case 'examine':
+                    case 'x':
+                    case 'inspect':
+                        examine(target);
+                        break;
+                    case 'use':
+                        use(target);
+                        break;
+                    case 'help':
+                        printMsg("Available commands: look, go <direction>, take <item>, inventory, examine <item>, use <item> on <target>");
+                        break;
+                    default:
+                        printMsg("Unknown command. Type 'help' for available actions.", "error-msg");
+                }
+            }
+
+            function getRoom() {
+                return scenario.rooms.find(r => r.id === gameState.currentRoom);
+            }
+
+            function look() {
+                const room = getRoom();
+                if (!room) {
+                    printMsg("ERROR: ROOM DATA CORRUPTED.", "error-msg");
+                    return;
+                }
+
+                printMsg(`\n--- ${room.name.toUpperCase()} ---`, "success-msg");
+                printMsg(room.description);
+
+                if (room.items && room.items.length > 0) {
+                    printMsg(`\nYou see here: ${room.items.map(i => i.name).join(', ')}`);
+                }
+
+                if (room.exits && Object.keys(room.exits).length > 0) {
+                    printMsg(`\nExits: ${Object.keys(room.exits).join(', ')}`);
+                }
+            }
+
+            function move(direction) {
+                if (!direction) {
+                    printMsg("Go where?");
+                    return;
+                }
+
+                const room = getRoom();
+                const exits = room.exits || {};
+
+                if (exits[direction]) {
+                    const targetExit = exits[direction];
+
+                    // Check if exit is locked
+                    if (targetExit.locked) {
+                         if (targetExit.required_item && gameState.inventory.includes(targetExit.required_item)) {
+                             printMsg(`You used the ${targetExit.required_item} to unlock the way ${direction}.`, "success-msg");
+                             targetExit.locked = false; // permanently unlock
+                             gameState.currentRoom = targetExit.target_room;
+                             look();
+                             checkWinCondition();
+                         } else {
+                             printMsg(`The way ${direction} is locked. ${targetExit.lock_message || 'You need a key.'}`, "error-msg");
+                         }
+                    } else {
+                        gameState.currentRoom = targetExit.target_room || targetExit; // Support both object and simple string exit types
+                        look();
+                        checkWinCondition();
+                    }
+                } else {
+                    printMsg(`You can't go ${direction} from here.`);
+                }
+            }
+
+            function take(itemName) {
+                if (!itemName) {
+                    printMsg("Take what?");
+                    return;
+                }
+
+                const room = getRoom();
+                const itemIndex = (room.items || []).findIndex(i => i.name.toLowerCase() === itemName.toLowerCase());
+
+                if (itemIndex > -1) {
+                    const item = room.items[itemIndex];
+                    if (item.takeable !== false) {
+                        gameState.inventory.push(item.id || item.name);
+                        room.items.splice(itemIndex, 1);
+                        printMsg(`Taken: ${item.name}`, "success-msg");
+                        checkWinCondition();
+                    } else {
+                        printMsg(`You can't take the ${item.name}.`);
+                    }
+                } else {
+                    printMsg(`You don't see a ${itemName} here.`);
+                }
+            }
+
+            function showInventory() {
+                if (gameState.inventory.length === 0) {
+                    printMsg("You are not carrying anything.");
+                } else {
+                    printMsg(`Inventory: ${gameState.inventory.join(', ')}`);
+                }
+            }
+
+            function examine(targetName) {
+                if (!targetName) {
+                    printMsg("Examine what?");
+                    return;
+                }
+
+                const room = getRoom();
+
+                // Check items in room
+                const roomItem = (room.items || []).find(i => i.name.toLowerCase() === targetName.toLowerCase() || (i.id && i.id.toLowerCase() === targetName.toLowerCase()));
+                if (roomItem) {
+                    printMsg(roomItem.description || `It's just a ${roomItem.name}.`);
+                    return;
+                }
+
+                // Check items in inventory
+                const invItem = scenario.all_items ? scenario.all_items.find(i => i.id === targetName || i.name.toLowerCase() === targetName.toLowerCase()) : null;
+                if (gameState.inventory.includes(targetName) || (invItem && gameState.inventory.includes(invItem.id))) {
+                    const desc = invItem ? invItem.description : "You look closely at it.";
+                    printMsg(desc);
+                    return;
+                }
+
+                printMsg(`You don't see that here.`);
+            }
+
+            function use(target) {
+                printMsg("Advanced use mechanics are offline in this simulation build. Use specific actions or hold items to bypass locks.");
+            }
+
+            function checkWinCondition() {
+                if (scenario.win_condition) {
+                    const cond = scenario.win_condition;
+                    let won = false;
+
+                    if (cond.type === 'reach_room' && gameState.currentRoom === cond.target) {
+                        won = true;
+                    } else if (cond.type === 'have_item' && gameState.inventory.includes(cond.target)) {
+                        won = true;
+                    }
+
+                    if (won) {
+                        printMsg(`\n*** SIMULATION COMPLETE ***`, "success-msg");
+                        printMsg(cond.message || "You have achieved your objective.");
+                        inputField.disabled = true;
+                    }
+                }
+            }
+
+        });
+    </script>
+</body>
+</html>
