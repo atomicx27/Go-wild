@@ -72,6 +72,80 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
+
+<!-- Modern UI Enhancements -->
+<style>
+    /* Global Transitions & Animations */
+    button, .button, .btn {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        cursor: pointer !important;
+        position: relative;
+        overflow: hidden;
+    }
+    button:hover, .button:hover, .btn:hover {
+        transform: scale(1.05) translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(0, 204, 255, 0.5), 0 0 10px rgba(138, 43, 226, 0.4) !important;
+        filter: brightness(1.2) !important;
+        z-index: 10;
+    }
+    button:active, .button:active, .btn:active {
+        transform: scale(0.95) !important;
+    }
+
+    input, textarea, select {
+        transition: all 0.3s ease-in-out !important;
+    }
+    input:focus, textarea:focus, select:focus {
+        outline: none !important;
+        box-shadow: 0 0 15px rgba(138, 43, 226, 0.6) !important;
+        border-color: rgba(138, 43, 226, 0.8) !important;
+        transform: scale(1.01) !important;
+    }
+
+    /* Container Glassmorphism & Hover */
+    .card, .panel, .container, #ui, #header, .glass-panel {
+        transition: all 0.4s ease-out !important;
+    }
+    .card:hover, .panel:hover, .glass-panel:hover {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 204, 255, 0.2) !important;
+        transform: translateY(-4px) !important;
+    }
+
+    /* Page load animation */
+    body {
+        animation: globalFadeIn 1s ease-out !important;
+    }
+    @keyframes globalFadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Custom Scrollbar for modern feel */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 204, 255, 0.5);
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 204, 255, 0.8);
+    }
+
+
+    @keyframes floatElement {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+    }
+
+</style>
+
 </head>
 <body class="min-h-screen flex flex-col font-sans text-slate-800">
 
