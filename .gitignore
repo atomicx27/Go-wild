@@ -102,3 +102,6 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+nexus_commander/venv/
+__pycache__/
+server_output.log
