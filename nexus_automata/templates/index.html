@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Automata - CyberForge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            black: '#0a0a0c',
+                            gray: '#1a1a24',
+                            neon: '#00ffcc',
+                            purple: '#b026ff',
+                            red: '#ff2a2a'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['Courier New', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0c;
+            color: #e2e8f0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .glow-border {
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+
+        .glow-border:focus-within {
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+
+        .btn-cyber {
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            transition: all 0.2s ease-in-out;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .btn-cyber:hover {
+            background: rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.6);
+            cursor: pointer;
+        }
+
+        .btn-cyber:disabled {
+            border-color: #555;
+            color: #555;
+            box-shadow: none;
+            background: transparent;
+            cursor: not-allowed;
+        }
+
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+        }
+
+        .matrix-terminal {
+            background-color: #000;
+            color: #00ffcc;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border-top: 1px solid #00ffcc;
+        }
+
+        .node-card {
+            background: #1a1a24;
+            border-left: 4px solid #b026ff;
+            transition: transform 0.2s ease;
+        }
+
+        .node-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(176, 38, 255, 0.3);
+        }
+
+        .node-type-shell { border-color: #00ffcc; }
+        .node-type-ai { border-color: #b026ff; }
+        .node-type-write_file { border-color: #ffaa00; }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(0, 255, 204, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #00ffcc;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00ffcc;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b026ff;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Top Nav / Input Area -->
+    <header class="glass-panel p-4 flex items-center justify-between z-10 relative">
+        <div class="flex items-center gap-3">
+            <div class="text-cyber-neon font-bold text-2xl tracking-widest">NEXUS_AUTOMATA <span class="text-xs text-cyber-purple">v1.0</span></div>
+        </div>
+
+        <div class="flex-1 max-w-3xl mx-8 relative">
+            <input type="text" id="goalInput" placeholder="Enter a goal for the Automata (e.g., 'Find all python files, analyze them, and write a summary report')..."
+                   class="w-full bg-cyber-black text-cyber-neon p-3 rounded glow-border outline-none placeholder-gray-600">
+            <div id="genLoader" class="absolute right-4 top-3 hidden">
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <button id="btnGenerate" class="btn-cyber px-6 py-2 rounded">Initialize</button>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="flex flex-1 overflow-hidden">
+
+        <!-- Sidebar: History -->
+        <aside class="w-64 glass-panel border-r border-t-0 border-b-0 border-l-0 flex flex-col z-0">
+            <div class="p-3 border-b border-[rgba(0,255,204,0.3)] text-cyber-neon uppercase text-sm tracking-widest font-bold">
+                Archived Patterns
+            </div>
+            <div id="workflowList" class="flex-1 overflow-y-auto p-2 space-y-2">
+                <!-- Workflows injected here -->
+            </div>
+        </aside>
+
+        <!-- Center: Visualizer -->
+        <main class="flex-1 flex flex-col relative bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9InRyYW5zcGFyZW50Ii8+CjxwYXRoIGQ9Ik0wIDEwaDQwTTEwIDB2NDBNMCAyMGg0ME0yMCAwdjQwTTAgMzBoNDBNMzAgMHY0MCIgc3Ryb2tlPSJyZ2JhKDE3NiwgMzgsIDI1NSwgMC4wNSkiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')]">
+
+            <div class="p-4 flex justify-between items-center bg-black/50 border-b border-cyber-gray backdrop-blur-sm z-10">
+                <h2 id="currentGoalTitle" class="text-cyber-neon text-lg truncate flex-1 mr-4">SYS_IDLE: Awaiting Input</h2>
+                <button id="btnRun" class="btn-cyber px-4 py-1 rounded text-sm hidden">Execute Pattern</button>
+            </div>
+
+            <!-- Nodes Container -->
+            <div id="nodesContainer" class="flex-1 overflow-y-auto p-8 flex flex-col gap-6 items-center z-0">
+                <!-- Placeholder -->
+                <div class="text-gray-600 flex flex-col items-center justify-center h-full opacity-50">
+                    <div class="text-4xl mb-2">⚡</div>
+                    <div>Awaiting sequence generation...</div>
+                </div>
+            </div>
+
+            <!-- Terminal Drawer -->
+            <div id="terminalContainer" class="h-64 matrix-terminal p-4 text-sm flex flex-col">
+                <div class="flex justify-between items-center mb-2 border-b border-[rgba(0,255,204,0.3)] pb-1">
+                    <span class="text-cyber-purple font-bold tracking-widest">>> EXECUTION_LOGS</span>
+                    <span id="runStatus" class="text-xs px-2 py-1 bg-cyber-gray rounded text-gray-400">STATUS: IDLE</span>
+                </div>
+                <div id="terminalOutput" class="flex-1 overflow-y-auto font-mono pb-4">
+                    System initialized. Ready for commands...
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts section to follow -->
+</body>
+</html>
+    <script>
+        let currentWorkflowId = null;
+        let currentRunId = null;
+        let logPollInterval = null;
+
+        const goalInput = document.getElementById('goalInput');
+        const btnGenerate = document.getElementById('btnGenerate');
+        const genLoader = document.getElementById('genLoader');
+        const workflowList = document.getElementById('workflowList');
+        const currentGoalTitle = document.getElementById('currentGoalTitle');
+        const btnRun = document.getElementById('btnRun');
+        const nodesContainer = document.getElementById('nodesContainer');
+        const terminalOutput = document.getElementById('terminalOutput');
+        const runStatus = document.getElementById('runStatus');
+
+        async function fetchWorkflows() {
+            const res = await fetch('/api/workflows');
+            const data = await res.json();
+            workflowList.innerHTML = '';
+            data.forEach(wf => {
+                const div = document.createElement('div');
+                div.className = 'p-2 bg-cyber-black border border-cyber-gray text-xs cursor-pointer hover:border-cyber-neon hover:text-cyber-neon truncate rounded';
+                div.textContent = wf.goal;
+                div.onclick = () => loadWorkflow(wf);
+                workflowList.appendChild(div);
+            });
+        }
+
+        function loadWorkflow(wf) {
+            currentWorkflowId = wf.id;
+            currentGoalTitle.textContent = `TARGET: ${wf.goal}`;
+            btnRun.classList.remove('hidden');
+
+            const steps = JSON.parse(wf.steps_json);
+            renderNodes(steps);
+
+            terminalOutput.innerHTML = `Loaded pattern ${wf.id}. Ready to execute.\n`;
+            runStatus.textContent = "STATUS: READY";
+            runStatus.className = "text-xs px-2 py-1 bg-cyber-gray rounded text-cyber-neon";
+
+            if (logPollInterval) clearInterval(logPollInterval);
+        }
+
+        function renderNodes(steps) {
+            nodesContainer.innerHTML = '';
+            steps.forEach((step, index) => {
+                const node = document.createElement('div');
+                node.className = `node-card node-type-${step.type} w-full max-w-2xl p-4 rounded shadow-lg relative flex flex-col gap-2`;
+
+                let icon = '⚡';
+                if(step.type === 'shell') icon = '⌨️';
+                if(step.type === 'ai') icon = '🧠';
+                if(step.type === 'write_file') icon = '💾';
+
+                node.innerHTML = `
+                    <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span class="text-cyber-neon font-bold">${icon} STEP: ${step.id}</span>
+                        <span class="text-xs text-gray-400 uppercase bg-black px-2 py-1 rounded">${step.type}</span>
+                    </div>
+                    <div class="text-sm font-mono text-gray-300 bg-black p-2 rounded whitespace-pre-wrap">${step.content}</div>
+                    ${step.target ? `<div class="text-xs text-cyber-purple mt-2">Target: ${step.target}</div>` : ''}
+                `;
+                nodesContainer.appendChild(node);
+
+                // Add connecting line if not last
+                if (index < steps.length - 1) {
+                    const line = document.createElement('div');
+                    line.className = 'w-1 h-6 bg-cyber-gray';
+                    nodesContainer.appendChild(line);
+                }
+            });
+        }
+
+        btnGenerate.addEventListener('click', async () => {
+            const goal = goalInput.value.trim();
+            if (!goal) return;
+
+            btnGenerate.disabled = true;
+            genLoader.classList.remove('hidden');
+            nodesContainer.innerHTML = '<div class="text-cyber-neon animate-pulse text-xl my-auto">Constructing Sequence...</div>';
+
+            try {
+                const res = await fetch('/api/generate_workflow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ goal })
+                });
+
+                if (!res.ok) throw new Error(await res.text());
+
+                const data = await res.json();
+                goalInput.value = '';
+                await fetchWorkflows();
+
+                // Mock wf object to reuse load function
+                loadWorkflow({
+                    id: data.id,
+                    goal: data.goal,
+                    steps_json: JSON.stringify(data.steps)
+                });
+
+            } catch (err) {
+                nodesContainer.innerHTML = `<div class="text-cyber-red text-xl my-auto">Error: ${err.message}</div>`;
+            } finally {
+                btnGenerate.disabled = false;
+                genLoader.classList.add('hidden');
+            }
+        });
+
+        btnRun.addEventListener('click', async () => {
+            if (!currentWorkflowId) return;
+
+            btnRun.disabled = true;
+            terminalOutput.innerHTML = 'Initiating execution protocol...\n';
+            runStatus.textContent = "STATUS: RUNNING";
+            runStatus.className = "text-xs px-2 py-1 bg-cyber-gray rounded text-cyber-purple animate-pulse";
+
+            try {
+                const res = await fetch(`/api/workflows/${currentWorkflowId}/run`, { method: 'POST' });
+                if (!res.ok) throw new Error(await res.text());
+
+                const data = await res.json();
+                currentRunId = data.run_id;
+
+                // Start polling logs
+                if (logPollInterval) clearInterval(logPollInterval);
+                logPollInterval = setInterval(pollLogs, 1000);
+
+            } catch (err) {
+                terminalOutput.innerHTML += `<span class="text-cyber-red">Failed to start: ${err.message}</span>\n`;
+                btnRun.disabled = false;
+                runStatus.textContent = "STATUS: FAILED";
+            }
+        });
+
+        async function pollLogs() {
+            if (!currentRunId) return;
+
+            try {
+                const res = await fetch(`/api/runs/${currentRunId}/logs`);
+                if (!res.ok) return;
+
+                const data = await res.json();
+
+                // Escape html simple
+                const escapedLogs = data.logs.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                terminalOutput.innerHTML = escapedLogs;
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+                if (data.status !== 'running') {
+                    clearInterval(logPollInterval);
+                    btnRun.disabled = false;
+                    runStatus.textContent = `STATUS: ${data.status.toUpperCase()}`;
+                    runStatus.className = data.status === 'completed'
+                        ? "text-xs px-2 py-1 bg-cyber-gray rounded text-cyber-neon"
+                        : "text-xs px-2 py-1 bg-cyber-gray rounded text-cyber-red";
+                }
+            } catch (err) {
+                console.error("Log polling error", err);
+            }
+        }
+
+        // Init
+        fetchWorkflows();
+
+        // Enter to submit
+        goalInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                btnGenerate.click();
+            }
+        });
+
+    </script>

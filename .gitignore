@@ -102,3 +102,7 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+nexus_automata/venv/
+nexus_automata/__pycache__/
+nexus_automata/*.db
+nexus_automata/tests/__pycache__/
