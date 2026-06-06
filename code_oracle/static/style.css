@@ -414,3 +414,11 @@ code {
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
+
+#submit-btn {
+    transition: all 0.3s ease;
+}
+#submit-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--accent);
+}
