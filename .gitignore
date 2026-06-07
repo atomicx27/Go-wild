@@ -102,3 +102,8 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+
+# cyber_deck
+cyber_deck/__pycache__/
+cyber_deck/venv/
+cyber_deck/.pytest_cache/

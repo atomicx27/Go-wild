@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Deck OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-gray-900 text-green-400 overflow-hidden font-mono h-screen w-screen relative selection:bg-green-500 selection:text-black">
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <!-- Desktop Area -->
+    <div id="desktop" class="absolute top-0 left-0 w-full h-full p-4 pb-16 flex flex-col gap-4 flex-wrap content-start">
+        <!-- Desktop Icons -->
+        <div class="desktop-icon cursor-pointer flex flex-col items-center p-2 rounded hover:bg-green-500/20 transition-colors w-24 text-center group" onclick="appManager.openTerminal()">
+            <i class="fas fa-terminal text-4xl mb-2 text-green-500 group-hover:text-green-300 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]"></i>
+            <span class="text-xs font-bold text-shadow">Terminal</span>
+        </div>
+
+        <div class="desktop-icon cursor-pointer flex flex-col items-center p-2 rounded hover:bg-purple-500/20 transition-colors w-24 text-center group" onclick="appManager.openForge()">
+            <i class="fas fa-hammer text-4xl mb-2 text-purple-500 group-hover:text-purple-300 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]"></i>
+            <span class="text-xs font-bold text-shadow text-purple-400">App Forge</span>
+        </div>
+    </div>
+
+    <!-- Windows Container -->
+    <div id="windows-container" class="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
+        <!-- Windows will be injected here by JS -->
+    </div>
+
+    <!-- Taskbar -->
+    <div id="taskbar" class="absolute bottom-0 left-0 w-full h-12 bg-black/80 border-t border-green-500/50 backdrop-blur-md flex items-center px-2 z-50 shadow-[0_-5px_15px_rgba(34,197,94,0.1)]">
+        <button id="start-btn" class="h-8 px-4 bg-green-900/50 hover:bg-green-700/50 border border-green-500 rounded text-green-400 font-bold transition-all shadow-[0_0_10px_rgba(34,197,94,0.3)] hover:shadow-[0_0_15px_rgba(34,197,94,0.6)]">
+            <i class="fas fa-power-off mr-2"></i>SYS
+        </button>
+        <div class="mx-4 h-6 w-px bg-green-500/30"></div>
+        <div id="taskbar-apps" class="flex-1 flex gap-2 overflow-x-auto">
+            <!-- Active apps will appear here -->
+        </div>
+        <div id="clock" class="text-sm font-bold ml-4 text-green-500 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)]">
+            00:00:00
+        </div>
+    </div>
+
+    <script src="/static/js/os.js"></script>
+</body>
+</html>
