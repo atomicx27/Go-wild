@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuro-Mentor | Cyberpunk Learning</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Google Fonts for Cyberpunk Aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+
+    <div class="app-container">
+        <!-- Sidebar for Module Selection -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="glitch" data-text="NEURO_MENTOR">NEURO_MENTOR</h1>
+                <p class="subtitle">v.1.0 // Knowledge Uplink</p>
+            </div>
+            <div class="module-list-container">
+                <ul id="module-list" class="module-list">
+                    <!-- Modules injected here via JS -->
+                    <li class="loading-text">Scanning for engrams...</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div id="no-module-selected" class="empty-state">
+                <h2>&lt;SELECT_MODULE_TO_INITIALIZE&gt;</h2>
+            </div>
+
+            <div id="module-view" class="module-view hidden">
+                <header class="module-header">
+                    <h2 id="module-title" class="neon-text">Module Title</h2>
+                    <p id="module-persona" class="persona-tag">Tutor: <span id="persona-name">Unknown</span></p>
+                </header>
+
+                <nav class="tabs">
+                    <button class="tab-btn active" data-target="summary-tab">SUMMARY</button>
+                    <button class="tab-btn" data-target="flashcards-tab">FLASHCARDS</button>
+                    <button class="tab-btn" data-target="quiz-tab">QUIZ_RUN</button>
+                    <button class="tab-btn" data-target="chat-tab">NEURAL_LINK</button>
+                </nav>
+
+                <div class="tab-content">
+                    <!-- Summary Tab -->
+                    <div id="summary-tab" class="tab-pane active">
+                        <div class="terminal-box">
+                            <div class="terminal-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="terminal-title">DATA_SUMMARY.TXT</span>
+                            </div>
+                            <div class="terminal-body">
+                                <p id="module-summary">Loading summary...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcards Tab -->
+                    <div id="flashcards-tab" class="tab-pane hidden">
+                        <div class="flashcard-container">
+                            <div id="flashcard-deck" class="flashcard-deck">
+                                <!-- Cards injected here -->
+                            </div>
+                            <div class="flashcard-controls">
+                                <button id="prev-card" class="cyber-btn">&lt; PREV</button>
+                                <span id="card-counter" class="counter">1 / 1</span>
+                                <button id="next-card" class="cyber-btn">NEXT &gt;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Tab -->
+                    <div id="quiz-tab" class="tab-pane hidden">
+                        <div id="quiz-container" class="quiz-container">
+                            <!-- Quiz questions injected here -->
+                        </div>
+                        <button id="submit-quiz" class="cyber-btn submit-btn hidden">SUBMIT_ANALYSIS</button>
+                        <div id="quiz-results" class="quiz-results hidden"></div>
+                    </div>
+
+                    <!-- Chat Tab -->
+                    <div id="chat-tab" class="tab-pane hidden">
+                        <div class="chat-container terminal-box">
+                            <div class="terminal-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="terminal-title">LIVE_LINK_ESTABLISHED</span>
+                            </div>
+                            <div id="chat-history" class="chat-history">
+                                <!-- Chat messages injected here -->
+                            </div>
+                            <div class="chat-input-area">
+                                <span class="prompt-arrow">&gt;</span>
+                                <input type="text" id="chat-input" placeholder="Enter query..." autocomplete="off">
+                                <button id="send-btn" class="cyber-btn icon-btn">SEND</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
