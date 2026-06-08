@@ -1,0 +1,21 @@
+INFO:     Started server process [88827]
+INFO:     Waiting for application startup.
+INFO:agent:Neuro-Mentor Agent started. Watching inbox...
+INFO:agent:Processing new file: sample.txt
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:agent:Error calling Ollama or parsing JSON: All connection attempts failed
+INFO:agent:Processing new file: sample.txt
+ERROR:agent:Error calling Ollama or parsing JSON: All connection attempts failed
+INFO:agent:Processing new file: sample.txt
+ERROR:agent:Error calling Ollama or parsing JSON: All connection attempts failed
+INFO:     127.0.0.1:43828 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43828 - "GET /static/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43836 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43836 - "GET /api/modules HTTP/1.1" 200 OK
+INFO:agent:Processing new file: sample.txt
+ERROR:agent:Error calling Ollama or parsing JSON: All connection attempts failed
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88827]
