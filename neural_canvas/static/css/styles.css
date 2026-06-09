@@ -1,0 +1,78 @@
+/* Cyberpunk specific styling */
+
+:root {
+    --neon-green: #00ffcc;
+    --dark-bg: #0a0f14;
+    --panel-bg: rgba(10, 15, 20, 0.85);
+}
+
+body {
+    background-color: var(--dark-bg);
+    background-image:
+        linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: center center;
+}
+
+.neon-text {
+    color: var(--neon-green);
+    text-shadow: 0 0 5px rgba(0, 255, 204, 0.5), 0 0 10px rgba(0, 255, 204, 0.3);
+}
+
+.shadow-neon-sm {
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.2);
+}
+
+.glass-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+}
+
+.cyber-input {
+    background: rgba(0, 0, 0, 0.6) !important;
+    border-color: rgba(0, 255, 204, 0.4) !important;
+}
+
+.cyber-input:focus {
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.3) !important;
+    border-color: var(--neon-green) !important;
+}
+
+.neon-hover:hover {
+    color: #fff;
+    text-shadow: 0 0 8px var(--neon-green);
+    transform: scale(1.1);
+}
+
+/* Custom Scrollbar for Chat */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 204, 0.3);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 204, 0.6);
+}
+
+/* Network Canvas Wrapper */
+#mynetwork {
+    outline: none; /* remove focus border from vis-network */
+}
+
+/* Ensure vis-network tooltips or popups look somewhat decent if enabled */
+div.vis-network div.vis-tooltip {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid var(--neon-green) !important;
+    color: var(--neon-green) !important;
+    font-family: monospace !important;
+    border-radius: 4px !important;
+}
