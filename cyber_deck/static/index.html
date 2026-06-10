@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberDeck OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/os.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#b026ff',
+                            pink: '#ff007f',
+                            green: '#39ff14'
+                        },
+                        cyber: {
+                            dark: '#0a0a0f',
+                            darker: '#050508',
+                            panel: 'rgba(10, 10, 15, 0.8)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cyber-darker text-neon-blue h-screen w-screen overflow-hidden font-mono flex flex-col cyber-grid relative">
+
+    <!-- CRT Overlay -->
+    <div class="crt pointer-events-none fixed inset-0 z-50"></div>
+
+    <!-- Top Bar -->
+    <div class="h-8 bg-cyber-panel border-b border-neon-purple/30 flex items-center px-4 justify-between backdrop-blur-md z-40 shadow-[0_0_15px_rgba(176,38,255,0.2)]">
+        <div class="flex items-center gap-4">
+            <span class="font-bold text-neon-purple animate-pulse">◬ CYBER_DECK_OS v1.0</span>
+            <span class="text-xs text-neon-blue/60" id="status-indicator">SYS_ONLINE</span>
+        </div>
+        <div class="text-xs text-neon-pink" id="clock">00:00:00</div>
+    </div>
+
+    <!-- Desktop Workspace -->
+    <div id="desktop" class="flex-1 relative p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 content-start overflow-y-auto z-30">
+        <!-- Widgets injected here -->
+    </div>
+
+    <!-- Terminal Overlay (Bottom) -->
+    <div id="terminal-panel" class="h-64 bg-cyber-dark border-t border-neon-blue/50 flex flex-col z-40 transition-transform duration-300 translate-y-0 shadow-[0_-5px_25px_rgba(0,243,255,0.1)]">
+        <div class="h-6 bg-neon-blue/10 flex items-center px-2 cursor-pointer border-b border-neon-blue/20" onclick="toggleTerminal()">
+            <span class="text-xs text-neon-blue font-bold">TERMINAL_UPLINK ⇕</span>
+        </div>
+
+        <div id="terminal-output" class="flex-1 p-4 overflow-y-auto text-sm space-y-2">
+            <div class="text-neon-green">> System initialized. Awaiting commands.</div>
+        </div>
+
+        <form id="command-form" class="h-10 border-t border-neon-blue/20 flex items-center px-2 bg-black/50">
+            <span class="text-neon-purple mr-2">root@cyberdeck:~#</span>
+            <input type="text" id="command-input" class="flex-1 bg-transparent outline-none text-neon-blue placeholder-neon-blue/30" placeholder="Enter command or widget request..." autocomplete="off">
+            <button type="submit" class="hidden"></button>
+        </form>
+    </div>
+
+    <script src="/static/js/os.js"></script>
+</body>
+</html>

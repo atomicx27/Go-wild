@@ -102,3 +102,6 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+cyber_deck/widgets/
+cyber_deck/__pycache__/
+cyber_deck/tests/__pycache__/
