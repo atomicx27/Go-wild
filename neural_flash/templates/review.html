@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Sequence - Neural Flash</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Courier New', Courier, monospace; }
+        .card-container { perspective: 1000px; width: 100%; max-width: 800px; height: 400px; }
+        .flashcard { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; cursor: pointer; }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; border-radius: 0.5rem; }
+        .card-front { background: rgba(0, 255, 204, 0.05); border: 1px solid #00ffcc; box-shadow: 0 0 10px rgba(0, 255, 204, 0.2) inset; }
+        .card-back { background: rgba(255, 0, 255, 0.05); border: 1px solid #ff00ff; box-shadow: 0 0 10px rgba(255, 0, 255, 0.2) inset; transform: rotateY(180deg); }
+        .btn-score { flex: 1; padding: 1rem; border: 1px solid #444; background: #111; color: #fff; font-weight: bold; transition: all 0.2s; }
+        .btn-score:hover { background: #333; }
+        .score-0 { border-color: #ff3333; color: #ff3333; } .score-0:hover { background: #ff3333; color: #000; }
+        .score-1 { border-color: #ff6633; color: #ff6633; } .score-1:hover { background: #ff6633; color: #000; }
+        .score-2 { border-color: #ff9933; color: #ff9933; } .score-2:hover { background: #ff9933; color: #000; }
+        .score-3 { border-color: #ffcc33; color: #ffcc33; } .score-3:hover { background: #ffcc33; color: #000; }
+        .score-4 { border-color: #ccff33; color: #ccff33; } .score-4:hover { background: #ccff33; color: #000; }
+        .score-5 { border-color: #33ff33; color: #33ff33; } .score-5:hover { background: #33ff33; color: #000; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-8">
+    <div class="w-full max-w-4xl flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
+        <a href="/" class="text-gray-500 hover:text-[#00ffcc] uppercase tracking-wider text-sm">&lt; Abort Sequence</a>
+        <div class="text-[#00ffcc] uppercase tracking-wider text-sm">Remaining: <span class="font-bold text-white">{{ remaining }}</span></div>
+    </div>
+
+    <div class="card-container mb-8" onclick="document.getElementById('flashcard').classList.add('is-flipped'); document.getElementById('controls').classList.remove('hidden')">
+        <div id="flashcard" class="flashcard">
+            <div class="card-face card-front">
+                <span class="text-xs text-[#00ffcc] uppercase tracking-widest absolute top-4 left-4">Question</span>
+                <h2 class="text-3xl text-center">{{ card.question }}</h2>
+                <div class="absolute bottom-4 text-gray-500 text-sm animate-pulse">Click to reveal data...</div>
+            </div>
+            <div class="card-face card-back">
+                <span class="text-xs text-[#ff00ff] uppercase tracking-widest absolute top-4 left-4">Answer</span>
+                <p class="text-2xl text-center mb-4">{{ card.answer }}</p>
+                {% if card.mnemonic %}
+                <div class="mt-4 p-4 bg-black/50 border border-gray-700 rounded text-sm text-yellow-400 max-w-md text-center">
+                    <span class="block text-xs text-gray-500 mb-1 uppercase tracking-wider">Mnemonic Subroutine</span>
+                    {{ card.mnemonic }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="controls" class="w-full max-w-4xl hidden">
+        <p class="text-center text-gray-500 mb-2 uppercase text-sm tracking-wider">Assess Memory Integrity</p>
+        <form method="POST" action="/review/{{ card.id }}" class="flex gap-2">
+            <button type="submit" name="quality" value="0" class="btn-score score-0">0: Blackout</button>
+            <button type="submit" name="quality" value="1" class="btn-score score-1">1: Incorrect</button>
+            <button type="submit" name="quality" value="2" class="btn-score score-2">2: Hard</button>
+            <button type="submit" name="quality" value="3" class="btn-score score-3">3: Fair</button>
+            <button type="submit" name="quality" value="4" class="btn-score score-4">4: Good</button>
+            <button type="submit" name="quality" value="5" class="btn-score score-5">5: Perfect</button>
+        </form>
+    </div>
+</body>
+</html>
