@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Flash Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0d0d0d; color: #00ffcc; font-family: 'Courier New', Courier, monospace; }
+        .glass-panel { background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); backdrop-filter: blur(10px); }
+        .neon-text { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc; }
+        .cyber-button { background: transparent; border: 1px solid #ff00ff; color: #ff00ff; transition: all 0.3s ease; box-shadow: 0 0 5px #ff00ff inset; }
+        .cyber-button:hover { background: #ff00ff; color: #000; box-shadow: 0 0 15px #ff00ff, 0 0 20px #ff00ff inset; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="glass-panel p-8 rounded-lg max-w-2xl w-full text-center">
+        <h1 class="text-5xl font-bold mb-6 neon-text tracking-widest uppercase">Neural Flash</h1>
+        <p class="text-xl mb-8 text-gray-400">Autonomous Spaced Repetition Core</p>
+
+        <div class="grid grid-cols-2 gap-6 mb-10">
+            <div class="p-6 border border-gray-800 bg-black/50 rounded flex flex-col items-center">
+                <span class="text-4xl font-bold text-white mb-2">{{ total_cards }}</span>
+                <span class="text-sm uppercase tracking-wider text-gray-500">Total Cards</span>
+            </div>
+            <div class="p-6 border border-gray-800 bg-black/50 rounded flex flex-col items-center">
+                <span class="text-4xl font-bold text-yellow-400 mb-2">{{ due_count }}</span>
+                <span class="text-sm uppercase tracking-wider text-gray-500">Due for Review</span>
+            </div>
+        </div>
+
+        {% if due_count > 0 %}
+        <a href="/review" class="cyber-button px-8 py-4 rounded text-xl font-bold uppercase tracking-wider block w-full">
+            Initialize Review Sequence
+        </a>
+        {% else %}
+        <div class="px-8 py-4 border border-green-500 text-green-500 rounded text-xl font-bold uppercase tracking-wider bg-green-500/10">
+            All Systems Optimal. No Reviews Due.
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

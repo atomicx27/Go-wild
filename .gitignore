@@ -102,3 +102,8 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+neural_flash/inbox/
+neural_flash/processed/
+neural_flash/*.db
+neural_flash/__pycache__/
+neural_flash/server.log
