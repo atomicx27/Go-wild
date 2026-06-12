@@ -102,3 +102,8 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+
+# cyber_oracle
+cyber_oracle/venv
+cyber_oracle/__pycache__
+cyber_oracle/.pytest_cache

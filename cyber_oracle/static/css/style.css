@@ -1,0 +1,64 @@
+body {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+/* CRT Screen Effect */
+.crt::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* Grid Background */
+.grid-bg {
+    background-image:
+        linear-gradient(rgba(34, 211, 238, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: center center;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+    background: rgba(10, 15, 20, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Text Glow */
+.glow-text {
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.5), 0 0 20px rgba(34, 211, 238, 0.3);
+}
+
+/* Custom Scrollbar for Terminal */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+    background: #065f46;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}
+
+/* Prose Markdown styling overrides */
+.prose h1, .prose h2, .prose h3 {
+    text-shadow: 0 0 5px rgba(168, 85, 247, 0.5);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+    padding-bottom: 0.5rem;
+}
+.prose ul > li::before {
+    background-color: #a855f7 !important;
+}
