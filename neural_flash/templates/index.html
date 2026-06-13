@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Flash | Autonomous Flashcards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="min-h-screen flex flex-col p-6">
+
+    <header class="mb-10 text-center">
+        <h1 class="text-5xl font-extrabold neon-text-primary tracking-wider uppercase mb-2">Neural Flash</h1>
+        <p class="text-gray-400 text-lg">Autonomous Ollama-powered Knowledge Extraction & Review</p>
+    </header>
+
+    <main class="flex-grow max-w-5xl w-full mx-auto" id="app">
+        <!-- Decks View -->
+        <div id="decks-view" class="block">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-200 border-l-4 border-[#00f0ff] pl-3">Your Decks</h2>
+                <button onclick="showUploadModal()" class="px-4 py-2 rounded-md font-bold btn-neon btn-success text-sm">
+                    + Upload Text
+                </button>
+            </div>
+
+            <div id="decks-container" class="deck-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Review View -->
+        <div id="review-view" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <button onclick="showDecksView()" class="px-4 py-2 rounded text-gray-400 hover:text-white transition">
+                    &larr; Back to Decks
+                </button>
+                <h2 id="review-deck-title" class="text-xl font-bold neon-text-primary">Deck Name</h2>
+                <span id="review-progress" class="text-gray-500 font-mono">0 / 0</span>
+            </div>
+
+            <div id="card-display" class="card-container mb-8 hidden">
+                <div id="flashcard" class="flashcard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <div class="absolute top-4 left-4 text-xs text-gray-500 font-mono tracking-widest">FRONT</div>
+                        <div id="card-front-text" class="text-2xl text-center font-medium"></div>
+                        <div class="absolute bottom-4 text-xs text-gray-600 animate-pulse">Click to reveal</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="absolute top-4 left-4 text-xs text-[#00f0ff] font-mono tracking-widest">BACK</div>
+                        <div class="absolute top-4 right-4">
+                            <span id="card-box-indicator" class="text-xs px-2 py-1 bg-gray-800 rounded-full border border-gray-600">Box 1</span>
+                        </div>
+                        <div id="card-back-text" class="text-xl text-center text-gray-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="no-cards-msg" class="text-center py-20 hidden">
+                <p class="text-2xl text-gray-400 mb-4">No cards due for review right now.</p>
+                <p class="text-gray-600 mb-8">Great job! The AI will notify you when it's time.</p>
+                <button onclick="showDecksView()" class="px-6 py-2 rounded-md border border-[#00f0ff] text-[#00f0ff] hover:bg-[#00f0ff] hover:text-black transition">
+                    Return Home
+                </button>
+            </div>
+
+            <div id="review-controls" class="flex justify-center gap-6 hidden opacity-0 transition-opacity duration-500">
+                <button onclick="submitAnswer(false)" class="btn-neon btn-danger px-8 py-3 rounded-lg font-bold text-lg w-40">
+                    Incorrect
+                </button>
+                <button onclick="submitAnswer(true)" class="btn-neon btn-success px-8 py-3 rounded-lg font-bold text-lg w-40">
+                    Correct
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+        <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 w-full max-w-lg shadow-2xl relative">
+            <button onclick="closeUploadModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white">&times;</button>
+            <h3 class="text-xl font-bold mb-4 neon-text-primary">Inject Knowledge</h3>
+            <p class="text-sm text-gray-400 mb-4">Paste text here. The autonomous agent will extract concepts and create flashcards in the background.</p>
+            <input type="text" id="upload-filename" placeholder="Filename (e.g., biology_notes.txt)" class="w-full bg-[#0d1117] border border-gray-700 rounded p-3 text-white mb-4 focus:outline-none focus:border-[#00f0ff] transition">
+            <textarea id="upload-content" rows="6" placeholder="Paste your text here..." class="w-full bg-[#0d1117] border border-gray-700 rounded p-3 text-white mb-4 focus:outline-none focus:border-[#00f0ff] transition"></textarea>
+            <div class="flex justify-end">
+                <button onclick="submitUpload()" class="btn-neon px-6 py-2 rounded bg-[rgba(0,240,255,0.1)] border border-[#00f0ff] text-[#00f0ff] hover:bg-[rgba(0,240,255,0.2)]">
+                    Transmit to Core
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentDeckId = null;
+        let currentCards = [];
+        let cardIndex = 0;
+        let isFlipped = false;
+
+        // DOM Elements
+        const decksView = document.getElementById('decks-view');
+        const reviewView = document.getElementById('review-view');
+        const decksContainer = document.getElementById('decks-container');
+        const flashcard = document.getElementById('flashcard');
+        const cardDisplay = document.getElementById('card-display');
+        const reviewControls = document.getElementById('review-controls');
+        const noCardsMsg = document.getElementById('no-cards-msg');
+        const uploadModal = document.getElementById('upload-modal');
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', loadDecks);
+
+        async function loadDecks() {
+            try {
+                const res = await fetch('/api/decks');
+                const decks = await res.json();
+
+                decksContainer.innerHTML = '';
+                if(decks.length === 0) {
+                    decksContainer.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">No decks found. Upload some text to generate cards.</p>';
+                    return;
+                }
+
+                decks.forEach(deck => {
+                    const el = document.createElement('div');
+                    el.className = 'deck-card bg-[#161b22] border border-[#30363d] rounded-xl p-6 cursor-pointer flex flex-col justify-between h-40 relative overflow-hidden group';
+                    el.onclick = () => startReview(deck.id, deck.name);
+
+                    // Cyberpunk accent line
+                    const accent = document.createElement('div');
+                    accent.className = 'absolute top-0 left-0 w-1 h-full bg-[#30363d] group-hover:bg-[#00f0ff] transition-colors';
+
+                    el.innerHTML = `
+                        <h3 class="text-xl font-bold text-gray-200 z-10">${deck.name}</h3>
+                        <div class="flex justify-between items-center z-10">
+                            <span class="text-xs text-gray-500">ID: ${deck.id}</span>
+                            <span class="text-[#00f0ff] text-sm opacity-0 group-hover:opacity-100 transition-opacity">Review &rarr;</span>
+                        </div>
+                    `;
+                    el.prepend(accent);
+                    decksContainer.appendChild(el);
+                });
+            } catch (e) {
+                console.error("Failed to load decks", e);
+            }
+        }
+
+        async function startReview(deckId, deckName) {
+            currentDeckId = deckId;
+            document.getElementById('review-deck-title').innerText = deckName;
+
+            decksView.classList.add('hidden');
+            reviewView.classList.remove('hidden');
+
+            cardDisplay.classList.add('hidden');
+            reviewControls.classList.add('hidden');
+            noCardsMsg.classList.add('hidden');
+
+            try {
+                const res = await fetch(`/api/decks/${deckId}/cards`);
+                currentCards = await res.json();
+
+                if (currentCards.length === 0) {
+                    noCardsMsg.classList.remove('hidden');
+                } else {
+                    cardIndex = 0;
+                    cardDisplay.classList.remove('hidden');
+                    showCard();
+                }
+            } catch (e) {
+                console.error("Failed to load cards", e);
+            }
+        }
+
+        function showCard() {
+            if (cardIndex >= currentCards.length) {
+                cardDisplay.classList.add('hidden');
+                reviewControls.classList.add('hidden');
+                noCardsMsg.classList.remove('hidden');
+                noCardsMsg.innerHTML = `
+                    <p class="text-2xl font-bold text-[#00f0ff] mb-4">Review Complete</p>
+                    <button onclick="showDecksView()" class="px-6 py-2 rounded-md border border-[#00f0ff] text-[#00f0ff] hover:bg-[#00f0ff] hover:text-black transition">
+                        Return Home
+                    </button>
+                `;
+                return;
+            }
+
+            isFlipped = false;
+            flashcard.classList.remove('flipped');
+            reviewControls.classList.add('hidden');
+            reviewControls.classList.remove('opacity-100');
+
+            const card = currentCards[cardIndex];
+            document.getElementById('card-front-text').innerText = card.front;
+            document.getElementById('card-back-text').innerText = card.back;
+            document.getElementById('card-box-indicator').innerText = `Box ${card.box}`;
+            document.getElementById('review-progress').innerText = `${cardIndex + 1} / ${currentCards.length}`;
+        }
+
+        function flipCard() {
+            if (isFlipped) return; // Only flip once
+            isFlipped = true;
+            flashcard.classList.add('flipped');
+
+            // Show controls after flip
+            setTimeout(() => {
+                reviewControls.classList.remove('hidden');
+                // slight delay for fade in
+                setTimeout(() => reviewControls.classList.add('opacity-100'), 50);
+            }, 300);
+        }
+
+        async function submitAnswer(correct) {
+            const card = currentCards[cardIndex];
+
+            try {
+                await fetch(`/api/cards/${card.id}/answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ correct: correct })
+                });
+            } catch (e) {
+                console.error("Failed to submit answer", e);
+            }
+
+            cardIndex++;
+            showCard();
+        }
+
+        function showDecksView() {
+            reviewView.classList.add('hidden');
+            decksView.classList.remove('hidden');
+            loadDecks(); // Refresh in case background daemon added stuff
+        }
+
+        // Upload Modal logic
+        function showUploadModal() {
+            uploadModal.classList.remove('hidden');
+            document.getElementById('upload-filename').value = `notes_${Date.now()}.txt`;
+            document.getElementById('upload-content').value = '';
+        }
+
+        function closeUploadModal() {
+            uploadModal.classList.add('hidden');
+        }
+
+        async function submitUpload() {
+            const filename = document.getElementById('upload-filename').value;
+            const content = document.getElementById('upload-content').value;
+
+            if (!filename || !content) {
+                alert("Provide filename and content.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename, content })
+                });
+
+                if(res.ok) {
+                    closeUploadModal();
+                    // Alert that it's processing in background
+                    alert("Text injected. The autonomous agent is generating flashcards. They will appear here shortly.");
+                    setTimeout(loadDecks, 3000); // reload after a few seconds
+                } else {
+                    alert("Upload failed.");
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>
