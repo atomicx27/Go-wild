@@ -51,3 +51,4 @@ each folder here will be a new project
 
 * **cyber_forge**: An autonomous AI workflow engine that acts as a self-healing code factory. It watches an inbox for text ideas, prompts Ollama for python code and pytest suites, iteratively tests and fixes bugs in isolation, and displays forged tools in a cyberpunk-themed HTML armory.
 * **synapse_forge**: A cyberpunk-styled 2D canvas web app where users drop thought nodes, and a background autonomous agent recursively brainstorms and connects related ideas using Ollama.
+* **neural_flash**: An autonomous, local AI-powered flashcard generator that watches an inbox for text, extracts concepts into a database via Ollama, and serves a cyberpunk web UI for review using a Leitner spaced-repetition system.

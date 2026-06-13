@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+data/
+inbox/
+archive/
+server.log
+daemon.log
