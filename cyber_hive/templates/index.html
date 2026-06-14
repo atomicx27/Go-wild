@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Hive Swarm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            900: '#0a0a16',
+                            800: '#13132b',
+                            700: '#1e1e40',
+                        },
+                        neon: {
+                            blue: '#00f3ff',
+                            pink: '#ff00ff',
+                            green: '#00ff00',
+                            purple: '#b026ff'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: theme('colors.cyber.900');
+            background-image:
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .glass-panel {
+            background: rgba(19, 19, 43, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid theme('colors.neon.blue');
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 5px theme('colors.neon.blue'), 0 0 10px theme('colors.neon.blue');
+        }
+
+        .node-event {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: theme('colors.neon.pink');
+            box-shadow: 0 0 10px theme('colors.neon.pink');
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-8 relative overflow-hidden">
+    <div class="max-w-4xl mx-auto z-10 relative">
+        <h1 class="text-4xl font-bold mb-8 text-center text-neon-blue glow-text">CYBER HIVE SWARM</h1>
+
+        <div class="glass-panel p-6 rounded-lg mb-8">
+            <h2 class="text-xl mb-4 text-neon-purple">Mission Directive</h2>
+            <div class="flex gap-4">
+                <input type="text" id="prompt-input" class="flex-1 bg-cyber-800 border border-neon-blue p-3 text-white focus:outline-none focus:border-neon-pink rounded" placeholder="Enter objective for the swarm..." value="Analyze the impact of AI on the stock market">
+                <button id="start-btn" class="bg-transparent border border-neon-blue text-neon-blue px-6 py-3 rounded hover:bg-neon-blue hover:text-cyber-900 transition-colors uppercase tracking-wider font-bold">Launch</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-panel p-6 rounded-lg h-96 overflow-y-auto" id="queen-panel">
+                <h2 class="text-xl mb-4 text-neon-pink border-b border-neon-pink pb-2">Queen Node</h2>
+                <div id="queen-log" class="space-y-2 text-sm"></div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-lg h-96 overflow-y-auto" id="drone-panel">
+                <h2 class="text-xl mb-4 text-neon-green border-b border-neon-green pb-2">Drone Swarm</h2>
+                <div id="drone-log" class="space-y-4 text-sm"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const promptInput = document.getElementById('prompt-input');
+        const queenLog = document.getElementById('queen-log');
+        const droneLog = document.getElementById('drone-log');
+
+        let eventSource = null;
+
+        function appendLog(element, message, colorClass) {
+            const div = document.createElement('div');
+            div.className = `p-2 border-l-2 ${colorClass} bg-cyber-800 bg-opacity-50 mb-2 font-mono`;
+            div.innerHTML = `> ${message}`;
+            element.appendChild(div);
+            element.scrollTop = element.scrollHeight;
+        }
+
+        startBtn.addEventListener('click', async () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt) return;
+
+            startBtn.disabled = true;
+            startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            queenLog.innerHTML = '';
+            droneLog.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/mission', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+
+                const data = await response.json();
+                const missionId = data.mission_id;
+
+                if (eventSource) {
+                    eventSource.close();
+                }
+
+                eventSource = new EventSource(`/api/stream/${missionId}`);
+
+                eventSource.onmessage = (event) => {
+                    const payload = JSON.parse(event.data);
+                    handleEvent(payload);
+                };
+
+            } catch (err) {
+                appendLog(queenLog, `Error: ${err.message}`, 'border-red-500 text-red-500');
+                startBtn.disabled = false;
+                startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'node-event';
+            sparkle.style.left = `${Math.random() * 100}vw`;
+            sparkle.style.top = `${Math.random() * 100}vh`;
+            document.body.appendChild(sparkle);
+
+            sparkle.animate([
+                { transform: 'scale(0) translateY(0)', opacity: 1 },
+                { transform: 'scale(1.5) translateY(-50px)', opacity: 0 }
+            ], {
+                duration: 1000 + Math.random() * 1000,
+                easing: 'cubic-bezier(0,0,0.2,1)',
+                composite: 'add'
+            }).onfinish = () => sparkle.remove();
+        }
+
+        function handleEvent(payload) {
+            const { type, message, data } = payload;
+
+            switch (type) {
+                case 'queen_start':
+                    appendLog(queenLog, message, 'border-neon-blue text-neon-blue');
+                    break;
+                case 'queen_complete':
+                    appendLog(queenLog, message, 'border-neon-pink text-neon-pink');
+                    const subtasksStr = data.subtasks.map((t, i) => `[${i+1}] ${t}`).join('<br>');
+                    appendLog(queenLog, `Subtasks:<br>${subtasksStr}`, 'border-neon-pink text-gray-300');
+                    createSparkle();
+                    break;
+                case 'queen_error':
+                    appendLog(queenLog, message, 'border-red-500 text-red-500');
+                    break;
+                case 'drone_start':
+                    appendLog(droneLog, message, 'border-neon-purple text-neon-purple');
+                    break;
+                case 'drone_complete':
+                    appendLog(droneLog, `Drone ${data.drone_id} Execution Result:<br><span class="text-gray-300">${data.result}</span>`, 'border-neon-green text-neon-green');
+                    for(let i=0; i<5; i++) setTimeout(createSparkle, i*200);
+                    break;
+                case 'drone_error':
+                    appendLog(droneLog, message, 'border-red-500 text-red-500');
+                    break;
+                case 'mission_complete':
+                    appendLog(queenLog, 'MISSION ACCOMPLISHED', 'border-neon-blue text-neon-blue font-bold text-lg');
+                    startBtn.disabled = false;
+                    startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    if (eventSource) {
+                        eventSource.close();
+                    }
+                    for(let i=0; i<20; i++) setTimeout(createSparkle, i*100);
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
