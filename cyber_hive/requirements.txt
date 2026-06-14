@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+httpx
+sse-starlette
+pytest
+pytest-asyncio
+jinja2
+playwright

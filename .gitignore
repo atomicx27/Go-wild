@@ -102,3 +102,11 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+
+# cyber_hive
+cyber_hive/venv/
+cyber_hive/__pycache__/
+cyber_hive/.pytest_cache/
+cyber_hive/tests/__pycache__/
+cyber_hive/server.log
+cyber_hive/screenshot.png
