@@ -102,3 +102,15 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+
+# neon_ledger
+neon_ledger/ledger.db
+neon_ledger/__pycache__/
+neon_ledger/tests/__pycache__/
+neon_ledger/.pytest_cache/
+neon_ledger/inbox/*
+!neon_ledger/inbox/.gitkeep
+neon_ledger/processed/*
+!neon_ledger/processed/.gitkeep
+neon_ledger/rejected/*
+!neon_ledger/rejected/.gitkeep
