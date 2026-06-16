@@ -1,0 +1,75 @@
+/* ENHANCED GLOBAL CSS OVERRIDES */
+body {
+    background-color: #0d1117; /* Dark mode baseline */
+    color: #e6edf3;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+    background: rgba(22, 27, 34, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Scrollbar for cyberpunk feel */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0d1117;
+}
+::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #58a6ff;
+    box-shadow: 0 0 10px #58a6ff;
+}
+
+/* Generic smooth transitions */
+button, a, input, select, textarea {
+    transition: all 0.3s ease;
+}
+
+/* Hover Glow Effects for Interactive Elements */
+button:hover, a:hover {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+    transform: scale(1.02);
+}
+
+/* Ripple Container */
+.cyber-ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple-anim 600ms linear;
+    background-color: rgba(0, 255, 255, 0.4);
+    pointer-events: none;
+}
+
+@keyframes ripple-anim {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Mouse Trail */
+.mouse-trail-particle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: #0ff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    mix-blend-mode: screen;
+    top: 0;
+    left: 0;
+}
