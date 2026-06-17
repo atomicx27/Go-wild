@@ -102,3 +102,12 @@ nexus_forge/workspace/
 nexus_forge/__pycache__/
 nexus_forge/tests/__pycache__/
 synapse_forge/__pycache__/
+
+# cyber_hive
+cyber_hive/inbox/*
+!cyber_hive/inbox/.gitkeep
+cyber_hive/outbox/*
+!cyber_hive/outbox/.gitkeep
+cyber_hive/rejected/*
+!cyber_hive/rejected/.gitkeep
+cyber_hive/__pycache__/
