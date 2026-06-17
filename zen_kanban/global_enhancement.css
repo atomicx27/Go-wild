@@ -1,0 +1,62 @@
+/* Modular UI Enhancements - Non-intrusive */
+:root {
+  --glitch-cyan: rgba(0, 255, 255, 0.4);
+  --glass-bg: rgba(17, 24, 39, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* Add a subtle lift and glow on interactive elements, avoiding clip issues */
+.enhanced-interactive {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.enhanced-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--glitch-cyan);
+}
+
+/* Glassmorphism for specific panels if they want to opt-in or we inject generically on specific containers */
+.enhanced-glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border-radius: 10px;
+}
+
+/* Ripple effect confined to a pseudo-element wrapper or applied specifically */
+.ripple-wrapper {
+  position: relative;
+  overflow: hidden; /* Only on the wrapper, not the button itself */
+  border-radius: inherit;
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Clean, non-intrusive mouse trail */
+.mouse-trail-particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: cyan;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+    box-shadow: 0 0 6px cyan;
+}
