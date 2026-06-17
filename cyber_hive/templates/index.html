@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Hive | Mind Link</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+
+        body {
+            background-color: #050505;
+            color: #00ffcc;
+            font-family: 'Fira Code', monospace;
+            background-image:
+                linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(10, 15, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1), inset 0 0 10px rgba(0, 255, 204, 0.05);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+        }
+
+        #terminal-output {
+            max-height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #00ffcc rgba(0,0,0,0.5);
+        }
+
+        #terminal-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        #terminal-output::-webkit-scrollbar-thumb {
+            background: #00ffcc;
+            border-radius: 4px;
+        }
+
+        .log-line {
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: slideIn 0.3s forwards ease-out;
+            padding: 4px 0;
+            border-bottom: 1px dashed rgba(0, 255, 204, 0.1);
+        }
+
+        .log-line:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .pulse-dot {
+            height: 12px;
+            width: 12px;
+            background-color: #00ffcc;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #00ffcc;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col p-8">
+
+    <header class="mb-8 flex items-center justify-between border-b border-cyan-900 pb-4">
+        <div class="flex items-center gap-4">
+            <div class="pulse-dot"></div>
+            <h1 class="text-4xl font-bold neon-text tracking-widest">CYBER HIVE</h1>
+        </div>
+        <div class="text-sm border border-cyan-500 text-cyan-500 px-4 py-1 rounded bg-cyan-900/20">
+            STATUS: MONITORING
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col">
+        <div class="glass-panel flex-grow rounded-lg p-6 relative overflow-hidden flex flex-col">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50"></div>
+
+            <div class="mb-4 text-xs tracking-widest text-cyan-700 font-semibold border-b border-cyan-900 pb-2">
+                HIVE MIND // REAL-TIME EVENT LOGS
+            </div>
+
+            <div id="terminal-output" class="flex-grow font-mono text-sm space-y-1">
+                <!-- Logs will be injected here -->
+                <div class="log-line text-gray-500">Establishing neural link...</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const terminalOutput = document.getElementById('terminal-output');
+
+        function appendLog(message) {
+            const div = document.createElement('div');
+            div.className = 'log-line';
+
+            // Syntax highlighting for specific keywords
+            let formattedMessage = message
+                .replace(/CRITICAL ERROR/g, '<span class="text-red-500 font-bold drop-shadow-[0_0_5px_rgba(239,68,68,0.8)]">$&</span>')
+                .replace(/HIVE MIND LINK SUCCESS/g, '<span class="text-green-400 font-bold">$&</span>')
+                .replace(/NEW DATA DETECTED/g, '<span class="text-yellow-400">$&</span>')
+                .replace(/PROCESSING COMPLETE/g, '<span class="text-purple-400">$&</span>');
+
+            div.innerHTML = `<span class="text-cyan-600 mr-2">></span>${formattedMessage}`;
+            terminalOutput.appendChild(div);
+
+            // Auto-scroll to bottom
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        const evtSource = new EventSource("/stream-logs");
+
+        evtSource.onmessage = function(event) {
+            appendLog(event.data);
+        };
+
+        evtSource.onerror = function() {
+            appendLog("<span class='text-red-500'>[SYSTEM] Connection lost. Attempting to reconnect...</span>");
+        };
+    </script>
+</body>
+</html>
