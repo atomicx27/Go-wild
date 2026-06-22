@@ -1,0 +1,22 @@
+
+/* Generic CSS classes for hover states */
+.enhanced-hover-target {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.enhanced-hover-target:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 6px 6px rgba(0,0,0,0.1);
+}
+
+/* Mouse trail dots */
+.mouse-trail-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background-color: rgba(139, 92, 246, 0.7); /* accent color */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
