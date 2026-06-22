@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroOS</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="desktop" id="desktop">
+        <!-- Desktop Icons will be rendered here -->
+    </div>
+
+    <!-- Window: Terminal -->
+    <div class="window terminal-window" id="terminal-window" style="top: 10%; left: 10%;">
+        <div class="window-header">
+            <span class="window-title">TERMINAL // UPLINK</span>
+            <div class="window-controls">
+                <button class="btn-close" onclick="document.getElementById('terminal-window').style.display='none'">_</button>
+            </div>
+        </div>
+        <div class="window-body terminal-body" id="terminal-body">
+            <div class="terminal-output" id="terminal-output">
+                <div>> INITIALIZING NEURO_OS UPLINK...</div>
+                <div>> KERNEL READY. WAITING FOR INPUT.</div>
+            </div>
+            <div class="terminal-input-line">
+                <span class="prompt">></span>
+                <input type="text" id="terminal-input" autocomplete="off" autofocus>
+            </div>
+        </div>
+    </div>
+
+    <!-- Window: System Monitor -->
+    <div class="window sysmon-window" id="sysmon-window" style="top: 10%; left: 60%;">
+        <div class="window-header">
+            <span class="window-title">SYS_MON // AGENT_THOUGHTS</span>
+            <div class="window-controls">
+                <button class="btn-close" onclick="document.getElementById('sysmon-window').style.display='none'">_</button>
+            </div>
+        </div>
+        <div class="window-body sysmon-body" id="sysmon-body">
+            <!-- WebSocket thoughts will flow here -->
+        </div>
+    </div>
+
+    <!-- Window: Notepad -->
+    <div class="window notepad-window" id="notepad-window" style="display: none; top: 20%; left: 30%;">
+        <div class="window-header">
+            <span class="window-title" id="notepad-title">DECRYPT_DATA</span>
+            <div class="window-controls">
+                <button class="btn-close" onclick="document.getElementById('notepad-window').style.display='none'">X</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <textarea id="notepad-content" readonly></textarea>
+        </div>
+    </div>
+
+    <div class="taskbar">
+        <div class="start-btn" onclick="toggleStartMenu()">NEURO_OS</div>
+        <div class="task-icons">
+            <div class="task-icon" onclick="document.getElementById('terminal-window').style.display='flex'">T</div>
+            <div class="task-icon" onclick="document.getElementById('sysmon-window').style.display='flex'">S</div>
+        </div>
+        <div class="clock" id="clock">00:00:00</div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

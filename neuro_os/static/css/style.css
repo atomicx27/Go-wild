@@ -1,0 +1,282 @@
+:root {
+    --bg-color: #050505;
+    --primary: #00ffcc;
+    --secondary: #ff00ff;
+    --tertiary: #ff0055;
+    --glass-bg: rgba(5, 5, 5, 0.6);
+    --glass-border: rgba(0, 255, 204, 0.3);
+    --font-main: 'Fira Code', monospace;
+    --font-heading: 'Orbitron', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image:
+        linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    color: var(--primary);
+    font-family: var(--font-main);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* CRT Scanlines */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.8;
+}
+
+.desktop {
+    height: calc(100vh - 40px);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 20px;
+}
+
+.desktop-icon {
+    width: 80px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, text-shadow 0.2s;
+}
+
+.desktop-icon:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px var(--primary);
+}
+
+.icon-img {
+    font-size: 40px;
+    color: var(--primary);
+    text-shadow: 0 0 5px var(--primary);
+    margin-bottom: 5px;
+}
+
+.icon-label {
+    font-size: 12px;
+    word-wrap: break-word;
+    background: rgba(0,0,0,0.5);
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* Window Styles */
+.window {
+    position: absolute;
+    width: 400px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+
+.window-header {
+    background: rgba(0, 255, 204, 0.1);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.window-title {
+    color: var(--secondary);
+    text-shadow: 0 0 5px var(--secondary);
+}
+
+.btn-close {
+    background: transparent;
+    color: var(--primary);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+.btn-close:hover {
+    color: var(--tertiary);
+}
+
+.window-body {
+    padding: 15px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Terminal specific */
+.terminal-window {
+    width: 500px;
+    height: 350px;
+}
+
+.terminal-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-output {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+}
+
+.prompt {
+    color: var(--secondary);
+    margin-right: 10px;
+}
+
+#terminal-input {
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-family: var(--font-main);
+    font-size: 14px;
+    flex-grow: 1;
+    outline: none;
+}
+
+/* SysMon specific */
+.sysmon-window {
+    width: 350px;
+    height: 400px;
+}
+
+.sysmon-body {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #aaffaa;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.sysmon-line {
+    border-left: 2px solid var(--primary);
+    padding-left: 8px;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Notepad specific */
+.notepad-window {
+    width: 400px;
+    height: 300px;
+}
+
+#notepad-content {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-family: var(--font-main);
+    resize: none;
+    outline: none;
+}
+
+/* Taskbar */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(5, 5, 5, 0.9);
+    border-top: 1px solid var(--primary);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 1000;
+}
+
+.start-btn {
+    font-family: var(--font-heading);
+    font-weight: bold;
+    color: var(--bg-color);
+    background: var(--primary);
+    padding: 5px 15px;
+    cursor: pointer;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+    transition: all 0.2s;
+}
+
+.start-btn:hover {
+    background: var(--secondary);
+    box-shadow: 0 0 10px var(--secondary);
+}
+
+.task-icons {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+    flex-grow: 1;
+}
+
+.task-icon {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.task-icon:hover {
+    background: rgba(0, 255, 204, 0.2);
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.clock {
+    font-family: var(--font-heading);
+    color: var(--secondary);
+    text-shadow: 0 0 5px var(--secondary);
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+}
