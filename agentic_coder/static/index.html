@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Coder UI</title>
+    <style>
+        body { font-family: sans-serif; display: flex; height: 100vh; margin: 0; background-color: #1e1e1e; color: #d4d4d4; }
+        #chat-panel { width: 50%; display: flex; flex-direction: column; border-right: 1px solid #333; }
+        #chat-log { flex: 1; overflow-y: auto; padding: 20px; }
+        .message { margin-bottom: 15px; }
+        .user-msg { color: #569cd6; font-weight: bold;}
+        .agent-msg { color: #ce9178; }
+        #input-area { padding: 20px; border-top: 1px solid #333; display: flex; }
+        #prompt-input { flex: 1; padding: 10px; border: 1px solid #3c3c3c; background: #252526; color: #fff; border-radius: 4px; }
+        #send-btn { padding: 10px 20px; margin-left: 10px; background: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        #workspace-panel { width: 50%; padding: 20px; overflow-y: auto; }
+        h2 { margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        pre { background: #1e1e1e; border: 1px solid #3c3c3c; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        .file-block { margin-bottom: 20px; }
+        .file-name { font-weight: bold; color: #4ec9b0; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div id="chat-panel">
+        <div id="chat-log"></div>
+        <div id="input-area">
+            <input type="text" id="prompt-input" placeholder="What should the agent build?" onkeypress="if(event.key === 'Enter') sendPrompt()">
+            <button id="send-btn" onclick="sendPrompt()">Send</button>
+        </div>
+    </div>
+    <div id="workspace-panel">
+        <h2>Workspace</h2>
+        <button onclick="fetchWorkspace()" style="background: #333; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-bottom: 10px;">Refresh</button>
+        <div id="files-list"></div>
+    </div>
+
+    <script>
+        const chatLog = document.getElementById('chat-log');
+        let ws;
+
+        function connectWebSocket() {
+            ws = new WebSocket(`ws://${location.host}/ws`);
+            ws.onmessage = function(event) {
+                const div = document.createElement('div');
+                div.className = 'message agent-msg';
+                div.innerText = "Agent: " + event.data;
+                chatLog.appendChild(div);
+                chatLog.scrollTop = chatLog.scrollHeight;
+                if (event.data.includes("finished")) {
+                    fetchWorkspace();
+                }
+            };
+        }
+
+        connectWebSocket();
+
+        async function sendPrompt() {
+            const input = document.getElementById('prompt-input');
+            const prompt = input.value;
+            if (!prompt) return;
+
+            const div = document.createElement('div');
+            div.className = 'message user-msg';
+            div.innerText = "You: " + prompt;
+            chatLog.appendChild(div);
+
+            input.value = '';
+
+            await fetch('/run', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt })
+            });
+        }
+
+        async function fetchWorkspace() {
+            const res = await fetch('/workspace_files');
+            const files = await res.json();
+            const list = document.getElementById('files-list');
+            list.innerHTML = '';
+
+            for (const [filename, content] of Object.entries(files)) {
+                const block = document.createElement('div');
+                block.className = 'file-block';
+
+                const name = document.createElement('div');
+                name.className = 'file-name';
+                name.innerText = filename;
+
+                const pre = document.createElement('pre');
+                pre.innerText = content;
+
+                block.appendChild(name);
+                block.appendChild(pre);
+                list.appendChild(block);
+            }
+        }
+
+        fetchWorkspace();
+    </script>
+</body>
+</html>
