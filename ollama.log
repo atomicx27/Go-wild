@@ -1,0 +1,6 @@
+Couldn't find '/home/jules/.ollama/id_ed25519'. Generating new private key.
+Your new public key is:
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF8ILovZiMIP5EDba4Hdp9XnO8WnH8WPIMlKllP/EQjO
+
+Error: listen tcp 127.0.0.1:11434: bind: address already in use
