@@ -51,3 +51,5 @@ each folder here will be a new project
 
 * **cyber_forge**: An autonomous AI workflow engine that acts as a self-healing code factory. It watches an inbox for text ideas, prompts Ollama for python code and pytest suites, iteratively tests and fixes bugs in isolation, and displays forged tools in a cyberpunk-themed HTML armory.
 * **synapse_forge**: A cyberpunk-styled 2D canvas web app where users drop thought nodes, and a background autonomous agent recursively brainstorms and connects related ideas using Ollama.
+
+* **ollama_interactive_storyteller**: An interactive, cyberpunk-themed 'choose your own adventure' text game powered by a local Ollama instance (qwen2.5:0.5b). It uses FastAPI for the backend and dynamically generates story continuations and choices based on user input.
