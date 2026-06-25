@@ -1,0 +1,47 @@
+body {
+    background-color: #050505;
+    background-image: radial-gradient(circle, #0a2a10 0%, #050505 100%);
+}
+
+#story-log {
+    scrollbar-width: thin;
+    scrollbar-color: #00ff00 #000;
+}
+
+#story-log::-webkit-scrollbar {
+    width: 8px;
+}
+
+#story-log::-webkit-scrollbar-track {
+    background: #000;
+}
+
+#story-log::-webkit-scrollbar-thumb {
+    background-color: #00ff00;
+    border-radius: 4px;
+}
+
+.choice-btn {
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.choice-btn:hover {
+    transform: translateX(5px);
+    box-shadow: -2px 0 0 0 #00ff00;
+}
+
+/* scanline effect */
+body::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 100;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}

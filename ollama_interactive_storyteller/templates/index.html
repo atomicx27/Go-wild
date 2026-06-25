@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ollama Interactive Storyteller</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-gray-900 text-green-400 font-mono h-screen flex flex-col p-4">
+    <header class="mb-4 border-b-2 border-green-500 pb-2">
+        <h1 class="text-3xl font-bold uppercase tracking-wider text-green-300">NetRunner.CYBER_TALE</h1>
+        <p class="text-xs text-green-600">CONNECTION: ESTABLISHED // PROTOCOL: OLLAMA</p>
+    </header>
+
+    <div id="setup-container" class="flex-1 flex flex-col justify-center items-center">
+        <h2 class="text-xl mb-4">INITIALIZE SEQUENCE</h2>
+        <input type="text" id="genre-input" placeholder="Enter Genre (e.g. Cyberpunk, Fantasy)" class="bg-black border border-green-500 text-green-400 p-2 mb-4 w-64 text-center focus:outline-none focus:ring-2 focus:ring-green-400">
+        <button id="start-btn" class="bg-green-700 hover:bg-green-600 text-black font-bold py-2 px-4 rounded transition duration-200">BOOT SEQUENCE</button>
+    </div>
+
+    <div id="story-container" class="hidden flex-1 flex flex-col max-w-4xl mx-auto w-full">
+        <div id="story-log" class="flex-1 bg-black border border-green-700 p-4 overflow-y-auto mb-4 whitespace-pre-wrap leading-relaxed shadow-lg shadow-green-900/20"></div>
+
+        <div id="choices-container" class="mb-4 flex flex-col gap-2">
+            <!-- Choices will be injected here -->
+        </div>
+
+        <div class="flex gap-2">
+            <input type="text" id="custom-action" placeholder="> Enter custom action..." class="flex-1 bg-black border border-green-500 text-green-400 p-2 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <button id="submit-custom" class="bg-green-700 hover:bg-green-600 text-black font-bold py-2 px-4 rounded transition duration-200">EXECUTE</button>
+        </div>
+    </div>
+
+    <div id="loading" class="hidden fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+        <div class="text-green-500 text-xl animate-pulse">PROCESSING_NODE...</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
