@@ -384,5 +384,148 @@
 
         animate();
     </script>
+
+<!-- START_UI_ENHANCEMENTS -->
+<style>
+  .modern-ui-enhancement-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    transform: scale(0);
+    z-index: 99999;
+  }
+
+  .modern-ui-trail-particle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(139, 92, 246, 0.5);
+    pointer-events: none;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+</style>
+
+<script>
+(function() {
+    // 1. Mouse trail animation
+    const numParticles = 10;
+    const particles = [];
+
+    for (let i = 0; i < numParticles; i++) {
+        const p = document.createElement('div');
+        p.className = 'modern-ui-trail-particle';
+        document.body.appendChild(p);
+        particles.push({
+            el: p,
+            x: -100,
+            y: -100,
+            targetX: -100,
+            targetY: -100,
+            active: false
+        });
+    }
+
+    let mouseX = -100;
+    let mouseY = -100;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        particles[0].targetX = mouseX;
+        particles[0].targetY = mouseY;
+        particles[0].active = true;
+        particles[0].el.style.opacity = 0.8;
+    });
+
+    function animateTrail() {
+        for (let i = 0; i < numParticles; i++) {
+            const p = particles[i];
+
+            if (i === 0) {
+                p.x += (p.targetX - p.x) * 0.3;
+                p.y += (p.targetY - p.y) * 0.3;
+            } else {
+                const prev = particles[i - 1];
+                p.x += (prev.x - p.x) * 0.3;
+                p.y += (prev.y - p.y) * 0.3;
+                if (prev.active) {
+                    p.active = true;
+                    p.el.style.opacity = 0.8 - (i * (0.8 / numParticles));
+                }
+            }
+
+            if (p.active) {
+                p.el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`;
+            }
+        }
+        requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
+
+    // 2. Click animations (Ripple) using Web Animations API
+    document.addEventListener('click', (e) => {
+        const burst = document.createElement('div');
+        burst.className = 'modern-ui-enhancement-ripple';
+        burst.style.left = `${e.pageX - 15}px`;
+        burst.style.top = `${e.pageY - 15}px`;
+        burst.style.width = '30px';
+        burst.style.height = '30px';
+        document.body.appendChild(burst);
+
+        const animation = burst.animate([
+            { transform: 'scale(0)', opacity: 0.8 },
+            { transform: 'scale(4)', opacity: 0 }
+        ], {
+            duration: 400,
+            easing: 'ease-out',
+            composite: 'add'
+        });
+
+        animation.onfinish = () => {
+            animation.cancel();
+            burst.remove();
+        };
+    });
+
+    // 3. MutationObserver for subtle fade-in animations on dynamically generated interactive elements
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) { // Element node
+                        if (!node.classList.contains('modern-ui-trail-particle') &&
+                            !node.classList.contains('modern-ui-enhancement-ripple')) {
+
+                            const computedStyle = window.getComputedStyle(node);
+                            if (computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden') {
+                                const anim = node.animate([
+                                    { opacity: 0, transform: 'translateY(5px)' },
+                                    { opacity: 1, transform: 'translateY(0)' }
+                                ], {
+                                    duration: 300,
+                                    easing: 'ease-out',
+                                    composite: 'add'
+                                });
+                                anim.onfinish = () => anim.cancel();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+})();
+</script>
+<!-- END_UI_ENHANCEMENTS -->
 </body>
+
 </html>
