@@ -51,3 +51,5 @@ each folder here will be a new project
 
 * **cyber_forge**: An autonomous AI workflow engine that acts as a self-healing code factory. It watches an inbox for text ideas, prompts Ollama for python code and pytest suites, iteratively tests and fixes bugs in isolation, and displays forged tools in a cyberpunk-themed HTML armory.
 * **synapse_forge**: A cyberpunk-styled 2D canvas web app where users drop thought nodes, and a background autonomous agent recursively brainstorms and connects related ideas using Ollama.
+
+* **terminal_dj**: An unhinged, agentic CLI tool that takes any random prompt, generates a wild, rhyming 'cyber-rap' using Ollama, and plays it in the terminal with dramatic typing effects and ASCII art.
