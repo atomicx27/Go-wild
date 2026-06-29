@@ -1,0 +1,3 @@
+watchdog
+requests
+jinja2
