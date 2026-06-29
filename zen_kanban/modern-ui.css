@@ -1,0 +1,35 @@
+.modern-hover-effect {
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+.modern-hover-effect:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+.ui-ripple-container {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.ui-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  transform: scale(0);
+  animation: ui-ripple-anim 0.6s linear;
+  pointer-events: none;
+}
+@keyframes ui-ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+.mouse-trail-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: rgba(100, 150, 255, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+}
