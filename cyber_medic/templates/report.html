@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Medic - Incident Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a; /* Slate 900 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #0ea5e9, 0 0 40px #0ea5e9, 0 0 80px #0ea5e9;
+        }
+        .card {
+            background-color: rgba(30, 41, 59, 0.8); /* Slate 800 with opacity */
+            border: 1px solid #334155; /* Slate 700 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: #0ea5e9; /* Sky 500 */
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
+        }
+        .severity-high {
+            color: #ef4444; /* Red 500 */
+            text-shadow: 0 0 5px #ef4444;
+        }
+        .severity-medium {
+            color: #eab308; /* Yellow 500 */
+            text-shadow: 0 0 5px #eab308;
+        }
+        .severity-low {
+            color: #22c55e; /* Green 500 */
+            text-shadow: 0 0 5px #22c55e;
+        }
+        .glitch-effect:hover {
+            animation: glitch 0.2s linear infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-12 text-center">
+            <h1 class="text-5xl font-bold text-sky-400 neon-text glitch-effect inline-block tracking-widest uppercase">Cyber Medic</h1>
+            <p class="mt-4 text-slate-400 text-lg">Autonomous Log Diagnostics & Prescription Protocol</p>
+        </header>
+
+        <main>
+            <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-2">
+                <h2 class="text-2xl font-semibold text-sky-300">Recent Incident Reports</h2>
+                <span class="text-sm text-slate-500">Auto-updating...</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% if reports %}
+                    {% for report in reports %}
+                    <div class="card p-6 rounded-lg relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-sky-500"></div>
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white break-words">{{ report.filename }}</h3>
+                            <span class="text-xs font-mono bg-slate-700 px-2 py-1 rounded text-slate-300">{{ report.timestamp }}</span>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-semibold text-slate-400 mb-1">RAW LOG EXTRACT:</h4>
+                            <pre class="bg-slate-900 p-3 rounded text-xs text-red-400 overflow-x-auto border border-slate-800 whitespace-pre-wrap">{{ report.raw_log }}</pre>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-400 mb-1 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                AI PRESCRIPTION:
+                            </h4>
+                            <div class="prose prose-invert prose-sm max-w-none text-slate-300">
+                                {{ report.diagnosis | safe }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-span-full card p-12 text-center rounded-lg border-dashed border-slate-600">
+                        <p class="text-slate-400 text-lg">No incidents reported. System nominal.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+
+        <footer class="mt-16 text-center text-sm text-slate-600 border-t border-slate-800 pt-4">
+            SYSTEM.STATUS: ONLINE // MODEL: QWEN2.5:0.5B // VER: 1.0.0
+        </footer>
+    </div>
+</body>
+</html>
