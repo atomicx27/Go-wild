@@ -1,0 +1,4 @@
+requests
+duckduckgo-search
+rich
+beautifulsoup4
