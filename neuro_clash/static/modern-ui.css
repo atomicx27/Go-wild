@@ -1,0 +1,45 @@
+/* modern-ui.css */
+
+/* Isolated Ripple Container */
+.ripple-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+/* Base interactive elements positioning for ripple */
+button, .btn, a, .interactive {
+    position: relative;
+    /* Do NOT set overflow: hidden globally here as it breaks tooltips/dropdowns */
+}
+
+/* Mouse trail style */
+.mouse-trail-particle {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(0, 255, 255, 0.7);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    /* Initial state, transformation handled by JS animation API */
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    mix-blend-mode: screen;
+}
+
+/* Modern hover effects */
+.hover-glow {
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
