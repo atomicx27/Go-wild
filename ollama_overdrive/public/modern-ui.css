@@ -1,0 +1,89 @@
+/* Modern UI Enhancements */
+:root {
+  --mui-primary: #6366f1;
+  --mui-primary-glow: rgba(99, 102, 241, 0.4);
+  --mui-transition-speed: 0.3s;
+}
+
+/* Base enhancements */
+body {
+  scroll-behavior: smooth;
+}
+
+/* Button & Link Hover Effects */
+button, .btn, a.button {
+  transition: transform var(--mui-transition-speed) cubic-bezier(0.4, 0, 0.2, 1), box-shadow var(--mui-transition-speed) cubic-bezier(0.4, 0, 0.2, 1), background-color var(--mui-transition-speed) ease;
+  position: relative;
+  /* Don't force overflow hidden to avoid clipping dropdowns */
+}
+
+button:hover, .btn:hover, a.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--mui-primary-glow);
+}
+
+button:active, .btn:active, a.button:active {
+  transform: translateY(0);
+}
+
+/* Input enhancements */
+input[type="text"], input[type="password"], input[type="email"], textarea, select {
+  transition: border-color var(--mui-transition-speed) ease, box-shadow var(--mui-transition-speed) ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--mui-primary);
+  box-shadow: 0 0 0 3px var(--mui-primary-glow);
+}
+
+/* Fade-in Animation for main elements */
+@keyframes mui-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mui-fade-in {
+  animation: mui-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Ripple Effect Container */
+.mui-ripple-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.mui-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: mui-ripple-anim 0.6s linear;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes mui-ripple-anim {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Custom Mouse Trail */
+.mui-trail {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--mui-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 10px var(--mui-primary);
+  opacity: 0.6;
+}
