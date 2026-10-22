@@ -1,0 +1,42 @@
+
+/* modern-ui.css */
+/* Modern glassmorphism, glowing effects, and smooth transitions */
+.modern-ui-enhanced-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.modern-ui-enhanced-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.modern-ui-enhanced-btn:hover::after {
+    opacity: 1;
+}
+
+.modern-ui-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modern-ui-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.modern-ui-input {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modern-ui-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.3);
+}
