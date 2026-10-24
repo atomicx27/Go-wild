@@ -1,0 +1,68 @@
+/* modern-ui.css */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.5); /* Using a generic purple accent */
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.8);
+}
+
+/* Soft focus rings for accessibility */
+*:focus-visible {
+    outline: 2px solid #8b5cf6;
+    outline-offset: 2px;
+}
+
+/* Base button enhancements */
+button, .btn {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+button:hover, .btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active, .btn:active {
+    transform: scale(0.97);
+}
+
+/* Input field enhancements */
+input, textarea, select {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+/* Card hover effects */
+.card, .task, .board-column, .item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Generic fade-in animation for main content */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+body > div:first-of-type, body > main {
+    animation: fadeIn 0.5s ease-out forwards;
+}
