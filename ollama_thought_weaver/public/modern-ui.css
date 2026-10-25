@@ -1,0 +1,29 @@
+/* modern-ui.css */
+.mui-btn-enhance {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: visible; /* Avoid clipping */
+}
+.mui-btn-enhance:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.mui-btn-enhance:active {
+    transform: translateY(0);
+}
+.mui-card-enhance {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mui-card-enhance:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+/* Focus rings for accessibility */
+*:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+}
+/* Add smooth scrolling to html */
+html {
+    scroll-behavior: smooth;
+}
