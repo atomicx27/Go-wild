@@ -48,6 +48,7 @@ each folder here will be a new project
 * **synth_scribe**: An autonomous Ollama-powered documentation agent that generates cyberpunk-themed HTML sites with Mermaid.js architecture diagrams.
 * **market_mayhem**: An autonomous, multi-agent stock market simulation powered by a local Ollama instance, visualized in a cyberpunk-themed Terminal UI.
 * **neural_kanban**: An autonomous, local AI-powered Kanban project management board where an AI PM automatically analyzes new tickets, breaks down tasks, and provides architectural advice using Ollama.
+* **shadow_broker**: An autonomous AI mercenary exchange. A background broker continuously scans your codebase for `TODO` and `FIXME` comments and posts them as open bounties to a database. An elite AI mercenary agent then continuously claims these bounties, uses Ollama to generate fixes, and submits them back to the database, visualized in a cyberpunk dashboard.
 
 * **cyber_forge**: An autonomous AI workflow engine that acts as a self-healing code factory. It watches an inbox for text ideas, prompts Ollama for python code and pytest suites, iteratively tests and fixes bugs in isolation, and displays forged tools in a cyberpunk-themed HTML armory.
 * **synapse_forge**: A cyberpunk-styled 2D canvas web app where users drop thought nodes, and a background autonomous agent recursively brainstorms and connects related ideas using Ollama.
