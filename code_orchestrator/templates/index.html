@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Orchestrator with Ollama</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #1e1e1e; color: #fff; }
+        .container { background-color: #2d2d2d; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        h1 { color: #4da6ff; text-align: center; }
+        .chat-box { height: 400px; overflow-y: auto; border: 1px solid #444; padding: 10px; margin-bottom: 20px; border-radius: 4px; background-color: #1a1a1a; }
+        .message { margin-bottom: 15px; padding: 10px; border-radius: 4px; }
+        .user-message { background-color: #2b5278; margin-left: 20%; }
+        .agent-plan { background-color: #3b3b3b; font-style: italic; border-left: 3px solid #f39c12; margin-right: 10%; }
+        .agent-result { background-color: #224422; border-left: 3px solid #2ecc71; margin-right: 20%; }
+        .input-group { display: flex; gap: 10px; }
+        input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #555; border-radius: 4px; background-color: #333; color: white; }
+        button { padding: 10px 20px; background-color: #4da6ff; color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #3388ff; }
+        button:disabled { background-color: #555; cursor: not-allowed; }
+        pre { background-color: #000; padding: 10px; overflow-x: auto; border-radius: 4px; }
+        code { font-family: Consolas, monospace; }
+        .loading { display: none; color: #f39c12; font-weight: bold; margin-top: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agentic Code Orchestrator 🚀</h1>
+        <div class="chat-box" id="chatBox">
+            <div class="message agent-result">Hello! I'm your local AI agent powered by Ollama (qwen2.5:0.5b). Tell me what to code or automate!</div>
+        </div>
+
+        <form id="chatForm" class="input-group">
+            <input type="text" id="promptInput" placeholder="E.g., Write a python script to monitor a directory for new files..." required>
+            <button type="submit" id="submitBtn">Send</button>
+        </form>
+        <div class="loading" id="loadingIndicator">Agent is thinking and executing... Please wait.</div>
+    </div>
+
+    <script>
+        const form = document.getElementById('chatForm');
+        const input = document.getElementById('promptInput');
+        const chatBox = document.getElementById('chatBox');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const prompt = input.value.trim();
+            if (!prompt) return;
+
+            // Add user message
+            addMessage(prompt, 'user-message');
+            input.value = '';
+
+            // UI state
+            submitBtn.disabled = true;
+            loadingIndicator.style.display = 'block';
+
+            try {
+                const formData = new FormData();
+                formData.append('prompt', prompt);
+
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = await response.json();
+
+                // Add agent's thought process
+                addMessage(`<strong>Agent's Plan:</strong><br>${formatText(data.plan)}`, 'agent-plan');
+
+                // Add agent's final result
+                addMessage(`<strong>Final Result:</strong><br>${formatText(data.result)}`, 'agent-result');
+
+            } catch (error) {
+                addMessage(`Error: ${error.message}`, 'agent-result');
+                console.error('Error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                loadingIndicator.style.display = 'none';
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
+
+        function addMessage(content, className) {
+            const div = document.createElement('div');
+            div.className = `message ${className}`;
+            div.innerHTML = content;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function formatText(text) {
+            // Simple markdown code block formatting
+            return text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                       .replace(/\n/g, '<br>');
+        }
+    </script>
+</body>
+</html>
