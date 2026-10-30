@@ -1,0 +1,42 @@
+/* Global UI Enhancements */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    animation: fadeInPage 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Generic interactive elements hover effect */
+button, .btn, a, input[type="submit"] {
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+}
+
+button:hover:not(:disabled), .btn:hover:not(:disabled), a:hover, input[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+button:active:not(:disabled), .btn:active:not(:disabled), a:active, input[type="submit"]:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Subtle glowing effect for specific focus states */
+input:focus, textarea:focus, select:focus {
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.5); /* Cyan glow by default */
+}
