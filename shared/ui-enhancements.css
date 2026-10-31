@@ -1,0 +1,95 @@
+/* Shared UI Enhancements for Modern Frontend Experience */
+
+/* Interactive Button Hover Enhancements - Does NOT use overflow: hidden */
+button, .btn, input[type="button"], input[type="submit"] {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+button:hover, .btn:hover, input[type="button"]:hover, input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4), 0 0 10px rgba(34, 211, 238, 0.2) inset;
+}
+
+button:active, .btn:active, input[type="button"]:active, input[type="submit"]:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(34, 211, 238, 0.3);
+}
+
+/* Mouse Trail Particles */
+.mouse-particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, rgba(34,211,238,1) 0%, rgba(34,211,238,0) 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.8;
+}
+
+/* Click Ripple Effect */
+.click-ripple {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(34, 211, 238, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+}
+
+/* Input Focus Enhancements */
+input[type="text"], input[type="email"], input[type="password"], textarea, select {
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.5), 0 0 15px rgba(34, 211, 238, 0.2);
+    border-color: rgba(34, 211, 238, 0.8) !important;
+}
+
+/* Scrollbar Modernization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(34, 211, 238, 0.3);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(34, 211, 238, 0.6);
+}
+
+/* Fade-in Animation for Container Load */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInSlideUp 0.6s ease-out forwards;
+}
+
+/* Glowing text highlight effect for selected text */
+::selection {
+    background: rgba(34, 211, 238, 0.3);
+    color: #fff;
+    text-shadow: 0 0 5px rgba(34, 211, 238, 0.8);
+}
