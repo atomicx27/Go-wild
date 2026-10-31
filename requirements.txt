@@ -1,0 +1,7 @@
+streamlit
+duckduckgo-search
+beautifulsoup4
+requests
+langchain
+langchain-ollama
+langgraph
