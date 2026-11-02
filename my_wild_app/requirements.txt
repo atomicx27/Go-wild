@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+jinja2
+duckduckgo-search
+langchain-ollama
+requests
+pytest
+httpx<0.28.0
+pytest-asyncio
