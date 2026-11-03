@@ -1,0 +1,30 @@
+/* shared_ui.css */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button, .btn {
+    transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+button:hover, .btn:hover {
+    filter: brightness(1.1);
+}
+
+button:active, .btn:active {
+    transform: scale(0.97);
+}
+
+input, textarea, select {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    outline: none;
+}
+
+button, .btn {
+    position: relative;
+    overflow: hidden;
+}
