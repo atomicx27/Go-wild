@@ -1,0 +1,7 @@
+fastapi
+uvicorn<0.30.0
+sqlalchemy
+langchain-ollama
+langchain-core
+pytest
+httpx
