@@ -1,0 +1,5 @@
+streamlit
+langchain-ollama
+langchain
+duckduckgo-search
+pydantic
